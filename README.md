@@ -33,7 +33,8 @@ Ogni sezione ha un'anteprima costruita sul proprio contenuto:
 
 - **Hero** — una sola card, *Dati in lavorazione*: barra di avanzamento divisa
   nei tre stati (70% completati, 20% richiedono attenzione, 10% pronti alla
-  chiusura), i tre contatori e un estratto delle unità.
+  chiusura), contatori verde e arancione affiancati, area inferiore per gli
+  elementi pronti alla chiusura e un estratto delle unità.
 - **Ottieni** — la card *Certificato tecnico* con quattro passaggi collegati in
   verticale: i primi due conclusi con la spunta, il terzo in corso con barra di
   avanzamento, il quarto ancora da fare. Accanto, sovrapposto in primo piano,
@@ -93,9 +94,11 @@ Tutto il resto sono sfumature calcolate con `color-mix`. Due meritano una nota:
   resta per i riempimenti e per i fondi scuri, dove arriva a 11:1.
 - `--orange-soft` è fermo al 10%: oltre, il testo ambrato scende sotto i 4,5:1.
 
-Gli sfondi non sono tinte piatte: `.wash-hero` e `.wash-soft` per le sezioni
-chiare, `.on-dark` e `.on-dark-glow` per quelle profonde, `.trama` per la trama
-diagonale appena percepibile.
+La landing usa prevalentemente il bianco, con un leggero gradiente verde alla
+base della hero. Le anteprime delle sezioni Ottieni e Mantieni sono raccolte
+in pannelli neutri chiari (`.software-stage`), con card bianche e ombre leggere.
+Il documento si sovrappone al bordo inferiore del percorso, senza coprire gli
+step; sui telefoni segue il percorso in verticale.
 
 ## Tipografia
 

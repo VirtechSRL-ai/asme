@@ -14,12 +14,12 @@ const MAILTO = `mailto:${contatti.email}?subject=${encodeURIComponent("Informazi
  */
 function Flusso() {
   return (
-    <ol className="relative">
+    <ol className="software-stage relative">
       {mantieni.fasi.map((fase, i) => {
         const Icona = icone[fase.icona];
         const ultima = i === mantieni.fasi.length - 1;
         return (
-          <li key={fase.titolo} className={ultima ? "" : "pb-5"}>
+          <li key={fase.titolo}>
             <div className="mock card-hover flex items-start gap-4 p-5 sm:p-6">
               <span
                 aria-hidden="true"
@@ -56,7 +56,7 @@ function Flusso() {
             {!ultima ? (
               <div aria-hidden="true" className="flex justify-center py-1">
                 <span
-                  className={`collega block w-[2px] ${
+                  className={`block w-[2px] ${
                     fase.stato === "ok" ? "bg-green-ink/40" : "bg-line"
                   }`}
                   style={{ height: "1.25rem" }}
@@ -72,7 +72,7 @@ function Flusso() {
 
 export function Mantieni() {
   return (
-    <section id="mantieni" className="wash-soft py-20 sm:py-28">
+    <section id="mantieni" className="py-20 sm:py-28">
       <Container>
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <Reveal>

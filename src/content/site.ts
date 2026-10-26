@@ -34,7 +34,7 @@ export const site = {
 
   // 01 — HERO
   hero: {
-    badge: "Per chi produce apparecchiature in pressione",
+    badge: "PER CHI PRODUCE APPARECCHIATURE IN PRESSIONE",
     titolo: "Tracciabilità dei materiali",
     sottotitolo: "dalla distinta al fascicolo tecnico",
     testo:

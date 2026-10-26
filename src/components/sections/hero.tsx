@@ -28,7 +28,7 @@ const ETICHETTA: Record<string, string> = {
  */
 function Cruscotto() {
   return (
-    <div className="mock mx-auto max-w-4xl text-left">
+    <div className="mock mx-auto max-w-4xl text-left dashboard">
       <div className="mock-testa">
         <span>{cruscotto.titolo}</span>
         <span className="font-bold normal-case tracking-normal text-neutral">
@@ -49,11 +49,11 @@ function Cruscotto() {
         </div>
 
         {/* I tre stati */}
-        <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {cruscotto.stati.map((stato) => (
             <div
               key={stato.chiave}
-              className="rounded-[16px] border border-line px-4 py-4"
+              className={`dashboard-state dashboard-state-${stato.chiave} rounded-[16px] border border-line px-5 py-5 ${stato.chiave === "pronti" ? "sm:col-span-2" : ""}`}
             >
               <dt className="flex items-center gap-2">
                 <span
@@ -127,15 +127,9 @@ function Cruscotto() {
 
 export function Hero() {
   return (
-    <section className="wash-hero relative overflow-hidden pt-12 pb-20 sm:pt-16 sm:pb-24">
-      <div aria-hidden="true" className="trama pointer-events-none absolute inset-0 opacity-70" />
-      <div
-        aria-hidden="true"
-        className="respira pointer-events-none absolute -top-72 left-1/2 h-[38rem] w-full max-w-[64rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--green)_26%,transparent),transparent_68%)]"
-      />
-
+    <section className="wash-hero relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
       <Container className="relative">
-        <Reveal className="mx-auto max-w-3xl text-center">
+        <Reveal className="mx-auto max-w-5xl text-center">
           <span className="inline-flex rounded-pill border border-line bg-white/70 px-3.5 py-1.5 text-[0.6875rem] font-extrabold uppercase tracking-[0.12em] text-green-ink">
             {hero.badge}
           </span>

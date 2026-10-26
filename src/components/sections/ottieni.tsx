@@ -14,21 +14,17 @@ const MAILTO = `mailto:${contatti.email}?subject=${encodeURIComponent("Informazi
  * risulta. Il controllo finale resta al team: l'ultimo passo è in attesa.
  */
 function AnteprimaCertificato() {
-  // Lo spazio a destra lascia che il documento sporga dalla card principale
-  // senza coprirne il testo: ne sovrappone solo il bordo.
   return (
-    <div className="relative sm:pr-36 lg:pr-44">
-      <div className="mock">
-        <div className="mock-testa">
+    <div className="software-stage certificate-stage">
+      <div className="mock certificate-process">
+        <div className="mock-testa certificate-heading">
           <span>{percorso.titolo}</span>
           <span className="rounded-[6px] bg-green-soft px-1.5 py-0.5 text-[0.8125rem] font-bold normal-case tabular-nums tracking-normal text-green-ink">
             {percorso.riferimento}
           </span>
         </div>
 
-        {/* Il margine destro tiene il testo dei passaggi fuori dall'area che
-            il documento sovrappone. */}
-        <ol className="p-5 sm:p-6 sm:pr-28 lg:pr-24">
+        <ol className="p-5 sm:p-6">
           {percorso.passi.map((passo, i) => {
             const ultimo = i === percorso.passi.length - 1;
             return (
@@ -97,11 +93,12 @@ function AnteprimaCertificato() {
 
       {/* Documento risultante: in colonna sul telefono, sovrapposto e in primo
           piano da tablet in su, dove c'è spazio per farlo sporgere. */}
-      <div className="mock mt-5 w-full sm:absolute sm:bottom-12 sm:right-0 sm:mt-0 sm:w-[15rem]">
+      <div className="mock certificate-document">
         <div className="mock-testa">
           <span>{documento.titolo}</span>
         </div>
         <div className="p-4">
+          <div aria-hidden="true" className="document-lines"><span /><span /><span /></div>
           <p className="rounded-[6px] bg-green-soft px-1.5 py-0.5 text-[0.8125rem] font-bold tabular-nums text-green-ink inline-block">
             {documento.riferimento}
           </p>
