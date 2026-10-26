@@ -1,52 +1,262 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   PALETTE
+   Tre famiglie: la carta (fondi chiari), l'ink (sezioni scure e testo) e
+   un solo accento brillante. Cambiando --accent cambia tutto il sito.
+   ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --surface: #f6f7f9;
-  --foreground: #10151c;
-  --muted: #5a6572;
-  --border: #e3e6ea;
-  --accent: #1d4ed8;
-  --accent-foreground: #ffffff;
-}
+  --paper: #f7f7f3;
+  --paper-alt: #ecece3;
+  --card: #ffffff;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b0e13;
-    --surface: #12171f;
-    --foreground: #eef1f5;
-    --muted: #98a2b1;
-    --border: #232a34;
-    --accent: #5b8cff;
-    --accent-foreground: #0b0e13;
-  }
+  --ink: #121c2b;
+  --ink-alt: #1a2636;
+
+  --text: #121c2b;
+  --muted: #606a78;
+  --muted-on-ink: #9ba6b3;
+
+  --line: #e2e2d8;
+  --line-on-ink: rgba(255, 255, 255, 0.12);
+
+  --accent: #ffc14d;
+  --accent-ink: #121c2b;
+
+  /* Raggi: la reference usa pill per i bottoni e angoli molto morbidi
+     per le card (20–32px). */
+  --r-pill: 999px;
+  --r-card: 24px;
+  --r-panel: 32px;
+  --r-sm: 10px;
+  --r-xs: 6px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-paper-alt: var(--paper-alt);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-alt: var(--ink-alt);
+  --color-text: var(--text);
   --color-muted: var(--muted);
-  --color-border: var(--border);
+  --color-muted-on-ink: var(--muted-on-ink);
+  --color-line: var(--line);
+  --color-line-on-ink: var(--line-on-ink);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent-ink: var(--accent-ink);
+
+  --radius-pill: var(--r-pill);
+  --radius-card: var(--r-card);
+  --radius-panel: var(--r-panel);
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono-ui);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE
+   ───────────────────────────────────────────────────────────────────────────── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 6rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PRIMITIVE RICORRENTI
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer components {
+  /* Etichettina monospace sopra i titoli di sezione */
+  .eyebrow {
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .on-ink .eyebrow {
+    color: var(--accent);
+  }
+
+  /* Titoli: molto stretti di tracking e di interlinea, come la reference */
+  .display {
+    font-size: clamp(2.5rem, 7vw, 4.75rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .h2 {
+    font-size: clamp(2rem, 4.4vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: -0.032em;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  .h3 {
+    font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+    line-height: 1.5;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .on-ink .lede {
+    color: var(--muted-on-ink);
+  }
+
+  /* Bottoni pill */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--r-pill);
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition:
+      transform 0.18s ease,
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn-ink {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn-ink:hover {
+    background: var(--ink-alt);
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .btn-accent:hover {
+    filter: brightness(1.05);
+  }
+
+  .btn-outline {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+  }
+
+  .btn-outline:hover {
+    background: var(--card);
+    border-color: var(--ink);
+  }
+
+  .on-ink .btn-outline {
+    border-color: var(--line-on-ink);
+    color: var(--paper);
+  }
+
+  .on-ink .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Card */
+  .card {
+    border-radius: var(--r-card);
+    border: 1px solid var(--line);
+    background: var(--card);
+  }
+
+  .on-ink .card {
+    border-color: var(--line-on-ink);
+    background: var(--ink-alt);
+  }
+
+  /* Chip / tag piccoli */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--line);
+    padding: 0.3125rem 0.6875rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .on-ink .chip {
+    border-color: var(--line-on-ink);
+    color: var(--muted-on-ink);
+  }
+
+  /* Freccia che scorre all'hover sui link testuali */
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  .link-arrow svg {
+    transition: transform 0.18s ease;
+  }
+
+  .link-arrow:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* Sezione scura: attiva le varianti .on-ink qui sopra */
+  .on-ink {
+    background: var(--ink);
+    color: var(--paper);
   }
 }
