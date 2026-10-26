@@ -2,26 +2,31 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    PALETTE
-   Tre famiglie: la carta (fondi chiari), l'ink (sezioni scure e testo) e
-   un solo accento brillante. Cambiando --accent cambia tutto il sito.
+   Allineata all'identità del brief: navy profondo, fondi chiari neutri e un
+   solo accento teal. Quando arriva la palette ufficiale Virtech bastano
+   --ink e --accent per riallineare tutta la pagina.
    ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --paper: #f7f7f3;
-  --paper-alt: #ecece3;
+  --paper: #f7f8f8;
+  --paper-alt: #eceff0;
   --card: #ffffff;
 
-  --ink: #121c2b;
-  --ink-alt: #1a2636;
+  --ink: #16202e;
+  --ink-alt: #1e2a3a;
 
-  --text: #121c2b;
-  --muted: #606a78;
-  --muted-on-ink: #9ba6b3;
+  --text: #16202e;
+  --muted: #5b6673;
+  --muted-on-ink: #9aa7b4;
 
-  --line: #e2e2d8;
+  --line: #e0e4e6;
   --line-on-ink: rgba(255, 255, 255, 0.12);
 
-  --accent: #ffc14d;
-  --accent-ink: #121c2b;
+  --accent: #2ec4ae;
+  --accent-ink: #0b1620;
+  --accent-soft: #e2f5f1;
+  /* Variante scura dell'accento: il teal pieno non ha contrasto sufficiente
+     per il testo piccolo sui fondi chiari. */
+  --accent-text: #127a6c;
 
   /* Raggi: la reference usa pill per i bottoni e angoli molto morbidi
      per le card (20–32px). */
@@ -45,6 +50,7 @@
   --color-line-on-ink: var(--line-on-ink);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
 
   --radius-pill: var(--r-pill);
   --radius-card: var(--r-card);
@@ -103,7 +109,7 @@ html {
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--accent-text);
   }
 
   .on-ink .eyebrow {
