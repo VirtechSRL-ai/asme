@@ -1,9 +1,8 @@
-# Landing monopagina ASME / PED — Virtech
+# Tracciamy — sito
 
-Landing in Next.js 16 (App Router), TypeScript e Tailwind CSS 4. I contenuti
-vengono dal brief *Landing monopagina ASME / PED*: tracciabilità dei materiali e
-preparazione della documentazione tecnica per produttori di apparecchiature in
-pressione.
+Landing monopagina di **Tracciamy**, il prodotto Virtech per la tracciabilità
+dei materiali nei processi ASME e PED. Next.js 16 (App Router), TypeScript,
+Tailwind CSS 4.
 
 ## Avviare il sito in locale
 
@@ -14,138 +13,115 @@ npm run dev
 
 Poi apri http://localhost:3000.
 
-## Le sette sezioni
+## Le sei sezioni
 
-L'ordine segue il brief. Un file per sezione, in `src/components/sections/`:
+Un file per sezione, in `src/components/sections/`. I fondi si alternano fra
+bianco, scuro e verde per dare ritmo allo scorrimento:
 
-| #   | Sezione     | File             | Fondo         | Contenuto                                  |
-| --- | ----------- | ---------------- | ------------- | ------------------------------------------ |
-| 01  | Hero        | `hero.tsx`       | bianco        | titolo a piena larghezza, catena animata   |
-| 02  | Prova       | `experience.tsx` | menta chiaro  | l'esperienza W&H, schema del lotto         |
-| 03  | Beneficio   | `benefit.tsx`    | bianco        | tre micro-messaggi e diagramma a ventaglio |
-| 04  | Prodotto    | `product.tsx`    | verde scuro   | il percorso unità → componente → certificato |
-| 05  | Metodo      | `method.tsx`     | grigio        | Importa. Collega. Verifica.                |
-| 06  | Ambiti      | `scopes.tsx`     | bianco        | ASME / PED e la fascia che condividono     |
-| 07  | Conversione | `demo.tsx`       | verde scuro   | modulo di richiesta demo                   |
-
-I fondi si alternano apposta: il ritmo chiaro → menta → chiaro → scuro → grigio
-→ chiaro → scuro scandisce lo scorrimento senza uscire dalla stessa identità.
+| #   | Sezione       | File          | Fondo  | Scopo                                |
+| --- | ------------- | ------------- | ------ | ------------------------------------ |
+| 01  | Hero          | `hero.tsx`    | bianco | cos'è Tracciamy, CTA di contatto     |
+| 02  | Il problema   | `problem.tsx` | scuro  | perché serve                         |
+| 03  | Come funziona | `method.tsx`  | bianco | Importa, Collega, Verifica           |
+| 04  | Cosa collega  | `links.tsx`   | verde  | unità → componente → certificato     |
+| 05  | ASME e PED    | `scopes.tsx`  | bianco | cosa esiste e cosa va configurato    |
+| 06  | Contatti      | `contact.tsx` | scuro  | chiusura, email e telefono           |
 
 ## Modificare i contenuti
 
 Tutti i testi stanno in `src/content/site.ts`, divisi per sezione. Non c'è copy
-dentro i componenti: per cambiare una frase si modifica solo quel file.
+dentro i componenti.
 
-## Identità visiva
+## Logo
 
-### Logo provvisorio
+Il logo ufficiale è `public/tracciamy-logo.png`, ritagliato dal file fornito
+senza ridisegnarlo. Lo usa il componente `src/components/logo.tsx`, in header e
+footer. La favicon è `src/app/icon.png` e contiene **solo il simbolo**, senza la
+scritta, come richiesto.
 
-`src/components/logo.tsx`. Il segno è una "V" disegnata come un tracciato che
-risale e termina in un nodo staccato: richiama il risalire da un'unità prodotta
-alla sua origine. Due versioni, stessa identità:
+**Il logo va su fondo bianco.** La scritta è nera e il simbolo sfuma fino a un
+verde molto scuro: su una superficie scura o verde sparirebbe. Per questo header
+e footer sono bianchi. Se serve il logo anche sulle sezioni scure, va fornita la
+**versione negativa ufficiale**: non l'ho generata io perché invertire i colori
+avrebbe alterato l'identità del marchio.
 
-- `<Logo nome="Virtech" />` — segno più marchio tipografico (header, footer)
-- `<LogoMark />` — solo il segno, per gli spazi stretti
+## Palette — quattro colori
 
-Il tratto usa `currentColor`, quindi funziona su fondo chiaro e scuro
-(`variante="paper"` per il secondo caso). La favicon è `src/app/icon.svg`, dallo
-stesso disegno.
+Variabili in `src/app/globals.css`. Il verde viene dal logo: `#00b66e` è la
+tonalità più chiara del simbolo, `#06231a` l'estremo opposto.
 
-**Per sostituirlo con il logo definitivo** bastano due file: `logo.tsx` e
-`icon.svg`. Header e footer non vanno toccati.
+| Variabile   | Valore    | Ruolo                                        |
+| ----------- | --------- | -------------------------------------------- |
+| `--green`   | `#00b66e` | colore del marchio: CTA, sezioni, dettagli   |
+| `--dark`    | `#06231a` | testi, sezioni profonde                      |
+| `--white`   | `#ffffff` | **unico** bianco del sito                    |
+| `--neutral` | `#55665f` | testi secondari e bordi                      |
 
-### Tipografia
+Tutto il resto sono sfumature di questi quattro, calcolate con `color-mix`, non
+colori nuovi. Due meritano una nota:
 
-Una sola famiglia: **Manrope**, caricata da `next/font`. La gerarchia nasce dai
-pesi (400–800), non da font diversi. Le classi stanno in `globals.css`:
+- `--green-ink` (`#027e4e`) è lo stesso verde scurito. Serve perché il verde
+  pieno su bianco sta a 2,6:1 e come testo non si leggerebbe. Il verde pieno
+  resta per i riempimenti, dove il contrasto lo dà il testo scuro sopra.
+- `--neutral-soft` è il neutro schiarito per i numeri grandi dei passaggi:
+  discreto ma sopra il 3:1 richiesto.
 
-| Classe     | Dimensione           | Uso                      |
-| ---------- | -------------------- | ------------------------ |
-| `.display` | 34 → 72 px           | titolo della hero        |
-| `.h2`      | 30 → 44 px           | titoli di sezione        |
-| `.h3`      | 20 → 24 px           | titoli interni           |
-| `.lede`    | 17 → 19 px           | testi descrittivi        |
-| `.eyebrow` | 13 px maiuscoletto   | etichetta sopra i titoli |
+I pulsanti verdi hanno testo scuro, come nel logo. Non esiste alcun azzurro.
 
-Sono tutte `clamp()`: scalano con la larghezza senza breakpoint.
+## Tipografia
 
-### Palette
-
-Variabili CSS in `src/app/globals.css`:
-
-| Variabile       | Valore    | Uso                                       |
-| --------------- | --------- | ----------------------------------------- |
-| `--paper`       | `#ffffff` | fondo base                                |
-| `--paper-alt`   | `#f1f3f2` | sezioni alternate                         |
-| `--paper-mint`  | `#e5fffd` | sezione in evidenza                       |
-| `--ink`         | `#0d302d` | sezioni scure e colore del testo          |
-| `--ink-deep`    | `#092220` | footer, un gradino più scuro              |
-| `--accent`      | `#69ea9b` | riempimenti, bottoni su fondo scuro       |
-| `--accent-text` | `#0e6b52` | l'accento quando è testo su fondo chiaro  |
-| `--muted`       | `#566b68` | testo secondario                          |
-| `--muted-soft`  | `#7b918c` | numeri grandi dei passaggi                |
-
-Esistono tre varianti dell'accento perché il menta pieno non raggiunge il
-contrasto minimo sul testo: `--accent` riempie, `--accent-text` scrive su fondo
-chiaro, e su fondo scuro il menta pieno va bene. Per riallineare tutto il sito
-alla palette ufficiale bastano `--ink` e `--accent`.
-
-### Componenti condivisi
-
-In `globals.css`: `.btn` (`.btn-ink`, `.btn-accent`, `.btn-outline`), `.card`,
-`.card-hover`, `.chip`, `.link-arrow`, `.eyebrow`. La classe `.on-ink` su un
-contenitore attiva automaticamente tutte le varianti per fondo scuro, etichette
-e bordi compresi. Le icone sono un set unico in `src/components/ui.tsx`: stesso
-viewBox, stesso spessore di tratto.
+Una sola famiglia: **Manrope**, da `next/font`, pesi 400–800. Classi in
+`globals.css`: `.display` (36→72px), `.h2` (31→46px), `.h3`, `.lede` (17→20px),
+`.eyebrow`. Sono `clamp()`, quindi scalano senza breakpoint. `.spicca` mette in
+verde una parola dentro un titolo.
 
 ## Animazioni
 
 `src/components/reveal.tsx`, senza librerie: un IntersectionObserver aggiunge
-`data-visible` quando l'elemento entra nel viewport, e la transizione è in CSS.
-`<Reveal cascata>` anima i figli uno dopo l'altro.
+`data-visible` quando l'elemento entra nel viewport, la transizione è in CSS.
+`<Reveal cascata>` anima i figli uno dopo l'altro; la classe `.traccia` disegna
+un filetto verde da sinistra.
 
-Si disattivano da sole con `prefers-reduced-motion`, e chi ha JavaScript
-disattivato vede comunque tutti i contenuti (regola in `<noscript>` nel layout).
+Gli stati hover sono in `globals.css`: i pulsanti si sollevano di 2px, prendono
+un alone verde e la freccia avanza; le card salgono di 4px con bordo verde; i
+link di contatto hanno una sottolineatura verde che si estende.
+
+Tutto si disattiva con `prefers-reduced-motion`, e chi ha JavaScript disattivato
+vede comunque i contenuti (regola in `<noscript>` nel layout).
 
 Nota: gli aloni decorativi usano `max-width`, non `overflow-x: hidden`
-sull'`html`. Quest'ultimo renderebbe la pagina un contenitore di scorrimento e
+sull'`html`, che renderebbe la pagina un contenitore di scorrimento e
 romperebbe l'header sticky.
 
-## Vincoli editoriali del brief
+## Contatti
 
-Sono scelte vincolate, non preferenze di stile. Da tenere se si tocca la pagina:
+Email, telefono e sede stanno in `src/content/site.ts` e compaiono nella hero,
+nella sezione di chiusura e nel footer. I pulsanti aprono `mailto:` e `tel:`
+reali: **non c'è nessun modulo di contatto**, perché non esiste ancora un
+sistema di raccolta collegato e un form che non invia sarebbe peggio di nessun
+form.
 
-- **Nessuna UI inventata.** Il brief richiede «interfaccia vera, non una UI
-  inventata» e vieta la dashboard sintetica. Le grafiche della pagina sono
-  quindi schemi concettuali dichiarati come tali (catena, lotto, diagramma,
-  percorso), mai finte schermate di prodotto.
-- **Nessuna metrica o testimonianza** senza dati e permessi documentati: niente
-  contatori, loghi clienti, recensioni o casi studio.
+## Vincoli editoriali
+
+Dal brief originale, ancora validi:
+
+- **Nessuna UI inventata**: le grafiche sono schemi concettuali, mai finte
+  schermate di prodotto.
+- **Nessuna metrica o testimonianza** senza dati e permessi documentati.
 - **Niente bollini di conformità** o icone che sembrino certificazioni
-  rilasciate (sezione 06).
-- **Formule da evitare:** «elimina gli errori», «garantisce conformità». Il
-  controllo tecnico finale resta al fabbricante e alle figure previste.
-- Il sistema **non verifica da solo** la conformità tecnica dei certificati:
+  rilasciate.
+- **Formule da evitare**: «elimina gli errori», «garantisce conformità». Il
+  controllo tecnico finale resta al fabbricante.
+- Il sistema **non verifica da solo** la conformità dei certificati:
   l'estrazione è assistita e richiede conferma umana.
-- Nessuna promessa di fascicolo PED generato finché non è dimostrata.
 
-## Da completare prima del go-live
+## Da completare
 
-1. **Logo e palette ufficiali Virtech**, al posto dei provvisori.
-2. **Screenshot reali anonimizzati.** Il brief ne prevede nelle sezioni 01, 02,
-   04 e 05. Finché non ci sono, quelle sezioni usano schemi concettuali: quando
-   arrivano, vanno inseriti con `next/image` accanto allo schema o al suo posto.
-   Da oscurare: numeri di commessa, nomi di clienti e fornitori.
-3. **Autorizzazione W&H** per nome, logo, screenshot e descrizione del caso.
-4. **Formulazione ASME/PED** e capacità disponibili per PED, da confermare con
-   il referente tecnico.
-5. **Destinazione del form**, testo privacy e link all'informativa (ora `#`).
-
-## Form di richiesta demo
-
-Il modulo della sezione 07 usa una server action in `src/app/actions.ts` e invia
-a `CONTACT_WEBHOOK_URL`. Finché la variabile non è configurata il form non finge
-di aver inviato: mostra l'indirizzo email di contatto. Vedi `.env.example`.
+1. **Versione negativa del logo**, per usarlo su fondi scuri.
+2. **Autorizzazione W&H** per nome e descrizione del caso (la nota in sezione 05
+   la richiama già).
+3. **Formulazione PED** da confermare con il referente tecnico.
+4. **Pagina privacy**, se verrà aggiunto un modulo in futuro.
 
 ## Verifiche eseguite
 
@@ -156,8 +132,9 @@ Con Chrome headless su sei larghezze (360, 390, 820, 1024, 1280, 1440 px):
 - tutti gli ingressi allo scroll scattano;
 - nessun errore in console;
 - un solo `h1`, gerarchia dei titoli senza salti;
-- nessun link o pulsante privo di nome accessibile, nessun campo senza `label`;
-- nessun testo sotto il contrasto minimo WCAG AA.
+- nessun link o pulsante privo di nome accessibile;
+- nessun testo sotto il contrasto minimo WCAG AA, compresi i colori calcolati
+  con `color-mix`.
 
 ## Comandi
 
@@ -171,5 +148,4 @@ npm run lint    # controllo del codice
 ## Pubblicazione
 
 Collegare il repository a [Vercel](https://vercel.com/new): ogni push su `main`
-pubblica la nuova versione. Ricordarsi di impostare `CONTACT_WEBHOOK_URL` fra le
-variabili d'ambiente del progetto.
+pubblica la nuova versione.

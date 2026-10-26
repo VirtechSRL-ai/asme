@@ -1,66 +1,37 @@
+import Image from "next/image";
+
 /**
- * Logo provvisorio.
+ * Logo Tracciamy, dal file ufficiale in public/.
  *
- * Il segno è una "V" disegnata come un tracciato che risale e termina in un
- * nodo staccato: richiama il risalire da un'unità prodotta alla sua origine,
- * che è il tema del progetto. Il tratto usa currentColor, quindi il logo si
- * adatta da solo ai fondi chiari e a quelli scuri; il nodo resta sull'accento.
+ * Il file è ritagliato dall'originale, senza ridisegnarlo. Il solo simbolo,
+ * senza la scritta, è usato per la favicon (src/app/icon.png).
  *
- * Per sostituirlo con il logo definitivo basta cambiare questo file: header,
- * footer e favicon (src/app/icon.svg) sono gli unici punti che lo usano.
+ * La scritta è nera e il simbolo sfuma fino a un verde molto scuro: il logo
+ * va quindi su superfici bianche. Le sezioni scure e verdi del sito non lo
+ * contengono apposta. Per usarlo anche lì serve la versione negativa
+ * ufficiale, che non è tra i file forniti.
  */
 
-function Glifo({ coloreNodo = "var(--accent)" }: { coloreNodo?: string }) {
-  return (
-    <>
-      <path
-        d="M13 13.5 L20 26 L24.9 17.2"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.9"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="26.6" cy="14" r="2.2" fill={coloreNodo} />
-    </>
-  );
-}
+const PROPORZIONE = 2158 / 527; // dimensioni native del file
 
-/** Versione compatta: il solo segno, dentro il suo contenitore. */
-export function LogoMark({
-  className = "h-9 w-9",
-  variante = "ink",
-}: {
-  className?: string;
-  variante?: "ink" | "paper";
-}) {
-  const sfondo = variante === "ink" ? "var(--ink)" : "var(--paper)";
-  const tratto = variante === "ink" ? "var(--paper)" : "var(--ink)";
-
-  return (
-    <svg viewBox="0 0 40 40" className={className} aria-hidden="true" focusable="false">
-      <rect width="40" height="40" rx="11" fill={sfondo} />
-      <g style={{ color: tratto }}>
-        <Glifo />
-      </g>
-    </svg>
-  );
-}
-
-/** Versione completa: segno più marchio tipografico. */
 export function Logo({
-  nome,
   className = "",
-  variante = "ink",
+  altezza = 34,
+  priority = false,
 }: {
-  nome: string;
   className?: string;
-  variante?: "ink" | "paper";
+  altezza?: number;
+  priority?: boolean;
 }) {
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <LogoMark className="h-9 w-9 shrink-0" variante={variante} />
-      <span className="text-[1.1875rem] font-extrabold tracking-[-0.035em]">{nome}</span>
-    </span>
+    <Image
+      src="/tracciamy-logo.png"
+      alt="Tracciamy"
+      width={Math.round(altezza * PROPORZIONE)}
+      height={altezza}
+      priority={priority}
+      className={className}
+      style={{ height: altezza, width: "auto" }}
+    />
   );
 }

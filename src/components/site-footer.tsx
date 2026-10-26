@@ -1,9 +1,11 @@
 import { cacheLife } from "next/cache";
 import { site } from "@/content/site";
 import { Logo } from "./logo";
-import { Container } from "./ui";
+import { Container, Mail, Phone, Pin } from "./ui";
 
 const { footer, contatti } = site;
+
+const MAILTO = `mailto:${contatti.email}?subject=${encodeURIComponent("Informazioni su Tracciamy")}`;
 
 export async function SiteFooter() {
   // L'anno del copyright viene prerenderizzato e rinfrescato dalla cache:
@@ -14,83 +16,64 @@ export async function SiteFooter() {
   const anno = new Date().getFullYear();
 
   return (
-    // Un gradino più scuro della sezione precedente, per chiudere la pagina
-    // senza stacchi netti.
-    <footer className="on-ink bg-ink-deep">
+    // Chiaro di proposito: il logo ufficiale ha la scritta nera e va su bianco.
+    <footer className="border-t border-line bg-white">
       <Container>
-        <div className="grid gap-10 py-16 lg:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-10 py-14 lg:grid-cols-[1.3fr_1fr_1fr]">
           <div className="max-w-sm">
-            <Logo nome={site.nome} variante="paper" />
-            <p className="mt-5 text-[0.9375rem] leading-relaxed text-muted-on-ink">
-              {footer.claim}
-            </p>
+            <Logo altezza={30} />
+            <p className="mt-5 text-[0.9375rem] leading-relaxed text-neutral">{footer.claim}</p>
           </div>
 
-          {footer.colonne.map((colonna) => (
-            <nav key={colonna.titolo} aria-label={colonna.titolo}>
-              <p className="eyebrow">{colonna.titolo}</p>
-              <ul className="mt-3 flex flex-col">
-                {colonna.voci.map((voce) => (
-                  <li key={voce.href}>
-                    <a
-                      href={voce.href}
-                      className="inline-block py-2.5 text-[0.9375rem] text-muted-on-ink transition-colors hover:text-paper"
-                    >
-                      {voce.etichetta}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
+          <nav aria-label="Sezioni del sito">
+            <p className="eyebrow">Il sito</p>
+            <ul className="mt-4 flex flex-col">
+              {site.nav.map((voce) => (
+                <li key={voce.href}>
+                  <a
+                    href={voce.href}
+                    className="inline-block py-2.5 text-[0.9375rem] font-semibold text-neutral transition-colors hover:text-green-ink"
+                  >
+                    {voce.etichetta}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <div>
             <p className="eyebrow">Contatti</p>
-            <ul className="mt-3 flex flex-col">
+            <ul className="mt-4 flex flex-col">
               <li>
                 <a
-                  href={`mailto:${contatti.email}`}
-                  className="inline-block py-2.5 text-[0.9375rem] text-muted-on-ink transition-colors hover:text-paper"
+                  href={MAILTO}
+                  className="inline-flex items-center gap-2.5 py-2.5 text-[0.9375rem] font-semibold transition-colors hover:text-green-ink"
                 >
+                  <Mail className="h-[1.125rem] w-[1.125rem] text-green-ink" />
                   {contatti.email}
                 </a>
               </li>
               <li>
                 <a
-                  href={`tel:${contatti.telefono.replace(/\s/g, "")}`}
-                  className="inline-block py-2.5 text-[0.9375rem] text-muted-on-ink transition-colors hover:text-paper"
+                  href={`tel:${contatti.telefonoLink}`}
+                  className="inline-flex items-center gap-2.5 py-2.5 text-[0.9375rem] font-semibold transition-colors hover:text-green-ink"
                 >
+                  <Phone className="h-[1.125rem] w-[1.125rem] text-green-ink" />
                   {contatti.telefono}
                 </a>
               </li>
-              <li>
-                <a
-                  href={contatti.linkedin}
-                  className="inline-block py-2.5 text-[0.9375rem] text-muted-on-ink transition-colors hover:text-paper"
-                >
-                  LinkedIn
-                </a>
+              <li className="flex items-center gap-2.5 py-2.5 text-[0.9375rem] font-semibold text-neutral">
+                <Pin className="h-[1.125rem] w-[1.125rem] text-green-ink" />
+                {contatti.sede}
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-line-on-ink py-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[0.8125rem] text-muted-on-ink">
-            © {anno} {site.nome}. Tutti i diritti riservati. {footer.legale}
+        <div className="border-t border-line py-7">
+          <p className="text-[0.8125rem] text-neutral">
+            © {anno} {footer.legale}. Tutti i diritti riservati.
           </p>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2">
-            {footer.link.map((voce) => (
-              <li key={voce.etichetta}>
-                <a
-                  href={voce.href}
-                  className="inline-block py-3 text-[0.8125rem] text-muted-on-ink transition-colors hover:text-paper"
-                >
-                  {voce.etichetta}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
       </Container>
     </footer>

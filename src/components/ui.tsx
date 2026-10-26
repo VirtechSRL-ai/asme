@@ -85,6 +85,35 @@ export function Import({ className }: IconaProps) {
   );
 }
 
+/** Scrivere: busta per i contatti via email. */
+export function Mail({ className }: IconaProps) {
+  return (
+    <Svg className={className ?? "h-[1.125rem] w-[1.125rem]"}>
+      <rect x="3" y="5.5" width="18" height="13" rx="2.5" />
+      <path d="m3.8 7 7.1 5.2a2 2 0 0 0 2.2 0L20.2 7" />
+    </Svg>
+  );
+}
+
+/** Chiamare: cornetta per i contatti telefonici. */
+export function Phone({ className }: IconaProps) {
+  return (
+    <Svg className={className ?? "h-[1.125rem] w-[1.125rem]"}>
+      <path d="M5 3.5h3l1.5 4-2 1.4a12 12 0 0 0 5.6 5.6l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5Z" />
+    </Svg>
+  );
+}
+
+/** Dove siamo: segnaposto per la sede. */
+export function Pin({ className }: IconaProps) {
+  return (
+    <Svg className={className ?? "h-[1.125rem] w-[1.125rem]"}>
+      <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" />
+      <circle cx="12" cy="10" r="2.6" />
+    </Svg>
+  );
+}
+
 /** Collegare: due elementi messi in relazione. */
 export function Link({ className }: IconaProps) {
   return (
