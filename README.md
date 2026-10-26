@@ -15,17 +15,39 @@ Poi apri http://localhost:3000.
 
 ## Le sei sezioni
 
-Un file per sezione, in `src/components/sections/`. I fondi si alternano fra
-bianco, scuro e verde per dare ritmo allo scorrimento:
+Un file per sezione, in `src/components/sections/`. Ogni sezione ha una propria
+grafica illustrativa e un proprio fondo, così lo scorrimento ha un ritmo:
 
-| #   | Sezione       | File          | Fondo  | Scopo                                |
-| --- | ------------- | ------------- | ------ | ------------------------------------ |
-| 01  | Hero          | `hero.tsx`    | bianco | cos'è Tracciamy, CTA di contatto     |
-| 02  | Il problema   | `problem.tsx` | scuro  | perché serve                         |
-| 03  | Come funziona | `method.tsx`  | bianco | Importa, Collega, Verifica           |
-| 04  | Cosa collega  | `links.tsx`   | verde  | unità → componente → certificato     |
-| 05  | ASME e PED    | `scopes.tsx`  | bianco | cosa esiste e cosa va configurato    |
-| 06  | Contatti      | `contact.tsx` | scuro  | chiusura, email e telefono           |
+| #   | Sezione       | File          | Fondo                | Grafica                        |
+| --- | ------------- | ------------- | -------------------- | ------------------------------ |
+| 01  | Hero          | `hero.tsx`    | bianco con lavaggio verde | unità e documenti collegati |
+| 02  | Il problema   | `problem.tsx` | scuro                | le fonti oggi scollegate       |
+| 03  | Come funziona | `method.tsx`  | bianco appena velato | una mini-grafica per passaggio |
+| 04  | Cosa collega  | `links.tsx`   | scuro con luce verde | la vista per apparecchiatura   |
+| 05  | ASME e PED    | `scopes.tsx`  | bianco               | passaggi fatti contro da fare  |
+| 06  | Contatti      | `contact.tsx` | scuro con luce verde | chiusura, email e telefono     |
+
+### La hero
+
+La composizione riprende il linguaggio della landing di Complaion, analizzata
+nel browser e non da uno screenshot: titolo grande e centrato con interlinea
+compressa, sottotitolo e azioni in asse, sfondo con lavaggio diagonale che si
+spegne nel bianco, e i pannelli del prodotto che restano tagliati dal bordo
+della finestra per invitare a scorrere. Testi, font, palette e logo restano
+quelli di Tracciamy: della reference si riprende solo l'impostazione visiva.
+
+### Le grafiche
+
+Sono in `src/components/mock.tsx` (le primitive condivise) e dentro le singole
+sezioni. Ciascuna risponde a una domanda precisa del testo che accompagna:
+dove stanno oggi le informazioni, cosa entra nel sistema, come si aggancia un
+certificato, cosa manca prima dei documenti, come si risale da una unità ai
+suoi materiali, cosa esiste già per ASME e cosa va definito per PED.
+
+**Sono esempi, non schermate reali.** I codici (`UN-0000`, `MAT-001`,
+`CERT-0000`) sono fittizi, le etichette di stato sono qualitative e non
+compare nessun numero, percentuale o indicatore di performance inventato. Ogni
+pannello porta la didascalia definita in `site.ts` come `notaEsempio`.
 
 ## Modificare i contenuti
 
@@ -47,26 +69,35 @@ avrebbe alterato l'identità del marchio.
 
 ## Palette — quattro colori
 
-Variabili in `src/app/globals.css`. Il verde viene dal logo: `#00b66e` è la
-tonalità più chiara del simbolo, `#06231a` l'estremo opposto.
+Variabili in `src/app/globals.css`.
 
 | Variabile   | Valore    | Ruolo                                        |
 | ----------- | --------- | -------------------------------------------- |
-| `--green`   | `#00b66e` | colore del marchio: CTA, sezioni, dettagli   |
+| `--green`   | `#00ee93` | colore del marchio: CTA, sezioni, dettagli   |
 | `--dark`    | `#06231a` | testi, sezioni profonde                      |
 | `--white`   | `#ffffff` | **unico** bianco del sito                    |
 | `--neutral` | `#55665f` | testi secondari e bordi                      |
 
+Il verde non è scelto a occhio: è campionato dal file originale del logo ed è
+il colore pieno del puntino della «i» (2069 pixel di quel valore esatto).
+
 Tutto il resto sono sfumature di questi quattro, calcolate con `color-mix`, non
 colori nuovi. Due meritano una nota:
 
-- `--green-ink` (`#027e4e`) è lo stesso verde scurito. Serve perché il verde
-  pieno su bianco sta a 2,6:1 e come testo non si leggerebbe. Il verde pieno
-  resta per i riempimenti, dove il contrasto lo dà il testo scuro sopra.
+- `--green-ink` è lo stesso verde mescolato con lo scuro. Serve perché il verde
+  del logo su bianco sta a 1,5:1 e come testo sarebbe illeggibile. Il verde
+  pieno resta per i riempimenti e per i fondi scuri, dove il contrasto arriva a
+  11:1.
 - `--neutral-soft` è il neutro schiarito per i numeri grandi dei passaggi:
   discreto ma sopra il 3:1 richiesto.
 
 I pulsanti verdi hanno testo scuro, come nel logo. Non esiste alcun azzurro.
+
+Gli sfondi non sono mai tinte piatte: `.wash-hero` e `.wash-soft` per le
+sezioni chiare, `.on-dark` e `.on-dark-glow` per quelle profonde, più `.trama`
+per la trama diagonale appena percepibile. `.on-dark-glow` ha un
+`background-color` pieno sotto i gradienti: senza, l'ultimo layer sarebbe
+un'immagine e il testo bianco resterebbe su fondo trasparente.
 
 ## Tipografia
 

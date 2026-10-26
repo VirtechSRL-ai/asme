@@ -1,93 +1,114 @@
 import { site } from "@/content/site";
+import { Codice, Pannello, Riga, Stato } from "../mock";
 import { Reveal } from "../reveal";
 import { ArrowRight, Container, Eyebrow, Mail } from "../ui";
 
 const { hero, contatti } = site;
-const { catena } = hero;
+const { mock } = hero;
 
 const MAILTO = `mailto:${contatti.email}?subject=${encodeURIComponent("Informazioni su Tracciamy")}`;
 
 /**
- * Catena di tracciabilità: dall'unità prodotta fino ai certificati.
- * È uno schema, non la riproduzione di una schermata del prodotto.
+ * I due pannelli che emergono dal bordo inferiore della prima schermata:
+ * a sinistra una unità con i suoi componenti, a destra i documenti collegati.
+ * Mostrano in un colpo d'occhio il legame che il prodotto costruisce.
  */
-function Catena() {
+function PannelliProdotto() {
   return (
-    <div className="relative">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-4 rounded-[40px] bg-[radial-gradient(ellipse_at_60%_30%,var(--glow),transparent_70%)]"
-      />
-      <div className="on-dark relative rounded-panel p-7 sm:p-8">
-        <Eyebrow>{catena.etichetta}</Eyebrow>
-
-        <ol className="relative mt-7">
-          <span
-            aria-hidden="true"
-            className="absolute left-[0.4375rem] top-2 bottom-10 w-px bg-line-on-dark"
-          >
-            <span className="trace-pulse absolute -left-[3px] h-[7px] w-[7px] rounded-full bg-green shadow-[0_0_14px_3px_var(--glow)]" />
+    <div className="relative mx-auto grid max-w-5xl grid-cols-1 gap-5 lg:grid-cols-[1.25fr_1fr] lg:items-start">
+      <Pannello
+        titolo={mock.unita.titolo}
+        azione={<Codice>{mock.unita.codice}</Codice>}
+        className="lg:translate-y-6"
+      >
+        <Riga className="justify-between bg-green-soft/60">
+          <span className="font-bold">{mock.unita.commessa}</span>
+          <span className="text-[0.8125rem] text-neutral">
+            {mock.unita.righe.length} componenti
           </span>
-
-          {catena.livelli.map((livello, i) => (
-            <li key={livello.nome} className="relative pl-8 pb-7 last:pb-0">
+        </Riga>
+        {mock.unita.righe.map((riga) => (
+          <Riga key={riga.nome} className="justify-between">
+            <span className="flex min-w-0 items-center gap-2.5">
               <span
                 aria-hidden="true"
-                className={`absolute left-0 top-1.5 h-[0.875rem] w-[0.875rem] rounded-full border-2 border-green ${
-                  i === catena.livelli.length - 1 ? "bg-green" : "bg-dark"
-                }`}
+                className="h-1.5 w-1.5 shrink-0 rounded-full bg-green-ink"
               />
-              <p className="text-[1.0625rem] font-extrabold tracking-[-0.025em]">{livello.nome}</p>
-              <p className="mt-1 text-[0.9375rem] text-on-dark-soft">{livello.voce}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+              <span className="truncate font-semibold">{riga.nome}</span>
+              <Codice>{riga.materiale}</Codice>
+            </span>
+            <Stato stato={riga.stato} />
+          </Riga>
+        ))}
+      </Pannello>
+
+      <Pannello titolo={mock.documenti.titolo}>
+        {mock.documenti.righe.map((riga) => (
+          <Riga key={riga.nome} className="justify-between">
+            <span className="truncate font-semibold">{riga.nome}</span>
+            <Stato stato={riga.stato} />
+          </Riga>
+        ))}
+      </Pannello>
     </div>
   );
 }
 
 export function Hero() {
   return (
-    <section className="relative pb-20 pt-10 sm:pt-16">
+    <section className="wash-hero relative overflow-hidden pt-12 sm:pt-16">
+      {/* Trama diagonale appena accennata, per dare consistenza allo sfondo */}
+      <div aria-hidden="true" className="trama pointer-events-none absolute inset-0 opacity-70" />
+      {/* Luce ambientale che respira lentamente */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-56 left-1/2 h-[34rem] w-full max-w-[70rem] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,var(--glow),transparent_68%)]"
+        className="respira pointer-events-none absolute -top-72 left-1/2 h-[38rem] w-full max-w-[64rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--green)_26%,transparent),transparent_68%)]"
       />
+
       <Container className="relative">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_minmax(0,25rem)] lg:gap-16">
-          <Reveal>
+        {/* Composizione centrata: etichetta, titolo, testo, azioni in asse */}
+        <Reveal className="mx-auto max-w-4xl text-center">
+          <div className="flex justify-center">
             <Eyebrow>{hero.eyebrow}</Eyebrow>
-            <h1 className="display mt-6">
-              {hero.titoloPrima} <span className="spicca">{hero.titoloSpicca}</span>{" "}
-              {hero.titoloDopo}
-            </h1>
-            <p className="lede mt-7 max-w-lg">{hero.testo}</p>
+          </div>
+          <h1 className="display mt-7">
+            {hero.titoloPrima} <span className="spicca">{hero.titoloSpicca}</span>{" "}
+            {hero.titoloDopo}
+          </h1>
+          <p className="lede mx-auto mt-7 max-w-2xl">{hero.testo}</p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              <a href={MAILTO} className="btn btn-green">
-                <Mail />
-                {site.ctaPrincipale.etichetta}
-              </a>
-              <a href={hero.ctaSecondaria.href} className="btn btn-outline">
-                {hero.ctaSecondaria.etichetta}
-                <ArrowRight />
-              </a>
-            </div>
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a href={MAILTO} className="btn btn-green w-full sm:w-auto">
+              <Mail />
+              {site.ctaPrincipale.etichetta}
+            </a>
+            <a href={hero.ctaSecondaria.href} className="btn btn-outline w-full sm:w-auto">
+              {hero.ctaSecondaria.etichetta}
+              <ArrowRight />
+            </a>
+          </div>
 
-            <p className="mt-7 text-[0.9375rem] text-neutral">
-              Oppure chiamaci:{" "}
-              <a href={`tel:${contatti.telefonoLink}`} className="link-contatto text-dark">
-                {contatti.telefono}
-              </a>
-            </p>
-          </Reveal>
+          <p className="mt-7 text-[0.9375rem] text-neutral">
+            Oppure chiamaci:{" "}
+            <a href={`tel:${contatti.telefonoLink}`} className="link-contatto text-dark">
+              {contatti.telefono}
+            </a>
+          </p>
+        </Reveal>
 
-          <Reveal ritardo={150}>
-            <Catena />
-          </Reveal>
-        </div>
+        {/* I pannelli restano sotto le azioni: su uno schermo normale finiscono
+            tagliati dal bordo della finestra e invitano a scorrere, come nella
+            reference, senza bisogno di ritagli artificiali. */}
+        <Reveal ritardo={200} className="mt-16 pb-24 sm:mt-20 sm:pb-28">
+          <PannelliProdotto />
+        </Reveal>
       </Container>
+
+      {/* Sfumatura che porta la hero dentro la sezione successiva */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-white"
+      />
     </section>
   );
 }

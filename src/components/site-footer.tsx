@@ -19,7 +19,7 @@ export async function SiteFooter() {
     // Chiaro di proposito: il logo ufficiale ha la scritta nera e va su bianco.
     <footer className="border-t border-line bg-white">
       <Container>
-        <div className="grid gap-10 py-14 lg:grid-cols-[1.3fr_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-10 py-14 lg:grid-cols-[1.3fr_1fr_1fr]">
           <div className="max-w-sm">
             <Logo altezza={30} />
             <p className="mt-5 text-[0.9375rem] leading-relaxed text-neutral">{footer.claim}</p>

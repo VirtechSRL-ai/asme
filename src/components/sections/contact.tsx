@@ -13,10 +13,10 @@ const MAILTO = `mailto:${contatti.email}?subject=${encodeURIComponent("Informazi
  */
 export function Contact() {
   return (
-    <section id="contatti" className="on-dark relative py-20 sm:py-28">
+    <section id="contatti" className="on-dark-glow relative overflow-hidden py-20 sm:py-28">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-64 left-1/2 h-[36rem] w-full max-w-[60rem] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,var(--glow),transparent_68%)]"
+        className="respira pointer-events-none absolute -bottom-64 left-1/2 h-[36rem] w-full max-w-[60rem] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--green)_22%,transparent),transparent_68%)]"
       />
       <Container className="relative">
         <Reveal className="mx-auto max-w-3xl text-center">
@@ -41,7 +41,7 @@ export function Contact() {
           </a>
         </Reveal>
 
-        <Reveal as="ul" cascata className="mx-auto mt-14 grid max-w-3xl gap-6 sm:grid-cols-3">
+        <Reveal as="ul" cascata className="mx-auto mt-14 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
           <li className="flex flex-col items-center gap-2 text-center">
             <Mail className="h-5 w-5 text-green" />
             <a href={MAILTO} className="link-contatto text-[1rem]">

@@ -2,28 +2,27 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    PALETTE — quattro colori, non uno di più
-   Il verde viene dal logo Tracciamy (#00b66e è la tonalità più chiara del
-   simbolo), lo scuro dal suo estremo opposto. Un solo bianco in tutto il sito.
-   Tutto il resto sono sfumature di questi quattro, non colori nuovi.
+   Il verde è quello esatto del puntino della "i" nel logo Tracciamy: campionato
+   dal file originale, #00ee93. Lo scuro viene dall'estremo opposto del simbolo.
+   Un solo bianco in tutto il sito. Tutto il resto sono sfumature di questi
+   quattro, calcolate con color-mix: non sono colori nuovi.
    ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --green: #00b66e;
+  --green: #00ee93;
   --dark: #06231a;
   --white: #ffffff;
   --neutral: #55665f;
 
-  /* Sfumature derivate, per leggibilità. Non sono colori in più:
-     --green-ink è lo stesso verde scurito, perché il verde pieno su bianco
-     resta a 2,6:1 e come testo non si leggerebbe. */
-  --green-ink: #027e4e;
-  --green-soft: color-mix(in srgb, var(--green) 12%, var(--white));
+  /* Verde scurito per il testo: il verde pieno su bianco sta a 1,5:1 e come
+     testo non si leggerebbe. È lo stesso verde, mescolato con lo scuro. */
+  --green-ink: color-mix(in srgb, var(--green) 45%, var(--dark));
+  --green-soft: color-mix(in srgb, var(--green) 10%, var(--white));
+  --neutral-soft: color-mix(in srgb, var(--neutral) 70%, var(--white));
   --on-dark-soft: color-mix(in srgb, var(--white) 62%, var(--dark));
   --line: color-mix(in srgb, var(--neutral) 22%, var(--white));
-  /* Tono chiaro per i numeri grandi: resta discreto ma supera il 3:1 */
-  --neutral-soft: color-mix(in srgb, var(--neutral) 70%, var(--white));
   --line-on-dark: color-mix(in srgb, var(--white) 16%, transparent);
   --dark-raised: color-mix(in srgb, var(--white) 6%, var(--dark));
-  --glow: color-mix(in srgb, var(--green) 26%, transparent);
+  --dark-deep: color-mix(in srgb, #000000 38%, var(--dark));
 
   --r-pill: 999px;
   --r-card: 20px;
@@ -41,6 +40,7 @@
   --color-green-soft: var(--green-soft);
   --color-dark: var(--dark);
   --color-dark-raised: var(--dark-raised);
+  --color-dark-deep: var(--dark-deep);
   --color-neutral: var(--neutral);
   --color-neutral-soft: var(--neutral-soft);
   --color-on-dark-soft: var(--on-dark-soft);
@@ -77,9 +77,13 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--green);
+  outline: 3px solid var(--green-ink);
   outline-offset: 3px;
   border-radius: var(--r-xs);
+}
+
+.on-dark :focus-visible {
+  outline-color: var(--green);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -97,13 +101,13 @@ body {
 
 @layer components {
   /* ───────────────────────────────────────────────────────────────────────────
-     TIPOGRAFIA — Manrope, una sola famiglia; la gerarchia nasce dai pesi
+     TIPOGRAFIA — Manrope, una sola famiglia
      ───────────────────────────────────────────────────────────────────────── */
   .display {
-    font-size: clamp(2.25rem, 1.3rem + 4.5vw, 4.5rem);
+    font-size: clamp(2.375rem, 1.1rem + 5.4vw, 4.25rem);
     font-weight: 800;
     letter-spacing: -0.04em;
-    line-height: 1.02;
+    line-height: 0.96;
     text-wrap: balance;
   }
 
@@ -111,7 +115,7 @@ body {
     font-size: clamp(1.9375rem, 1.35rem + 2.6vw, 2.875rem);
     font-weight: 800;
     letter-spacing: -0.035em;
-    line-height: 1.08;
+    line-height: 1.06;
     text-wrap: balance;
   }
 
@@ -134,23 +138,12 @@ body {
     color: var(--on-dark-soft);
   }
 
-  .on-green .lede {
-    /* 88% e non meno: sotto questa soglia il testo scende a 4,3:1 sul verde */
-    color: color-mix(in srgb, var(--dark) 88%, var(--green));
-  }
-
-  /* Evidenziazione tipografica: una parola in verde dentro un titolo */
   .spicca {
     color: var(--green-ink);
   }
 
-  .on-dark .spicca,
-  .on-green .spicca {
+  .on-dark .spicca {
     color: var(--green);
-  }
-
-  .on-green .spicca {
-    color: var(--white);
   }
 
   .eyebrow {
@@ -172,45 +165,117 @@ body {
     background: var(--green);
   }
 
-  .on-dark .eyebrow,
-  .on-green .eyebrow {
+  .on-dark .eyebrow {
     color: var(--green);
   }
 
-  .on-green .eyebrow {
-    color: var(--dark);
-  }
-
-  .on-green .eyebrow::before {
-    background: var(--dark);
-  }
-
   /* ───────────────────────────────────────────────────────────────────────────
-     SUPERFICI — bianco, scuro, verde. Nient'altro.
+     SFONDI
+     Mai tinte piatte: luci diffuse e gradienti diagonali che si spengono nel
+     bianco, così le sezioni si legano invece di accostarsi.
      ───────────────────────────────────────────────────────────────────────── */
   .on-dark {
-    background: var(--dark);
+    background-color: var(--dark);
+    background-image: radial-gradient(
+      ellipse 85% 40% at 50% 0%,
+      color-mix(in srgb, var(--green) 11%, transparent),
+      transparent 72%
+    );
     color: var(--white);
   }
 
-  .on-green {
-    background: var(--green);
-    color: var(--dark);
+  /* Scuro profondo con luce verde: per la sezione centrale e la chiusura */
+  .on-dark-glow {
+    /* Il colore pieno sotto i gradienti non è ridondante: l'ultimo layer di
+       background è un'immagine, quindi senza questo il fondo sarebbe
+       trasparente e il testo bianco resterebbe illeggibile se un gradiente
+       non venisse disegnato. */
+    background-color: var(--dark);
+    background-image:
+      radial-gradient(
+        ellipse 70% 55% at 50% 0%,
+        color-mix(in srgb, var(--green) 20%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 60% 50% at 10% 100%,
+        color-mix(in srgb, var(--green) 14%, transparent),
+        transparent 70%
+      ),
+      linear-gradient(170deg, var(--dark) 0%, var(--dark-deep) 100%);
+    color: var(--white);
   }
 
-  .on-dark .card {
+  /* Il lavaggio diagonale della hero: verde in basso a sinistra che si spegne
+     nel bianco verso l'alto a destra, più una luce ambientale in alto. */
+  .wash-hero {
+    background:
+      radial-gradient(
+        ellipse 48% 40% at 50% -8%,
+        color-mix(in srgb, var(--green) 30%, transparent),
+        transparent 72%
+      ),
+      radial-gradient(
+        ellipse 55% 50% at 6% 96%,
+        color-mix(in srgb, var(--green) 34%, transparent),
+        transparent 68%
+      ),
+      linear-gradient(
+        317deg,
+        color-mix(in srgb, var(--green) 55%, transparent) 0%,
+        color-mix(in srgb, var(--green) 30%, transparent) 18%,
+        color-mix(in srgb, var(--green) 12%, transparent) 36%,
+        transparent 60%
+      ),
+      var(--white);
+  }
+
+  /* Lavaggio leggero, per legare una sezione bianca a quella precedente */
+  .wash-soft {
+    background:
+      radial-gradient(
+        ellipse 80% 40% at 50% 0%,
+        color-mix(in srgb, var(--green) 9%, transparent),
+        transparent 65%
+      ),
+      var(--white);
+  }
+
+  /* Trama di linee diagonali, appena percepibile: dà consistenza allo sfondo */
+  .trama {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--dark) 4%, transparent) 0 1px,
+      transparent 1px 22px
+    );
+  }
+
+  .on-dark .card,
+  .on-dark-glow .card {
     border-color: var(--line-on-dark);
-    background: var(--dark-raised);
+    background: color-mix(in srgb, var(--white) 5%, transparent);
   }
 
-  .on-green .card {
-    border-color: color-mix(in srgb, var(--dark) 18%, transparent);
-    background: color-mix(in srgb, var(--white) 14%, transparent);
+  .on-dark .chip,
+  .on-dark-glow .chip {
+    border-color: var(--line-on-dark);
+    color: var(--on-dark-soft);
+  }
+
+  .on-dark-glow .eyebrow {
+    color: var(--green);
+  }
+
+  .on-dark-glow .lede {
+    color: var(--on-dark-soft);
+  }
+
+  .on-dark-glow .spicca {
+    color: var(--green);
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
-     BOTTONI
-     Hover percepibile: sollevamento, alone verde e freccia che avanza.
+     BOTTONI — hover sempre percepibile
      ───────────────────────────────────────────────────────────────────────── */
   .btn {
     position: relative;
@@ -249,15 +314,14 @@ body {
     transform: translateY(0);
   }
 
-  /* Verde pieno con testo scuro: è la combinazione del logo */
   .btn-green {
     background: var(--green);
     color: var(--dark);
   }
 
   .btn-green:hover {
-    background: color-mix(in srgb, var(--green) 88%, var(--white));
-    box-shadow: 0 12px 30px -10px var(--glow);
+    background: color-mix(in srgb, var(--green) 86%, var(--white));
+    box-shadow: 0 14px 34px -12px color-mix(in srgb, var(--green) 65%, transparent);
   }
 
   .btn-dark {
@@ -266,39 +330,39 @@ body {
   }
 
   .btn-dark:hover {
-    background: color-mix(in srgb, var(--dark) 88%, var(--green));
-    box-shadow: 0 12px 30px -12px var(--glow);
+    background: color-mix(in srgb, var(--dark) 86%, var(--green));
+    box-shadow: 0 14px 34px -14px color-mix(in srgb, var(--green) 55%, transparent);
   }
 
   .btn-outline {
     border: 2px solid var(--line);
-    background: transparent;
+    background: color-mix(in srgb, var(--white) 70%, transparent);
     color: var(--dark);
   }
 
   .btn-outline:hover {
-    border-color: var(--green);
+    border-color: var(--green-ink);
     color: var(--green-ink);
-    box-shadow: 0 10px 26px -14px var(--glow);
+    background: var(--white);
+    box-shadow: 0 12px 30px -16px color-mix(in srgb, var(--green) 60%, transparent);
   }
 
-  .on-dark .btn-outline {
+  .on-dark .btn-outline,
+  .on-dark-glow .btn-outline {
     border-color: var(--line-on-dark);
+    background: transparent;
     color: var(--white);
   }
 
-  .on-dark .btn-outline:hover {
+  .on-dark .btn-outline:hover,
+  .on-dark-glow .btn-outline:hover {
     border-color: var(--green);
     color: var(--green);
-  }
-
-  .on-green .btn-dark:hover {
-    background: var(--dark);
-    box-shadow: 0 12px 30px -10px color-mix(in srgb, var(--dark) 45%, transparent);
+    background: color-mix(in srgb, var(--green) 8%, transparent);
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
-     ALTRI COMPONENTI
+     COMPONENTI
      ───────────────────────────────────────────────────────────────────────── */
   .card {
     border-radius: var(--r-card);
@@ -315,8 +379,14 @@ body {
 
   .card-hover:hover {
     transform: translateY(-4px);
+    border-color: var(--green-ink);
+    box-shadow: 0 22px 48px -28px color-mix(in srgb, var(--green) 60%, transparent);
+  }
+
+  .on-dark .card-hover:hover,
+  .on-dark-glow .card-hover:hover {
     border-color: var(--green);
-    box-shadow: 0 20px 44px -26px var(--glow);
+    box-shadow: 0 22px 48px -24px color-mix(in srgb, var(--green) 35%, transparent);
   }
 
   .chip {
@@ -331,12 +401,6 @@ body {
     color: var(--neutral);
   }
 
-  .on-dark .chip {
-    border-color: var(--line-on-dark);
-    color: var(--on-dark-soft);
-  }
-
-  /* Link testuale con freccia */
   .link-arrow {
     display: inline-flex;
     align-items: center;
@@ -344,10 +408,10 @@ body {
     font-size: 1rem;
     font-weight: 700;
     color: var(--green-ink);
-    transition: color 0.2s var(--ease);
   }
 
-  .on-dark .link-arrow {
+  .on-dark .link-arrow,
+  .on-dark-glow .link-arrow {
     color: var(--green);
   }
 
@@ -359,7 +423,6 @@ body {
     transform: translateX(5px);
   }
 
-  /* Link di contatto: sottolineatura verde che si estende all'hover */
   .link-contatto {
     position: relative;
     font-weight: 700;
@@ -384,15 +447,124 @@ body {
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
-     INGRESSO DEI CONTENUTI
-     Il fallback per chi non ha JavaScript è in <noscript>, nel layout.
+     MOCKUP — i pannelli illustrativi che spiegano il prodotto
+     Stile unitario: stessa cornice, stessa intestazione, stesse righe.
+     ───────────────────────────────────────────────────────────────────────── */
+  .mock {
+    border-radius: var(--r-panel);
+    border: 1px solid var(--line);
+    background: var(--white);
+    box-shadow: 0 30px 70px -40px color-mix(in srgb, var(--dark) 55%, transparent);
+    overflow: hidden;
+  }
+
+  .on-dark .mock,
+  .on-dark-glow .mock {
+    border-color: var(--line-on-dark);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
+    box-shadow: 0 30px 70px -40px color-mix(in srgb, #000 70%, transparent);
+  }
+
+  .mock-testa {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.125rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--neutral);
+  }
+
+  .on-dark .mock-testa,
+  .on-dark-glow .mock-testa {
+    border-color: var(--line-on-dark);
+    color: var(--on-dark-soft);
+  }
+
+  .mock-riga {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.125rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .on-dark .mock-riga,
+  .on-dark-glow .mock-riga {
+    border-color: var(--line-on-dark);
+  }
+
+  .mock-riga:last-child {
+    border-bottom: 0;
+  }
+
+  /* I figli delle righe hanno min-width:auto e con white-space:nowrap
+     imporrebbero la loro larghezza piena al pannello, allargandolo oltre lo
+     schermo sui telefoni stretti. */
+  .mock-riga > * {
+    min-width: 0;
+  }
+
+  /* Pastiglie di stato: etichette qualitative, non dati inventati */
+  .stato {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: var(--r-pill);
+    padding: 0.1875rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .stato-ok {
+    /* 15% e non di più: oltre, il testo verde scuro scende sotto i 4,5:1 */
+    background: color-mix(in srgb, var(--green) 15%, var(--white));
+    color: var(--green-ink);
+  }
+
+  .stato-attesa {
+    background: color-mix(in srgb, var(--neutral) 14%, var(--white));
+    color: var(--neutral);
+  }
+
+  .on-dark .stato-ok,
+  .on-dark-glow .stato-ok {
+    background: color-mix(in srgb, var(--green) 26%, transparent);
+    color: var(--green);
+  }
+
+  .on-dark .stato-attesa,
+  .on-dark-glow .stato-attesa {
+    background: color-mix(in srgb, var(--white) 12%, transparent);
+    color: var(--on-dark-soft);
+  }
+
+  /* Didascalia obbligatoria sui mockup: sono esempi, non schermate reali */
+  .mock-nota {
+    font-size: 0.8125rem;
+    color: var(--neutral);
+  }
+
+  .on-dark .mock-nota,
+  .on-dark-glow .mock-nota {
+    color: var(--on-dark-soft);
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     MOVIMENTO
      ───────────────────────────────────────────────────────────────────────── */
   .reveal {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(26px);
     transition:
-      opacity 0.75s var(--ease),
-      transform 0.75s var(--ease);
+      opacity 0.8s var(--ease),
+      transform 0.8s var(--ease);
     transition-delay: var(--reveal-delay, 0ms);
   }
 
@@ -408,10 +580,10 @@ body {
 
   .reveal-stagger > * {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(26px);
     transition:
-      opacity 0.65s var(--ease),
-      transform 0.65s var(--ease);
+      opacity 0.7s var(--ease),
+      transform 0.7s var(--ease);
   }
 
   .reveal-stagger[data-visible="true"] > * {
@@ -420,16 +592,16 @@ body {
   }
 
   .reveal-stagger[data-visible="true"] > *:nth-child(2) {
-    transition-delay: 110ms;
+    transition-delay: 120ms;
   }
   .reveal-stagger[data-visible="true"] > *:nth-child(3) {
-    transition-delay: 220ms;
+    transition-delay: 240ms;
   }
   .reveal-stagger[data-visible="true"] > *:nth-child(4) {
-    transition-delay: 330ms;
+    transition-delay: 360ms;
   }
   .reveal-stagger[data-visible="true"] > *:nth-child(n + 5) {
-    transition-delay: 440ms;
+    transition-delay: 480ms;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -440,16 +612,27 @@ body {
     }
   }
 
-  /* Linea verde che si disegna da sinistra quando la sezione entra in vista */
+  /* Filetto verde che si disegna da sinistra */
+  .traccia {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.9s var(--ease) 0.15s;
+  }
+
   .reveal[data-visible="true"] .traccia,
   .reveal-stagger[data-visible="true"] .traccia {
     transform: scaleX(1);
   }
 
-  .traccia {
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.9s var(--ease) 0.15s;
+  /* Collegamento che si disegna dall'alto, nei mockup di relazione */
+  .collega {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.7s var(--ease) 0.35s;
+  }
+
+  .reveal[data-visible="true"] .collega {
+    transform: scaleY(1);
   }
 
   /* Impulso che percorre la catena di tracciabilità */
@@ -471,6 +654,23 @@ body {
     100% {
       top: 100%;
       opacity: 0;
+    }
+  }
+
+  /* Respiro lentissimo delle luci ambientali di sfondo */
+  .respira {
+    animation: respira 11s ease-in-out infinite;
+  }
+
+  @keyframes respira {
+    0%,
+    100% {
+      opacity: 0.75;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.03);
     }
   }
 }
