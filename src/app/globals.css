@@ -2,24 +2,29 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    PALETTE
-   Verde foresta come base scura, verde menta come unico accento, menta
+   Verde foresta come base profonda, verde menta come unico accento, menta
    chiarissimo e grigio neutro per alternare le sezioni chiare.
    Per riallineare tutta la pagina bastano --ink e --accent.
    ───────────────────────────────────────────────────────────────────────────── */
 :root {
   --paper: #ffffff;
-  --paper-alt: #f0f0f0;
+  --paper-alt: #f1f3f2;
+  --paper-mint: #e5fffd;
   --card: #ffffff;
 
   --ink: #0d302d;
   --ink-alt: #123b36;
+  --ink-deep: #092220;
 
   --text: #0d302d;
-  --muted: #5d6c7b;
-  --muted-on-ink: #899998;
+  --muted: #566b68;
+  --muted-on-ink: #9fb3af;
+  /* Tono chiaro per i numeri grandi dei passaggi: resta discreto ma supera
+     il 3:1 richiesto dal testo di grandi dimensioni. */
+  --muted-soft: #7b918c;
 
-  --line: #e2e6e4;
-  --line-on-ink: rgba(255, 255, 255, 0.12);
+  --line: #dfe5e3;
+  --line-on-ink: rgba(255, 255, 255, 0.14);
 
   --accent: #69ea9b;
   --accent-ink: #0d302d;
@@ -27,54 +32,79 @@
   /* Variante scura dell'accento: il menta pieno sta sotto 2:1 di contrasto
      sui fondi chiari e non è leggibile sul testo piccolo. */
   --accent-text: #0e6b52;
-  /* Alone morbido dietro ai titoli e ai riquadri. */
+  /* Alone morbido dietro ai titoli e alle composizioni grafiche. */
   --glow: rgba(105, 234, 155, 0.22);
 
-  /* Raggi: la reference usa pill per i bottoni e angoli molto morbidi
-     per le card (20–32px). */
   --r-pill: 999px;
-  --r-card: 24px;
-  --r-panel: 32px;
-  --r-sm: 10px;
-  --r-xs: 6px;
+  --r-card: 20px;
+  --r-panel: 28px;
+  --r-sm: 12px;
+  --r-xs: 8px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 @theme inline {
   --color-paper: var(--paper);
   --color-paper-alt: var(--paper-alt);
+  --color-paper-mint: var(--paper-mint);
   --color-card: var(--card);
   --color-ink: var(--ink);
   --color-ink-alt: var(--ink-alt);
+  --color-ink-deep: var(--ink-deep);
   --color-text: var(--text);
   --color-muted: var(--muted);
   --color-muted-on-ink: var(--muted-on-ink);
+  --color-muted-soft: var(--muted-soft);
   --color-line: var(--line);
   --color-line-on-ink: var(--line-on-ink);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
 
   --radius-pill: var(--r-pill);
   --radius-card: var(--r-card);
   --radius-panel: var(--r-panel);
 
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-mono-ui);
+  --font-sans: var(--font-manrope);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
    BASE
    ───────────────────────────────────────────────────────────────────────────── */
-body {
-  background: var(--paper);
-  color: var(--text);
-  font-family: var(--font-inter), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
+}
+
+/* Gli aloni decorativi non devono mai superare la larghezza del viewport,
+   altrimenti la pagina scorre in orizzontale. Si limitano con max-width, non
+   con overflow-x sull'html: quello renderebbe la pagina un contenitore di
+   scorrimento e romperebbe gli elementi sticky. */
+
+body {
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+
+.on-ink :focus-visible {
+  outline-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -85,67 +115,45 @@ html {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
 
-::selection {
-  background: var(--accent);
-  color: var(--accent-ink);
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: var(--r-xs);
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   PRIMITIVE RICORRENTI
-   ───────────────────────────────────────────────────────────────────────────── */
 @layer components {
-  /* Etichettina monospace sopra i titoli di sezione */
-  .eyebrow {
-    font-family: var(--font-mono-ui), ui-monospace, monospace;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent-text);
-  }
-
-  .on-ink .eyebrow {
-    color: var(--accent);
-  }
-
-  /* Titoli: molto stretti di tracking e di interlinea, come la reference */
+  /* ───────────────────────────────────────────────────────────────────────────
+     TIPOGRAFIA
+     Una sola famiglia (Manrope); la gerarchia nasce da peso, dimensione e
+     spaziatura. Le misure seguono la scala del brief: titoli 34→72px,
+     titoli di sezione 30→44px, testi 16→19px.
+     ───────────────────────────────────────────────────────────────────────── */
   .display {
-    font-size: clamp(2.5rem, 7vw, 4.75rem);
-    font-weight: 600;
+    font-size: clamp(2.125rem, 1.2rem + 4.6vw, 4.5rem);
+    font-weight: 700;
     letter-spacing: -0.035em;
-    line-height: 0.98;
+    line-height: 1.02;
     text-wrap: balance;
   }
 
   .h2 {
-    font-size: clamp(2rem, 4.4vw, 3.25rem);
-    font-weight: 600;
-    letter-spacing: -0.032em;
-    line-height: 1.04;
+    font-size: clamp(1.875rem, 1.3rem + 2.6vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
     text-wrap: balance;
   }
 
   .h3 {
-    font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.5rem);
     font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
     text-wrap: balance;
   }
 
   .lede {
-    font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
-    line-height: 1.5;
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    line-height: 1.6;
     color: var(--muted);
     text-wrap: pretty;
   }
@@ -154,26 +162,91 @@ html {
     color: var(--muted-on-ink);
   }
 
-  /* Bottoni pill */
-  .btn {
+  /* Etichetta sopra i titoli: stesso font, carattere dato da peso e tracking */
+  .eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    border-radius: var(--r-pill);
-    padding: 0.875rem 1.5rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-    transition:
-      transform 0.18s ease,
-      background-color 0.18s ease,
-      border-color 0.18s ease,
-      color 0.18s ease;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-text);
   }
 
-  .btn:hover {
-    transform: translateY(-1px);
+  .eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+
+  .on-ink .eyebrow {
+    color: var(--accent);
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     SUPERFICI
+     Alternano il ritmo delle sezioni restando nella stessa identità.
+     ───────────────────────────────────────────────────────────────────────── */
+  .surface-alt {
+    background: var(--paper-alt);
+  }
+
+  .surface-mint {
+    background: var(--paper-mint);
+  }
+
+  .on-ink {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .on-ink .card {
+    border-color: var(--line-on-ink);
+    background: var(--ink-alt);
+  }
+
+  .on-ink .chip {
+    border-color: var(--line-on-ink);
+    color: var(--muted-on-ink);
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     BOTTONI
+     ───────────────────────────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    border-radius: var(--r-pill);
+    padding: 0.75rem 1.625rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    transition:
+      transform 0.2s var(--ease),
+      background-color 0.2s var(--ease),
+      border-color 0.2s var(--ease),
+      color 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+
+  .btn svg {
+    transition: transform 0.2s var(--ease);
+  }
+
+  .btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  .btn:active {
+    transform: translateY(1px);
   }
 
   .btn-ink {
@@ -182,7 +255,8 @@ html {
   }
 
   .btn-ink:hover {
-    background: var(--ink-alt);
+    background: var(--ink-deep);
+    box-shadow: 0 10px 24px -12px rgba(13, 48, 45, 0.55);
   }
 
   .btn-accent {
@@ -191,18 +265,19 @@ html {
   }
 
   .btn-accent:hover {
-    filter: brightness(1.05);
+    background: #7cf0a9;
+    box-shadow: 0 10px 26px -12px rgba(105, 234, 155, 0.7);
   }
 
   .btn-outline {
-    border: 1px solid var(--line);
+    border: 1.5px solid var(--line);
     background: transparent;
     color: var(--text);
   }
 
   .btn-outline:hover {
-    background: var(--card);
     border-color: var(--ink);
+    background: var(--paper-alt);
   }
 
   .on-ink .btn-outline {
@@ -211,60 +286,153 @@ html {
   }
 
   .on-ink .btn-outline:hover {
+    border-color: rgba(255, 255, 255, 0.35);
     background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.3);
   }
 
-  /* Card */
+  /* ───────────────────────────────────────────────────────────────────────────
+     COMPONENTI
+     ───────────────────────────────────────────────────────────────────────── */
   .card {
     border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--card);
   }
 
-  .on-ink .card {
-    border-color: var(--line-on-ink);
-    background: var(--ink-alt);
+  .card-hover {
+    transition:
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease),
+      border-color 0.25s var(--ease);
   }
 
-  /* Chip / tag piccoli */
+  .card-hover:hover {
+    transform: translateY(-3px);
+    border-color: rgba(13, 48, 45, 0.25);
+    box-shadow: 0 18px 40px -24px rgba(13, 48, 45, 0.4);
+  }
+
+  .on-ink .card-hover:hover {
+    border-color: rgba(105, 234, 155, 0.4);
+    box-shadow: none;
+  }
+
   .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
     border-radius: var(--r-pill);
     border: 1px solid var(--line);
-    padding: 0.3125rem 0.6875rem;
-    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--muted);
   }
 
-  .on-ink .chip {
-    border-color: var(--line-on-ink);
-    color: var(--muted-on-ink);
-  }
-
-  /* Freccia che scorre all'hover sui link testuali */
   .link-arrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.4375rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-text);
+  }
+
+  .on-ink .link-arrow {
+    color: var(--accent);
   }
 
   .link-arrow svg {
-    transition: transform 0.18s ease;
+    transition: transform 0.2s var(--ease);
   }
 
   .link-arrow:hover svg {
-    transform: translateX(3px);
+    transform: translateX(4px);
   }
 
-  /* Sezione scura: attiva le varianti .on-ink qui sopra */
-  .on-ink {
-    background: var(--ink);
-    color: var(--paper);
+  /* ───────────────────────────────────────────────────────────────────────────
+     INGRESSO DEI CONTENUTI
+     L'elemento parte nascosto e compare quando entra nel viewport. Il fallback
+     per chi non ha JavaScript è in <noscript>, nel layout.
+     ───────────────────────────────────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s var(--ease),
+      transform 0.7s var(--ease);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Variante a cascata: anima i figli uno dopo l'altro, non il contenitore. */
+  .reveal-stagger {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s var(--ease),
+      transform 0.6s var(--ease);
+  }
+
+  .reveal-stagger[data-visible="true"] > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-stagger[data-visible="true"] > *:nth-child(2) {
+    transition-delay: 90ms;
+  }
+  .reveal-stagger[data-visible="true"] > *:nth-child(3) {
+    transition-delay: 180ms;
+  }
+  .reveal-stagger[data-visible="true"] > *:nth-child(4) {
+    transition-delay: 270ms;
+  }
+  .reveal-stagger[data-visible="true"] > *:nth-child(5) {
+    transition-delay: 360ms;
+  }
+  .reveal-stagger[data-visible="true"] > *:nth-child(n + 6) {
+    transition-delay: 450ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-stagger > * {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Impulso che percorre la catena di tracciabilità nella hero.
+     Con movimento ridotto l'animazione dura un istante e finisce invisibile,
+     quindi non resta un punto fermo a metà della linea. */
+  .trace-pulse {
+    animation: trace-pulse 3.4s var(--ease) infinite;
+  }
+
+  @keyframes trace-pulse {
+    0% {
+      top: 0;
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
   }
 }

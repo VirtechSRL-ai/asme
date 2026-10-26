@@ -1,57 +1,64 @@
+import { Fragment } from "react";
 import { site } from "@/content/site";
-import { ArrowRight, Container, Eyebrow } from "../ui";
+import { Reveal } from "../reveal";
+import { ArrowRight, Container, SectionIntro } from "../ui";
 
 const { ambiti } = site;
 
 /**
- * 06 — Ambiti: due colonne simmetriche ASME / PED collegate da una fascia.
+ * 06 — Ambiti: due percorsi distinti che condividono la stessa esigenza di
+ * evidenze. La fascia in alto è ciò che hanno in comune.
  * Niente bollini o icone che possano sembrare certificazioni rilasciate.
  */
 export function Scopes() {
   return (
-    <section id="ambiti" className="on-ink py-24 sm:py-28">
+    <section id="ambiti" className="py-20 sm:py-24">
       <Container>
-        <div className="mx-auto max-w-3xl text-center">
-          <Eyebrow>{ambiti.eyebrow}</Eyebrow>
-          <h2 className="h2 mt-4">{ambiti.titolo}</h2>
-        </div>
+        <Reveal>
+          <SectionIntro
+            eyebrow={ambiti.eyebrow}
+            titolo={ambiti.titolo}
+            allineamento="centro"
+          />
+        </Reveal>
 
-        {/* Fascia di collegamento fra le due colonne */}
-        <div className="mt-14 flex items-center justify-center gap-3 sm:gap-5">
+        {/* Fascia condivisa dai due percorsi */}
+        <Reveal ritardo={100} className="mt-14 flex flex-wrap items-center justify-center gap-3">
           {ambiti.fascia.map((voce, i) => (
-            <span key={voce} className="flex items-center gap-3 sm:gap-5">
+            <Fragment key={voce}>
               {i > 0 ? (
-                <span aria-hidden="true" className="h-px w-6 bg-line-on-ink sm:w-12" />
+                <span aria-hidden="true" className="h-px w-6 bg-line sm:w-12" />
               ) : null}
-              <span className="rounded-pill border border-line-on-ink px-4 py-2 font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-muted-on-ink">
+              <span className="rounded-pill bg-accent-soft px-5 py-2.5 text-[0.9375rem] font-bold tracking-[-0.01em] text-accent-text">
                 {voce}
               </span>
-            </span>
+            </Fragment>
           ))}
-        </div>
+        </Reveal>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-2">
+        {/* Raccordo verso le due colonne */}
+        <div aria-hidden="true" className="mx-auto h-10 w-px bg-line" />
+
+        <Reveal as="ul" cascata className="grid gap-5 lg:grid-cols-2">
           {ambiti.colonne.map((colonna) => (
-            <div key={colonna.sigla} className="card rounded-panel flex flex-col p-8">
-              <p className="font-mono text-[1.75rem] font-medium tracking-[-0.02em] text-accent">
+            <li key={colonna.sigla} className="card card-hover flex flex-col p-8 sm:p-10">
+              <span className="text-[2.5rem] font-extrabold leading-none tracking-[-0.04em]">
                 {colonna.sigla}
-              </p>
-              <p className="mt-5 flex-1 text-[1.0625rem] leading-relaxed text-muted-on-ink">
+              </span>
+              <h3 className="h3 mt-5">{colonna.titolo}</h3>
+              <p className="mt-3 flex-1 text-[1.0625rem] leading-relaxed text-muted">
                 {colonna.testo}
               </p>
-              <p className="mt-7 rounded-[16px] border border-dashed border-line-on-ink px-4 py-4 text-[0.8125rem] leading-relaxed text-muted-on-ink">
-                {colonna.nota}
-              </p>
-            </div>
+            </li>
           ))}
-        </div>
+        </Reveal>
 
-        <div className="mt-10 flex justify-center">
-          <a href={ambiti.cta.href} className="btn btn-accent">
+        <Reveal ritardo={60} className="mt-12 flex justify-center">
+          <a href={ambiti.cta.href} className="btn btn-ink">
             {ambiti.cta.etichetta}
             <ArrowRight />
           </a>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

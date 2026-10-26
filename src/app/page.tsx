@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
-      <main className="flex-1">
+      <main id="contenuto" className="flex-1">
         <Hero />
         <Experience />
         <Benefit />
