@@ -1,114 +1,159 @@
 import { site } from "@/content/site";
-import { Codice, Pannello, Riga, Stato } from "../mock";
 import { Reveal } from "../reveal";
-import { ArrowRight, Container, Eyebrow, Mail } from "../ui";
+import { Check, Container } from "../ui";
 
-const { hero, contatti } = site;
-const { mock } = hero;
+const { hero } = site;
+const { cruscotto } = hero;
 
-const MAILTO = `mailto:${contatti.email}?subject=${encodeURIComponent("Informazioni su Tracciamy")}`;
+const COLORE: Record<string, { barra: string; punto: string; stato: string }> = {
+  ok: { barra: "bg-green", punto: "bg-green", stato: "stato stato-ok" },
+  attenzione: { barra: "bg-orange", punto: "bg-orange", stato: "stato stato-attenzione" },
+  pronti: {
+    barra: "bg-[color-mix(in_srgb,var(--green)_35%,var(--white))]",
+    punto: "bg-[color-mix(in_srgb,var(--green)_45%,var(--white))]",
+    stato: "stato stato-attesa",
+  },
+};
+
+const ETICHETTA: Record<string, string> = {
+  ok: "Completato",
+  attenzione: "Attenzione",
+  pronti: "Pronto",
+};
 
 /**
- * I due pannelli che emergono dal bordo inferiore della prima schermata:
- * a sinistra una unità con i suoi componenti, a destra i documenti collegati.
- * Mostrano in un colpo d'occhio il legame che il prodotto costruisce.
+ * Cruscotto centrale sotto il titolo: una sola card che raccoglie
+ * l'avanzamento complessivo, i tre stati e un estratto delle unità.
+ * È un'anteprima illustrativa: i codici sono fittizi.
  */
-function PannelliProdotto() {
+function Cruscotto() {
   return (
-    <div className="relative mx-auto grid max-w-5xl grid-cols-1 gap-5 lg:grid-cols-[1.25fr_1fr] lg:items-start">
-      <Pannello
-        titolo={mock.unita.titolo}
-        azione={<Codice>{mock.unita.codice}</Codice>}
-        className="lg:translate-y-6"
-      >
-        <Riga className="justify-between bg-green-soft/60">
-          <span className="font-bold">{mock.unita.commessa}</span>
-          <span className="text-[0.8125rem] text-neutral">
-            {mock.unita.righe.length} componenti
-          </span>
-        </Riga>
-        {mock.unita.righe.map((riga) => (
-          <Riga key={riga.nome} className="justify-between">
-            <span className="flex min-w-0 items-center gap-2.5">
-              <span
-                aria-hidden="true"
-                className="h-1.5 w-1.5 shrink-0 rounded-full bg-green-ink"
-              />
-              <span className="truncate font-semibold">{riga.nome}</span>
-              <Codice>{riga.materiale}</Codice>
-            </span>
-            <Stato stato={riga.stato} />
-          </Riga>
-        ))}
-      </Pannello>
+    <div className="mock mx-auto max-w-4xl text-left">
+      <div className="mock-testa">
+        <span>{cruscotto.titolo}</span>
+        <span className="font-bold normal-case tracking-normal text-neutral">
+          {cruscotto.totale} {cruscotto.unita}
+        </span>
+      </div>
 
-      <Pannello titolo={mock.documenti.titolo}>
-        {mock.documenti.righe.map((riga) => (
-          <Riga key={riga.nome} className="justify-between">
-            <span className="truncate font-semibold">{riga.nome}</span>
-            <Stato stato={riga.stato} />
-          </Riga>
-        ))}
-      </Pannello>
+      <div className="p-5 sm:p-7">
+        {/* Barra di avanzamento divisa nei tre stati */}
+        <div className="flex h-3 gap-1 overflow-hidden rounded-pill" aria-hidden="true">
+          {cruscotto.stati.map((stato) => (
+            <span
+              key={stato.chiave}
+              className={`${COLORE[stato.chiave].barra} rounded-pill`}
+              style={{ width: `${stato.quota}%` }}
+            />
+          ))}
+        </div>
+
+        {/* I tre stati */}
+        <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {cruscotto.stati.map((stato) => (
+            <div
+              key={stato.chiave}
+              className="rounded-[16px] border border-line px-4 py-4"
+            >
+              <dt className="flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className={`h-2.5 w-2.5 shrink-0 rounded-full ${COLORE[stato.chiave].punto}`}
+                />
+                <span className="text-[0.875rem] font-bold text-neutral">{stato.etichetta}</span>
+              </dt>
+              <dd className="mt-2 flex items-baseline gap-2">
+                <span className="text-[2rem] font-extrabold leading-none tracking-[-0.04em] tabular-nums">
+                  {stato.numero}
+                </span>
+                <span className="text-[0.9375rem] font-bold tabular-nums text-neutral">
+                  {stato.quota}%
+                </span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        {/* Estratto delle unità in lavorazione */}
+        <div className="mt-6 overflow-hidden rounded-[16px] border border-line">
+          <div className="hidden grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 border-b border-line bg-green-soft/50 px-4 py-2.5 sm:grid">
+            {cruscotto.colonne.map((colonna) => (
+              <span
+                key={colonna}
+                className="min-w-0 truncate text-[0.6875rem] font-extrabold uppercase tracking-[0.1em] text-neutral"
+              >
+                {colonna}
+              </span>
+            ))}
+          </div>
+
+          {cruscotto.righe.map((riga) => (
+            <div
+              key={riga.unita}
+              className="flex flex-col gap-1.5 border-b border-line px-4 py-3.5 last:border-b-0 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-3 sm:py-3"
+            >
+              <span className="flex items-center justify-between gap-3 sm:block sm:min-w-0">
+                <span className="truncate text-[0.9375rem] font-extrabold tabular-nums">
+                  {riga.unita}
+                </span>
+                <span className="sm:hidden">
+                  <span className={COLORE[riga.stato].stato}>
+                    {riga.stato === "ok" ? <Check className="h-3 w-3" /> : null}
+                    {ETICHETTA[riga.stato]}
+                  </span>
+                </span>
+              </span>
+              <span className="min-w-0 truncate text-[0.875rem] text-neutral">
+                <span className="sm:hidden">Distinta: </span>
+                {riga.distinta}
+              </span>
+              <span className="min-w-0 truncate text-[0.875rem] tabular-nums text-neutral">
+                <span className="sm:hidden">Certificati: </span>
+                {riga.certificati}
+              </span>
+              <span className="hidden sm:block">
+                <span className={COLORE[riga.stato].stato}>
+                  {riga.stato === "ok" ? <Check className="h-3 w-3" /> : null}
+                  {ETICHETTA[riga.stato]}
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
 export function Hero() {
   return (
-    <section className="wash-hero relative overflow-hidden pt-12 sm:pt-16">
-      {/* Trama diagonale appena accennata, per dare consistenza allo sfondo */}
+    <section className="wash-hero relative overflow-hidden pt-12 pb-20 sm:pt-16 sm:pb-24">
       <div aria-hidden="true" className="trama pointer-events-none absolute inset-0 opacity-70" />
-      {/* Luce ambientale che respira lentamente */}
       <div
         aria-hidden="true"
         className="respira pointer-events-none absolute -top-72 left-1/2 h-[38rem] w-full max-w-[64rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--green)_26%,transparent),transparent_68%)]"
       />
 
       <Container className="relative">
-        {/* Composizione centrata: etichetta, titolo, testo, azioni in asse */}
-        <Reveal className="mx-auto max-w-4xl text-center">
-          <div className="flex justify-center">
-            <Eyebrow>{hero.eyebrow}</Eyebrow>
-          </div>
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <span className="inline-flex rounded-pill border border-line bg-white/70 px-3.5 py-1.5 text-[0.6875rem] font-extrabold uppercase tracking-[0.12em] text-green-ink">
+            {hero.badge}
+          </span>
+
           <h1 className="display mt-7">
-            {hero.titoloPrima} <span className="spicca">{hero.titoloSpicca}</span>{" "}
-            {hero.titoloDopo}
+            {hero.titolo}
+            <span className="mt-1 block font-bold tracking-[-0.035em] text-neutral [font-size:0.74em]">
+              {hero.sottotitolo}
+            </span>
           </h1>
-          <p className="lede mx-auto mt-7 max-w-2xl">{hero.testo}</p>
 
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href={MAILTO} className="btn btn-green w-full sm:w-auto">
-              <Mail />
-              {site.ctaPrincipale.etichetta}
-            </a>
-            <a href={hero.ctaSecondaria.href} className="btn btn-outline w-full sm:w-auto">
-              {hero.ctaSecondaria.etichetta}
-              <ArrowRight />
-            </a>
-          </div>
-
-          <p className="mt-7 text-[0.9375rem] text-neutral">
-            Oppure chiamaci:{" "}
-            <a href={`tel:${contatti.telefonoLink}`} className="link-contatto text-dark">
-              {contatti.telefono}
-            </a>
-          </p>
+          <p className="lede mx-auto mt-7 max-w-xl">{hero.testo}</p>
         </Reveal>
 
-        {/* I pannelli restano sotto le azioni: su uno schermo normale finiscono
-            tagliati dal bordo della finestra e invitano a scorrere, come nella
-            reference, senza bisogno di ritagli artificiali. */}
-        <Reveal ritardo={200} className="mt-16 pb-24 sm:mt-20 sm:pb-28">
-          <PannelliProdotto />
+        <Reveal ritardo={180} className="mt-14">
+          <Cruscotto />
         </Reveal>
       </Container>
-
-      {/* Sfumatura che porta la hero dentro la sezione successiva */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-white"
-      />
     </section>
   );
 }

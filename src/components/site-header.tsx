@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
+
+const MAILTO = `mailto:${site.contatti.email}?subject=${encodeURIComponent("Informazioni su Tracciamy")}`;
 import { Logo } from "./logo";
 import { ArrowRight, Container } from "./ui";
 
@@ -51,7 +53,7 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <a href={site.ctaPrincipale.href} className="btn btn-green hidden lg:inline-flex">
+          <a href={MAILTO} className="btn btn-green hidden lg:inline-flex">
             {site.ctaPrincipale.etichetta}
             <ArrowRight />
           </a>
@@ -102,7 +104,7 @@ export function SiteHeader() {
             ))}
           </nav>
           <a
-            href={site.ctaPrincipale.href}
+            href={MAILTO}
             onClick={() => setAperto(false)}
             tabIndex={aperto ? undefined : -1}
             className="btn btn-green mb-6 mt-5 w-full"

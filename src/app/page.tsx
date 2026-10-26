@@ -1,11 +1,8 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { Contact } from "@/components/sections/contact";
 import { Hero } from "@/components/sections/hero";
-import { Links } from "@/components/sections/links";
-import { Method } from "@/components/sections/method";
-import { Problem } from "@/components/sections/problem";
-import { Scopes } from "@/components/sections/scopes";
+import { Mantieni } from "@/components/sections/mantieni";
+import { Ottieni } from "@/components/sections/ottieni";
 
 export default function Home() {
   return (
@@ -13,11 +10,8 @@ export default function Home() {
       <SiteHeader />
       <main id="contenuto" className="flex-1">
         <Hero />
-        <Problem />
-        <Method />
-        <Links />
-        <Scopes />
-        <Contact />
+        <Ottieni />
+        <Mantieni />
       </main>
       <SiteFooter />
     </>

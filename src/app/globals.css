@@ -12,11 +12,17 @@
   --dark: #06231a;
   --white: #ffffff;
   --neutral: #55665f;
+  /* Arancione: non è un colore del marchio, è lo stato "richiede attenzione".
+     Compare solo su quello, mai come elemento decorativo. */
+  --orange: #f2920d;
+  --orange-ink: #b45309;
 
   /* Verde scurito per il testo: il verde pieno su bianco sta a 1,5:1 e come
      testo non si leggerebbe. È lo stesso verde, mescolato con lo scuro. */
   --green-ink: color-mix(in srgb, var(--green) 45%, var(--dark));
   --green-soft: color-mix(in srgb, var(--green) 10%, var(--white));
+  /* 10% e non di più: oltre, il testo ambrato scende sotto i 4,5:1 */
+  --orange-soft: color-mix(in srgb, var(--orange) 10%, var(--white));
   --neutral-soft: color-mix(in srgb, var(--neutral) 70%, var(--white));
   --on-dark-soft: color-mix(in srgb, var(--white) 62%, var(--dark));
   --line: color-mix(in srgb, var(--neutral) 22%, var(--white));
@@ -38,10 +44,13 @@
   --color-green: var(--green);
   --color-green-ink: var(--green-ink);
   --color-green-soft: var(--green-soft);
+  --color-orange-soft: var(--orange-soft);
   --color-dark: var(--dark);
   --color-dark-raised: var(--dark-raised);
   --color-dark-deep: var(--dark-deep);
   --color-neutral: var(--neutral);
+  --color-orange: var(--orange);
+  --color-orange-ink: var(--orange-ink);
   --color-neutral-soft: var(--neutral-soft);
   --color-on-dark-soft: var(--on-dark-soft);
   --color-line: var(--line);
@@ -531,6 +540,11 @@ body {
   .stato-attesa {
     background: color-mix(in srgb, var(--neutral) 14%, var(--white));
     color: var(--neutral);
+  }
+
+  .stato-attenzione {
+    background: var(--orange-soft);
+    color: var(--orange-ink);
   }
 
   .on-dark .stato-ok,

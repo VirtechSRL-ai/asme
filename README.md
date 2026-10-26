@@ -1,8 +1,8 @@
 # Tracciamy — sito
 
 Landing monopagina di **Tracciamy**, il prodotto Virtech per la tracciabilità
-dei materiali nei processi ASME e PED. Next.js 16 (App Router), TypeScript,
-Tailwind CSS 4.
+dei materiali, dalla distinta al fascicolo tecnico. Next.js 16 (App Router),
+TypeScript, Tailwind CSS 4.
 
 ## Avviare il sito in locale
 
@@ -13,41 +13,40 @@ npm run dev
 
 Poi apri http://localhost:3000.
 
-## Le sei sezioni
+## Struttura
 
-Un file per sezione, in `src/components/sections/`. Ogni sezione ha una propria
-grafica illustrativa e un proprio fondo, così lo scorrimento ha un ritmo:
+Tre sezioni, nell'ordine del riferimento Complaion. Un file per sezione, in
+`src/components/sections/`:
 
-| #   | Sezione       | File          | Fondo                | Grafica                        |
-| --- | ------------- | ------------- | -------------------- | ------------------------------ |
-| 01  | Hero          | `hero.tsx`    | bianco con lavaggio verde | unità e documenti collegati |
-| 02  | Il problema   | `problem.tsx` | scuro                | le fonti oggi scollegate       |
-| 03  | Come funziona | `method.tsx`  | bianco appena velato | una mini-grafica per passaggio |
-| 04  | Cosa collega  | `links.tsx`   | scuro con luce verde | la vista per apparecchiatura   |
-| 05  | ASME e PED    | `scopes.tsx`  | bianco               | passaggi fatti contro da fare  |
-| 06  | Contatti      | `contact.tsx` | scuro con luce verde | chiusura, email e telefono     |
+| #   | Sezione  | File           | Layout                                      |
+| --- | -------- | -------------- | ------------------------------------------- |
+| 01  | Hero     | `hero.tsx`     | badge, titolo su due righe, cruscotto centrale |
+| 02  | Ottieni  | `ottieni.tsx`  | grafica a sinistra, testo a destra          |
+| 03  | Mantieni | `mantieni.tsx` | testo a sinistra, grafica a destra          |
 
-### La hero
-
-La composizione riprende il linguaggio della landing di Complaion, analizzata
-nel browser e non da uno screenshot: titolo grande e centrato con interlinea
-compressa, sottotitolo e azioni in asse, sfondo con lavaggio diagonale che si
-spegne nel bianco, e i pannelli del prodotto che restano tagliati dal bordo
-della finestra per invitare a scorrere. Testi, font, palette e logo restano
-quelli di Tracciamy: della reference si riprende solo l'impostazione visiva.
+Header e footer completano la pagina. Non ci sono sezioni di testimonianze,
+prezzi, FAQ o casi studio: la pagina si ferma alle tre previste.
 
 ### Le grafiche
 
-Sono in `src/components/mock.tsx` (le primitive condivise) e dentro le singole
-sezioni. Ciascuna risponde a una domanda precisa del testo che accompagna:
-dove stanno oggi le informazioni, cosa entra nel sistema, come si aggancia un
-certificato, cosa manca prima dei documenti, come si risale da una unità ai
-suoi materiali, cosa esiste già per ASME e cosa va definito per PED.
+Ogni sezione ha un'anteprima costruita sul proprio contenuto:
 
-**Sono esempi, non schermate reali.** I codici (`UN-0000`, `MAT-001`,
-`CERT-0000`) sono fittizi, le etichette di stato sono qualitative e non
-compare nessun numero, percentuale o indicatore di performance inventato. Ogni
-pannello porta la didascalia definita in `site.ts` come `notaEsempio`.
+- **Hero** — una sola card, *Dati in lavorazione*: barra di avanzamento divisa
+  nei tre stati (70% completati, 20% richiedono attenzione, 10% pronti alla
+  chiusura), i tre contatori e un estratto delle unità.
+- **Ottieni** — la card *Certificato tecnico* con quattro passaggi collegati in
+  verticale: i primi due conclusi con la spunta, il terzo in corso con barra di
+  avanzamento, il quarto ancora da fare. Accanto, sovrapposto in primo piano,
+  il documento *Certificato* che ne risulta.
+- **Mantieni** — tre riquadri collegati da una linea verticale: materiali e
+  documenti, traccia, controllo finale del team.
+
+Sono rappresentazioni illustrative: i codici (`UN-0016`, `CERT-0016`) sono
+fittizi. L'ultimo passaggio resta sempre in carico al team, perché il software
+organizza, collega e verifica la completezza, ma non rilascia certificazioni.
+
+Il claim del 90% nella hero è presentato come affermazione commerciale, senza
+studi o prove a supporto.
 
 ## Modificare i contenuti
 
@@ -56,114 +55,90 @@ dentro i componenti.
 
 ## Logo
 
-Il logo ufficiale è `public/tracciamy-logo.png`, ritagliato dal file fornito
-senza ridisegnarlo. Lo usa il componente `src/components/logo.tsx`, in header e
-footer. La favicon è `src/app/icon.png` e contiene **solo il simbolo**, senza la
-scritta, come richiesto.
+`public/tracciamy-logo.png`, ritagliato dal file ufficiale senza ridisegnarlo,
+usato da `src/components/logo.tsx` in header e footer. La favicon è
+`src/app/icon.png` e contiene solo il simbolo, senza la scritta.
 
-**Il logo va su fondo bianco.** La scritta è nera e il simbolo sfuma fino a un
-verde molto scuro: su una superficie scura o verde sparirebbe. Per questo header
-e footer sono bianchi. Se serve il logo anche sulle sezioni scure, va fornita la
-**versione negativa ufficiale**: non l'ho generata io perché invertire i colori
-avrebbe alterato l'identità del marchio.
+**Il logo va su fondo bianco**: la scritta è nera e il simbolo sfuma fino a un
+verde molto scuro. Per usarlo su fondi scuri serve la versione negativa
+ufficiale.
+
+Nel footer c'è anche il logo **Virtech** (`public/virtech-logo.png`): scontornato
+dal file fornito ricavando l'alpha dal contrasto col fondo, con la forma intatta,
+e ricolorato con la palette Tracciamy — simbolo verde, scritta bianca — quindi
+va sulla barra scura. È cliccabile verso virtechsrl.com.
 
 ## Palette — quattro colori
 
 Variabili in `src/app/globals.css`.
 
-| Variabile   | Valore    | Ruolo                                        |
-| ----------- | --------- | -------------------------------------------- |
-| `--green`   | `#00ee93` | colore del marchio: CTA, sezioni, dettagli   |
-| `--dark`    | `#06231a` | testi, sezioni profonde                      |
-| `--white`   | `#ffffff` | **unico** bianco del sito                    |
-| `--neutral` | `#55665f` | testi secondari e bordi                      |
+| Variabile   | Valore    | Ruolo                                      |
+| ----------- | --------- | ------------------------------------------ |
+| `--green`   | `#00ee93` | colore del marchio: CTA, sezioni, dettagli |
+| `--dark`    | `#06231a` | testi, sezioni profonde                    |
+| `--white`   | `#ffffff` | **unico** bianco del sito                  |
+| `--neutral` | `#55665f` | testi secondari e bordi                    |
 
-Il verde non è scelto a occhio: è campionato dal file originale del logo ed è
-il colore pieno del puntino della «i» (2069 pixel di quel valore esatto).
+Il verde è campionato dal file originale del logo: è il colore pieno del
+puntino della «i».
 
-Tutto il resto sono sfumature di questi quattro, calcolate con `color-mix`, non
-colori nuovi. Due meritano una nota:
+A questi si aggiunge `--orange` (`#f2920d`), che **non è un colore del
+marchio**: serve solo allo stato «richiedono attenzione» e non compare mai come
+elemento decorativo.
 
-- `--green-ink` è lo stesso verde mescolato con lo scuro. Serve perché il verde
-  del logo su bianco sta a 1,5:1 e come testo sarebbe illeggibile. Il verde
-  pieno resta per i riempimenti e per i fondi scuri, dove il contrasto arriva a
-  11:1.
-- `--neutral-soft` è il neutro schiarito per i numeri grandi dei passaggi:
-  discreto ma sopra il 3:1 richiesto.
+Tutto il resto sono sfumature calcolate con `color-mix`. Due meritano una nota:
 
-I pulsanti verdi hanno testo scuro, come nel logo. Non esiste alcun azzurro.
+- `--green-ink` è il verde mescolato con lo scuro. Serve perché il verde del
+  logo su bianco sta a 1,5:1 e come testo sarebbe illeggibile. Il verde pieno
+  resta per i riempimenti e per i fondi scuri, dove arriva a 11:1.
+- `--orange-soft` è fermo al 10%: oltre, il testo ambrato scende sotto i 4,5:1.
 
-Gli sfondi non sono mai tinte piatte: `.wash-hero` e `.wash-soft` per le
-sezioni chiare, `.on-dark` e `.on-dark-glow` per quelle profonde, più `.trama`
-per la trama diagonale appena percepibile. `.on-dark-glow` ha un
-`background-color` pieno sotto i gradienti: senza, l'ultimo layer sarebbe
-un'immagine e il testo bianco resterebbe su fondo trasparente.
+Gli sfondi non sono tinte piatte: `.wash-hero` e `.wash-soft` per le sezioni
+chiare, `.on-dark` e `.on-dark-glow` per quelle profonde, `.trama` per la trama
+diagonale appena percepibile.
 
 ## Tipografia
 
 Una sola famiglia: **Manrope**, da `next/font`, pesi 400–800. Classi in
-`globals.css`: `.display` (36→72px), `.h2` (31→46px), `.h3`, `.lede` (17→20px),
-`.eyebrow`. Sono `clamp()`, quindi scalano senza breakpoint. `.spicca` mette in
-verde una parola dentro un titolo.
+`globals.css`: `.display`, `.h2`, `.h3`, `.lede`, `.eyebrow`. Sono `clamp()`,
+quindi scalano senza breakpoint.
 
 ## Animazioni
 
 `src/components/reveal.tsx`, senza librerie: un IntersectionObserver aggiunge
 `data-visible` quando l'elemento entra nel viewport, la transizione è in CSS.
-`<Reveal cascata>` anima i figli uno dopo l'altro; la classe `.traccia` disegna
-un filetto verde da sinistra.
+Gli hover sono in `globals.css`: i pulsanti si sollevano di 2px con alone verde
+e freccia che avanza, le card salgono con bordo verde.
 
-Gli stati hover sono in `globals.css`: i pulsanti si sollevano di 2px, prendono
-un alone verde e la freccia avanza; le card salgono di 4px con bordo verde; i
-link di contatto hanno una sottolineatura verde che si estende.
+Tutto si disattiva con `prefers-reduced-motion`, e senza JavaScript i contenuti
+restano visibili (regola in `<noscript>` nel layout).
 
-Tutto si disattiva con `prefers-reduced-motion`, e chi ha JavaScript disattivato
-vede comunque i contenuti (regola in `<noscript>` nel layout).
-
-Nota: gli aloni decorativi usano `max-width`, non `overflow-x: hidden`
-sull'`html`, che renderebbe la pagina un contenitore di scorrimento e
-romperebbe l'header sticky.
+Gli aloni decorativi usano `max-width`, non `overflow-x: hidden` sull'`html`,
+che renderebbe la pagina un contenitore di scorrimento e romperebbe l'header
+sticky. Le griglie usano `grid-cols-1` esplicito: senza, la colonna si
+dimensiona sul contenuto minimo del figlio e allarga la pagina sui telefoni.
 
 ## Contatti
 
-Email, telefono e sede stanno in `src/content/site.ts` e compaiono nella hero,
-nella sezione di chiusura e nel footer. I pulsanti aprono `mailto:` e `tel:`
-reali: **non c'è nessun modulo di contatto**, perché non esiste ancora un
-sistema di raccolta collegato e un form che non invia sarebbe peggio di nessun
-form.
+Stanno in `src/content/site.ts` e compaiono nel footer. Le CTA aprono `mailto:`
+reale. **Non c'è un modulo di contatto**: non esiste ancora un sistema di
+raccolta collegato, e un form che non invia sarebbe peggio di nessun form.
 
-## Vincoli editoriali
-
-Dal brief originale, ancora validi:
-
-- **Nessuna UI inventata**: le grafiche sono schemi concettuali, mai finte
-  schermate di prodotto.
-- **Nessuna metrica o testimonianza** senza dati e permessi documentati.
-- **Niente bollini di conformità** o icone che sembrino certificazioni
-  rilasciate.
-- **Formule da evitare**: «elimina gli errori», «garantisce conformità». Il
-  controllo tecnico finale resta al fabbricante.
-- Il sistema **non verifica da solo** la conformità dei certificati:
-  l'estrazione è assistita e richiede conferma umana.
-
-## Da completare
-
-1. **Versione negativa del logo**, per usarlo su fondi scuri.
-2. **Autorizzazione W&H** per nome e descrizione del caso (la nota in sezione 05
-   la richiama già).
-3. **Formulazione PED** da confermare con il referente tecnico.
-4. **Pagina privacy**, se verrà aggiunto un modulo in futuro.
+- info@virtechsrl.com
+- +39 333 866 5089
+- Erbusco, Brescia, Italia
+- https://www.virtechsrl.com/
 
 ## Verifiche eseguite
 
 Con Chrome headless su sei larghezze (360, 390, 820, 1024, 1280, 1440 px):
 
-- nessun overflow orizzontale e nessun elemento fuori dallo schermo;
+- nessun overflow orizzontale;
 - header sticky funzionante a tutte le larghezze;
 - tutti gli ingressi allo scroll scattano;
 - nessun errore in console;
 - un solo `h1`, gerarchia dei titoli senza salti;
-- nessun link o pulsante privo di nome accessibile;
+- nessun link o pulsante privo di nome accessibile, nessuna immagine senza alt;
 - nessun testo sotto il contrasto minimo WCAG AA, compresi i colori calcolati
   con `color-mix`.
 
