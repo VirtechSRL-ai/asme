@@ -22,6 +22,8 @@ export const site = {
     telefono: "+39 333 866 5089",
     telefonoLink: "+393338665089",
     sede: "Erbusco, Brescia, Italia",
+    sito: "https://www.virtechsrl.com/",
+    sitoEtichetta: "virtechsrl.com",
   },
 
   nav: [

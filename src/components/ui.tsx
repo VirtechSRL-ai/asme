@@ -104,6 +104,17 @@ export function Phone({ className }: IconaProps) {
   );
 }
 
+/** Sito web: globo per il collegamento esterno. */
+export function Globe({ className }: IconaProps) {
+  return (
+    <Svg className={className ?? "h-[1.125rem] w-[1.125rem]"}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M3.5 12h17" />
+      <path d="M12 3.5a13 13 0 0 1 0 17a13 13 0 0 1 0-17Z" />
+    </Svg>
+  );
+}
+
 /** Dove siamo: segnaposto per la sede. */
 export function Pin({ className }: IconaProps) {
   return (
