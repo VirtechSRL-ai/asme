@@ -10,7 +10,7 @@ export function Hero() {
     <section className="relative overflow-hidden pb-20 pt-14 sm:pt-20">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 h-[30rem] w-[60rem] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(46,196,174,0.16),transparent_65%)]"
+        className="pointer-events-none absolute -top-40 left-1/2 h-[30rem] w-[60rem] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,var(--glow),transparent_65%)]"
       />
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-[1fr_1fr] lg:gap-16">

@@ -36,7 +36,7 @@ function Diagramma() {
               {colonna.voci.map((voce) => (
                 <li
                   key={voce}
-                  className="relative rounded-[14px] border border-line bg-paper px-4 py-3 text-[0.875rem]"
+                  className="relative rounded-[14px] border border-line bg-paper-alt px-4 py-3 text-[0.875rem]"
                 >
                   {/* Trattino di collegamento verso la colonna precedente */}
                   <span

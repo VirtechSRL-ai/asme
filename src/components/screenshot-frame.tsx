@@ -26,11 +26,11 @@ export function ScreenshotFrame({
   return (
     <figure className="relative">
       <div
-        className={`flex flex-col justify-end rounded-panel border border-dashed border-line bg-paper-alt p-6 ${classeAltezza}`}
+        className={`relative flex flex-col justify-end overflow-hidden rounded-panel border border-dashed border-line bg-accent-soft p-6 ${classeAltezza}`}
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-panel bg-[radial-gradient(ellipse_at_70%_15%,rgba(46,196,174,0.1),transparent_60%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_15%,var(--glow),transparent_60%)]"
         />
         <figcaption className="relative max-w-md">
           <span className="eyebrow">{titolo}</span>

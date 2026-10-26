@@ -2,31 +2,33 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    PALETTE
-   Allineata all'identità del brief: navy profondo, fondi chiari neutri e un
-   solo accento teal. Quando arriva la palette ufficiale Virtech bastano
-   --ink e --accent per riallineare tutta la pagina.
+   Verde foresta come base scura, verde menta come unico accento, menta
+   chiarissimo e grigio neutro per alternare le sezioni chiare.
+   Per riallineare tutta la pagina bastano --ink e --accent.
    ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --paper: #f7f8f8;
-  --paper-alt: #eceff0;
+  --paper: #ffffff;
+  --paper-alt: #f0f0f0;
   --card: #ffffff;
 
-  --ink: #16202e;
-  --ink-alt: #1e2a3a;
+  --ink: #0d302d;
+  --ink-alt: #123b36;
 
-  --text: #16202e;
-  --muted: #5b6673;
-  --muted-on-ink: #9aa7b4;
+  --text: #0d302d;
+  --muted: #5d6c7b;
+  --muted-on-ink: #899998;
 
-  --line: #e0e4e6;
+  --line: #e2e6e4;
   --line-on-ink: rgba(255, 255, 255, 0.12);
 
-  --accent: #2ec4ae;
-  --accent-ink: #0b1620;
-  --accent-soft: #e2f5f1;
-  /* Variante scura dell'accento: il teal pieno non ha contrasto sufficiente
-     per il testo piccolo sui fondi chiari. */
-  --accent-text: #127a6c;
+  --accent: #69ea9b;
+  --accent-ink: #0d302d;
+  --accent-soft: #e5fffd;
+  /* Variante scura dell'accento: il menta pieno sta sotto 2:1 di contrasto
+     sui fondi chiari e non è leggibile sul testo piccolo. */
+  --accent-text: #0e6b52;
+  /* Alone morbido dietro ai titoli e ai riquadri. */
+  --glow: rgba(105, 234, 155, 0.22);
 
   /* Raggi: la reference usa pill per i bottoni e angoli molto morbidi
      per le card (20–32px). */
