@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ASME — sito
 
-## Getting Started
+Sito vetrina costruito con [Next.js](https://nextjs.org) (App Router), TypeScript e Tailwind CSS 4.
 
-First, run the development server:
+## Avviare il sito in locale
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Poi apri http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Modificare i contenuti
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tutti i testi, i contatti, le voci di menu e le sezioni stanno in un solo file:
 
-## Learn More
+```
+src/content/site.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
+Cambiando i valori lì si aggiorna tutto il sito, header e footer compresi. Il nome
+del sito e la descrizione vengono usati anche per il titolo della pagina e per
+l'anteprima sui social.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Struttura
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Percorso                       | Contenuto                                  |
+| ------------------------------ | ------------------------------------------ |
+| `src/content/site.ts`          | testi e dati del sito                      |
+| `src/app/page.tsx`             | la home con tutte le sezioni               |
+| `src/app/layout.tsx`           | struttura HTML, font e metadati SEO        |
+| `src/app/globals.css`          | colori del tema (chiaro e scuro) e stili   |
+| `src/components/site-header.tsx` | header con menu, anche in versione mobile |
+| `src/components/site-footer.tsx` | footer                                   |
 
-## Deploy on Vercel
+I colori sono definiti come variabili CSS in `globals.css`, con una variante per
+il tema scuro: cambiando `--accent` si cambia il colore principale del sito.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Comandi
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run dev     # sviluppo in locale
+npm run build   # build di produzione
+npm run start   # avvia la build di produzione
+npm run lint    # controllo del codice
+```
+
+## Pubblicazione
+
+Il modo più rapido è collegare questo repository a [Vercel](https://vercel.com/new):
+ogni push sul branch `main` pubblica la nuova versione.
