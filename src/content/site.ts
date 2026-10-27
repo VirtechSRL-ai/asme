@@ -45,7 +45,8 @@ export const site = {
     etichetta: "Per chi produce apparecchiature in pressione.",
     // Le due righe sono un unico titolo: stessa dimensione, stesso peso.
     titoloRiga1: "Tracciabilità dei materiali",
-    titoloRiga2: "dalla distinta al fascicolo tecnico.",
+    titoloRiga2Prima: "dalla distinta al ",
+    titoloRiga2Spicca: "fascicolo tecnico.",
     testo:
       "Riduciamo del 90% il tempo necessario a preparare la documentazione di tracciabilità.",
     // Dashboard sintetica: due sole tessere, come nella reference.
@@ -69,23 +70,11 @@ export const site = {
     },
   },
 
-  // ── 2. FASCIA DI TRANSIZIONE ──────────────────────────────────────────────
-  fascia: {
-    // Ripetuto nella banda scorrevole fra hero e sezione successiva.
-    parole: [
-      "Distinte",
-      "Componenti",
-      "Materiali",
-      "Certificati",
-      "Fascicolo tecnico",
-      "Unità prodotte",
-    ],
-  },
-
   // ── 3. OTTIENI ────────────────────────────────────────────────────────────
   ottieni: {
     etichetta: "Ottieni",
-    titolo: "Ottieni il certificato in pochissimi minuti.",
+    titoloPrima: "Ottieni il certificato in ",
+    titoloSpicca: "pochissimi minuti.",
     testo:
       "L'applicativo collega distinte, componenti e certificati, segnala ciò che manca e prepara la documentazione per la verifica finale.",
     cruscotto: {
@@ -108,7 +97,8 @@ export const site = {
   // ── 4. MANTIENI ───────────────────────────────────────────────────────────
   mantieni: {
     etichetta: "Mantieni",
-    titolo: "Ogni componente e certificato sotto controllo.",
+    titoloSpicca: "Ogni componente",
+    titoloDopo: " e certificato sotto controllo.",
     testo:
       "Distinte, componenti e certificati restano collegati alle singole unità: il tuo team vede quali documenti sono disponibili e quali informazioni mancano.",
     // Un solo messaggio: materiali e documenti → Tracciamy → controllo del team
@@ -128,7 +118,8 @@ export const site = {
     etichetta: "L'applicativo Tracciamy",
     // "expertise" in italiano è femminile: "la nostra", non "il nostro".
     // È l'unico errore grammaticale trovato nei testi approvati.
-    titolo: "La nostra expertise in una piattaforma.",
+    titoloSpicca: "La nostra expertise",
+    titoloDopo: " in una piattaforma.",
     testoRiga1: "In pochi minuti la piattaforma prepara il certificato.",
     testoRiga2: "Nel frattempo tu monitori ogni passo in tempo reale.",
     cruscotto: {

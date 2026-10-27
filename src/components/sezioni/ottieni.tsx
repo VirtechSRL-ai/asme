@@ -94,7 +94,10 @@ export function Ottieni() {
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <Entra>
             <Occhiello>{ottieni.etichetta}</Occhiello>
-            <h2 className="titolo-sezione mt-5">{ottieni.titolo}</h2>
+            <h2 className="titolo-sezione mt-5">
+              {ottieni.titoloPrima}
+              <span className="spicca">{ottieni.titoloSpicca}</span>
+            </h2>
             <p className="descrizione mt-6">{ottieni.testo}</p>
             <a href="#contatti" className="bottone bottone-verde mt-9">
               {azioni.contatta}

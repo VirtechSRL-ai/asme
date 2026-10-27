@@ -154,9 +154,21 @@ body {
   }
 
   .su-scuro .occhiello,
+  .lastra-scura .occhiello,
   .alone-scuro .occhiello {
     border-color: var(--bordo-su-scuro);
     background: color-mix(in srgb, var(--chiaro) 7%, transparent);
+    color: var(--verde);
+  }
+
+  /* Parola evidenziata dentro un titolo */
+  .spicca {
+    color: var(--verde-testo);
+  }
+
+  .su-scuro .spicca,
+  .alone-scuro .spicca,
+  .lastra-scura .spicca {
     color: var(--verde);
   }
 
@@ -168,6 +180,7 @@ body {
   }
 
   .su-scuro .descrizione,
+  .lastra-scura .descrizione,
   .alone-scuro .descrizione {
     color: var(--testo-su-scuro);
   }
@@ -181,6 +194,7 @@ body {
   }
 
   .su-scuro .etichetta-dato,
+  .lastra-scura .etichetta-dato,
   .alone-scuro .etichetta-dato {
     color: var(--testo-su-scuro);
   }
@@ -194,28 +208,76 @@ body {
     color: var(--chiaro);
   }
 
-  .alone-chiaro {
+  /* L'ambiente: un solo fondale per l'intera pagina. Le luci sono collocate
+     in percentuale sull'altezza totale, quindi le sfumature attraversano i
+     confini fra le sezioni invece di interrompersi a ogni stacco. */
+  .ambiente {
+    position: relative;
     background-color: var(--chiaro);
     background-image:
       radial-gradient(
-        ellipse 50% 42% at 50% -6%,
-        color-mix(in srgb, var(--verde) 34%, transparent),
+        ellipse 62% 16% at 50% 0%,
+        color-mix(in srgb, var(--verde) 30%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 48% 12% at 6% 14%,
+        color-mix(in srgb, var(--verde) 20%, transparent),
         transparent 72%
       ),
       radial-gradient(
-        ellipse 58% 48% at 8% 92%,
+        ellipse 52% 12% at 96% 30%,
+        color-mix(in srgb, var(--verde) 16%, transparent),
+        transparent 72%
+      ),
+      radial-gradient(
+        ellipse 70% 14% at 50% 52%,
+        color-mix(in srgb, var(--verde) 12%, transparent),
+        transparent 74%
+      ),
+      radial-gradient(
+        ellipse 44% 12% at 10% 74%,
+        color-mix(in srgb, var(--verde) 18%, transparent),
+        transparent 72%
+      ),
+      radial-gradient(
+        ellipse 56% 14% at 88% 93%,
         color-mix(in srgb, var(--verde) 22%, transparent),
-        transparent 70%
+        transparent 72%
       );
+    background-repeat: no-repeat;
   }
 
+  /* Le sezioni chiare non hanno fondale proprio: lasciano vedere l'ambiente */
+  .alone-chiaro,
   .alone-tenue {
-    background-color: var(--chiaro);
-    background-image: radial-gradient(
-      ellipse 78% 44% at 50% 0%,
-      color-mix(in srgb, var(--verde) 13%, transparent),
-      transparent 68%
-    );
+    background: transparent;
+  }
+
+  /* Lastra profonda: una sezione scura che galleggia nell'ambiente chiaro.
+     Gli angoli arrotondati e il margine evitano lo stacco netto a tutta
+     larghezza, che sarebbe una cesura nella composizione. */
+  .lastra-scura {
+    position: relative;
+    border-radius: clamp(1.5rem, 3vw, 2.5rem);
+    background-color: var(--scuro);
+    background-image:
+      radial-gradient(
+        ellipse 60% 50% at 18% 0%,
+        color-mix(in srgb, var(--verde) 22%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 55% 60% at 100% 100%,
+        color-mix(in srgb, var(--verde) 16%, transparent),
+        transparent 72%
+      ),
+      linear-gradient(160deg, var(--scuro) 0%, var(--scuro-fondo) 100%);
+    color: var(--chiaro);
+    box-shadow:
+      0 30px 70px -40px color-mix(in srgb, var(--scuro) 60%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--verde) 14%, transparent);
+    overflow: hidden;
   }
 
   .alone-scuro {
@@ -235,66 +297,6 @@ body {
     color: var(--chiaro);
   }
 
-  .trama {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      color-mix(in srgb, var(--scuro) 4%, transparent) 0 1px,
-      transparent 1px 24px
-    );
-  }
-
-  /* ───────────────────────────────────────────────────────────────────────────
-     FASCIA DI TRANSIZIONE
-     Lega la hero alla sezione successiva: il fondo parte dal verde tenue della
-     hero e si spegne nel chiaro, così le due superfici non si scontrano.
-     ───────────────────────────────────────────────────────────────────────── */
-  .fascia {
-    position: relative;
-    overflow: hidden;
-    background-image: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--verde) 16%, var(--chiaro)) 0%,
-      color-mix(in srgb, var(--verde) 7%, var(--chiaro)) 55%,
-      var(--chiaro) 100%
-    );
-    border-top: 1px solid color-mix(in srgb, var(--verde) 22%, transparent);
-  }
-
-  .fascia-pista {
-    display: flex;
-    width: max-content;
-    animation: fascia-scorre 38s linear infinite;
-    /* I bordi sfumano, così i marchi entrano ed escono senza tagli netti */
-    mask-image: linear-gradient(
-      90deg,
-      transparent,
-      #000 12%,
-      #000 88%,
-      transparent
-    );
-  }
-
-  .fascia-pista:hover {
-    animation-play-state: paused;
-  }
-
-  @keyframes fascia-scorre {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-    to {
-      /* Metà esatta: la pista contiene due copie identiche, quindi il ciclo
-         riparte senza salti visibili. */
-      transform: translate3d(-50%, 0, 0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .fascia-pista {
-      animation: none;
-      transform: none;
-    }
-  }
 
   /* ───────────────────────────────────────────────────────────────────────────
      BOTTONI
@@ -370,6 +372,7 @@ body {
   }
 
   .su-scuro .bottone-contorno,
+  .lastra-scura .bottone-contorno,
   .alone-scuro .bottone-contorno {
     border-color: var(--bordo-su-scuro);
     background: transparent;
@@ -377,6 +380,7 @@ body {
   }
 
   .su-scuro .bottone-contorno:hover,
+  .lastra-scura .bottone-contorno:hover,
   .alone-scuro .bottone-contorno:hover {
     border-color: var(--verde);
     color: var(--verde);
@@ -395,7 +399,8 @@ body {
     box-shadow:
       0 1px 2px color-mix(in srgb, var(--scuro) 6%, transparent),
       0 12px 24px -12px color-mix(in srgb, var(--scuro) 18%, transparent),
-      0 40px 80px -48px color-mix(in srgb, var(--scuro) 45%, transparent);
+      0 40px 80px -48px color-mix(in srgb, var(--scuro) 45%, transparent),
+      0 50px 100px -70px color-mix(in srgb, var(--verde) 70%, transparent);
     overflow: hidden;
   }
 
@@ -416,6 +421,7 @@ body {
   }
 
   .su-scuro .pannello,
+  .lastra-scura .pannello,
   .alone-scuro .pannello {
     border-color: var(--bordo-su-scuro);
     background: color-mix(in srgb, var(--chiaro) 7%, var(--scuro));
@@ -426,6 +432,7 @@ body {
   }
 
   .su-scuro .pannello::before,
+  .lastra-scura .pannello::before,
   .alone-scuro .pannello::before {
     background: linear-gradient(
       90deg,
@@ -469,6 +476,7 @@ body {
   }
 
   .su-scuro .pannello-testa,
+  .lastra-scura .pannello-testa,
   .alone-scuro .pannello-testa {
     border-color: var(--bordo-su-scuro);
     color: var(--testo-su-scuro);
@@ -492,6 +500,7 @@ body {
   }
 
   .su-scuro .pannello-riga,
+  .lastra-scura .pannello-riga,
   .alone-scuro .pannello-riga {
     border-color: var(--bordo-su-scuro);
   }
@@ -520,12 +529,14 @@ body {
   }
 
   .su-scuro .stato-ok,
+  .lastra-scura .stato-ok,
   .alone-scuro .stato-ok {
     background: color-mix(in srgb, var(--verde) 24%, transparent);
     color: var(--verde);
   }
 
   .su-scuro .stato-attesa,
+  .lastra-scura .stato-attesa,
   .alone-scuro .stato-attesa {
     background: color-mix(in srgb, var(--chiaro) 12%, transparent);
     color: var(--testo-su-scuro);
@@ -543,6 +554,7 @@ body {
   }
 
   .su-scuro .codice,
+  .lastra-scura .codice,
   .alone-scuro .codice {
     background: color-mix(in srgb, var(--verde) 18%, transparent);
     color: var(--verde);
@@ -554,6 +566,7 @@ body {
   }
 
   .su-scuro .nota-dimostrativa,
+  .lastra-scura .nota-dimostrativa,
   .alone-scuro .nota-dimostrativa {
     color: var(--testo-su-scuro);
   }
@@ -624,6 +637,32 @@ body {
   .entra[data-visibile="true"] .linea-flusso,
   .entra-cascata[data-visibile="true"] .linea-flusso {
     transform: scaleY(1);
+  }
+
+  /* Logo di transizione fra hero e sezione successiva: emerge dal fondale,
+     non è appoggiato sopra la pagina. */
+  .transizione-logo {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+    filter: blur(6px);
+    transition:
+      opacity 1s var(--curva),
+      transform 1s var(--curva),
+      filter 1s var(--curva);
+  }
+
+  .entra[data-visibile="true"] .transizione-logo {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .transizione-logo {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
   }
 
   /* Luce ambientale con respiro lentissimo */

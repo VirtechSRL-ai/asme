@@ -117,7 +117,10 @@ export function Applicativo() {
       <Contenitore className="relative">
         <Entra className="mx-auto max-w-2xl text-center">
           <p className="occhiello">{applicativo.etichetta}</p>
-          <h2 className="titolo-sezione mt-5">{applicativo.titolo}</h2>
+          <h2 className="titolo-sezione mt-5">
+            <span className="spicca">{applicativo.titoloSpicca}</span>
+            {applicativo.titoloDopo}
+          </h2>
           <p className="descrizione mt-6">
             {applicativo.testoRiga1}
             <br className="hidden sm:block" /> {applicativo.testoRiga2}

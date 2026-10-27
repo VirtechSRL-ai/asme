@@ -19,7 +19,8 @@ Un file per sezione, in `src/components/sezioni/`:
 
 | #   | Sezione         | File              | Composizione                                   |
 | --- | --------------- | ----------------- | ---------------------------------------------- |
-| 01  | Hero            | `hero.tsx`        | titolo centrato, due dashboard sovrapposte     |
+| 01  | Hero            | `hero.tsx`        | titolo centrato, due dashboard sintetiche      |
+| --  | Transizione     | `transizione.tsx` | il solo simbolo del marchio fra hero e Ottieni |
 | 02  | Ottieni         | `ottieni.tsx`     | testo a sinistra, processo in quattro passaggi |
 | 03  | Mantieni        | `mantieni.tsx`    | flusso a sinistra, testo a destra              |
 | 04  | L'applicativo   | `applicativo.tsx` | dashboard tridimensionale su fondo scuro       |
@@ -27,7 +28,22 @@ Un file per sezione, in `src/components/sezioni/`:
 | 06  | Contatti        | `site-footer.tsx` | chiusura, recapiti e logo Virtech              |
 
 Le colonne si alternano fra una sezione e l'altra per dare ritmo allo
-scorrimento, e i fondi passano da chiaro con alone verde a scuro profondo.
+scorrimento.
+
+**Il fondale è uno solo per tutta la pagina.** La classe `.ambiente` su `<main>`
+colloca le luci verdi in percentuale sull'altezza totale, così le sfumature
+attraversano i confini invece di interrompersi a ogni stacco; le sezioni chiare
+non hanno fondo proprio. A rompere la monotonia è `.lastra-scura`: la sezione
+"Mantieni" è una lastra profonda con angoli arrotondati che galleggia
+nell'ambiente chiaro, invece di una banda scura a tutta larghezza che taglierebbe
+la pagina in due. Nessuna texture geometrica: la profondità viene da luce,
+colore e ombre.
+
+Il verde ufficiale evidenzia una parola o una breve espressione nei titoli, in
+posizioni diverse da sezione a sezione, e una sezione resta senza: deve restare
+selettivo. Sui fondi profondi si usa il verde pieno, che arriva a 12:1; sui fondi
+chiari la sua versione scurita, perché il verde di marca su chiaro sta a 1,4:1 e
+come testo sarebbe illeggibile.
 
 ### Le dashboard
 

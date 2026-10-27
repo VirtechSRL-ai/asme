@@ -132,7 +132,6 @@ function Dettaglio() {
 export function Hero() {
   return (
     <section className="alone-chiaro relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
-      <div aria-hidden="true" className="trama pointer-events-none absolute inset-0 opacity-70" />
       <div
         aria-hidden="true"
         className="respiro pointer-events-none absolute -top-72 left-1/2 h-[36rem] w-full max-w-[58rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--verde)_28%,transparent),transparent_68%)]"
@@ -145,7 +144,10 @@ export function Hero() {
           {/* Un unico titolo su due righe, stessa dimensione e stesso peso */}
           <h1 className="titolo-hero mt-7">
             <span className="block">{hero.titoloRiga1}</span>
-            <span className="block">{hero.titoloRiga2}</span>
+            <span className="block">
+              {hero.titoloRiga2Prima}
+              <span className="spicca">{hero.titoloRiga2Spicca}</span>
+            </span>
           </h1>
 
           <p className="descrizione mx-auto mt-6 max-w-lg">{hero.testo}</p>
