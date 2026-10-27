@@ -3,18 +3,19 @@
 // Tutti i testi stanno qui: per cambiare una frase non serve toccare i
 // componenti.
 //
-// I blocchi `mock` descrivono le grafiche illustrative delle sezioni. Sono
-// esempi, non schermate reali del prodotto: i codici sono fittizi e le
-// etichette di stato sono qualitative. Nessun dato numerico, percentuale o
-// indicatore di performance viene inventato.
+// I blocchi `cruscotto` e `flusso` alimentano le dashboard illustrative. Sono
+// dati dimostrativi, non statistiche reali di Tracciamy: codici fittizi ed
+// etichette qualitative, pensati per essere sostituiti con dati o screenshot
+// veri. L'unico numero commerciale è il 90% della hero, riportato come claim
+// senza prove a supporto.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const site = {
   nome: "Tracciamy",
   azienda: "Virtech",
-  payoff: "Tracciabilità dei materiali per chi produce apparecchiature in pressione",
+  payoff: "Tracciabilità dei materiali, dalla distinta al fascicolo tecnico",
   descrizione:
-    "Tracciamy collega ogni unità prodotta ai suoi componenti, materiali e certificati, e segnala cosa manca prima di preparare la documentazione di commessa.",
+    "Tracciamy collega distinte, componenti e certificati, segnala ciò che manca e prepara la documentazione tecnica per chi produce apparecchiature in pressione.",
   url: "https://www.tracciamy.it",
 
   contatti: {
@@ -27,206 +28,172 @@ export const site = {
   },
 
   nav: [
-    { etichetta: "Il problema", href: "#problema" },
-    { etichetta: "Come funziona", href: "#metodo" },
-    { etichetta: "Cosa collega", href: "#collegamenti" },
-    { etichetta: "ASME e PED", href: "#ambiti" },
+    { etichetta: "Ottieni", href: "#ottieni" },
+    { etichetta: "Mantieni", href: "#mantieni" },
+    { etichetta: "L'applicativo", href: "#applicativo" },
   ],
-  ctaPrincipale: { etichetta: "Richiedi informazioni", href: "#contatti" },
 
-  notaEsempio: "Esempio illustrativo. Codici e contenuti sono fittizi.",
+  azioni: {
+    contatta: "Contattaci",
+    cosaOttieni: "Cosa ottieni",
+  },
 
-  // 01 — HERO
+  notaDemo: "Dati dimostrativi, non statistiche reali.",
+
+  // ── 1. HERO ───────────────────────────────────────────────────────────────
   hero: {
-    eyebrow: "Tracciabilità dei materiali",
-    titoloPrima: "Sai quali materiali sono entrati in",
-    titoloSpicca: "ogni unità",
-    titoloDopo: "che hai prodotto?",
+    etichetta: "Per chi produce apparecchiature in pressione",
+    titolo: "Tracciabilità dei materiali",
+    sottotitolo: "dalla distinta al fascicolo tecnico.",
     testo:
-      "Tracciamy collega ogni unità ai suoi componenti, materiali e certificati. In un posto solo.",
-    ctaSecondaria: { etichetta: "Come funziona", href: "#metodo" },
-    // Composizione che emerge dal bordo inferiore della prima schermata.
-    mock: {
-      unita: {
-        titolo: "Unità",
-        codice: "UN-0000",
-        commessa: "Commessa di esempio",
-        righe: [
-          { nome: "Componente A", materiale: "MAT-001", stato: "ok" },
-          { nome: "Componente B", materiale: "MAT-002", stato: "ok" },
-          { nome: "Componente C", materiale: "MAT-003", stato: "attesa" },
-        ],
-      },
-      documenti: {
-        titolo: "Documenti collegati",
-        righe: [
-          { nome: "Certificato materiale", stato: "ok" },
-          { nome: "Riferimento di fornitura", stato: "ok" },
-          { nome: "Documento di produzione", stato: "attesa" },
-        ],
-      },
-    },
-  },
-
-  // 02 — PROBLEMA
-  problema: {
-    eyebrow: "Il problema",
-    titolo: "Oggi quelle informazioni sono sparse.",
-    testo:
-      "Distinte, numeri seriali e certificati dei fornitori vivono in file e passaggi diversi. Per verificare una singola unità, il team ricostruisce tutto a mano.",
-    punti: [
-      { icona: "trace", titolo: "Risalire", testo: "Dalla macchina al componente al certificato." },
-      { icona: "inspect", titolo: "Controllare", testo: "Vedere cosa manca ancora." },
-      { icona: "dossier", titolo: "Preparare", testo: "Raccogliere le evidenze per il fascicolo." },
-    ],
-    // Le fonti oggi scollegate fra loro.
-    mock: {
-      titolo: "Dove stanno oggi le informazioni",
-      fonti: [
-        { nome: "Distinta base", formato: "Foglio di calcolo" },
-        { nome: "Numeri seriali", formato: "Gestionale" },
-        { nome: "Certificati dei materiali", formato: "PDF dei fornitori" },
-        { nome: "Documenti di produzione", formato: "Cartelle condivise" },
+      "Riduciamo del 90% il tempo necessario a preparare la documentazione di tracciabilità.",
+    // Dashboard principale: stato di avanzamento della commessa.
+    cruscotto: {
+      titolo: "Commessa in lavorazione",
+      riferimento: "CM-0042",
+      avanzamento: { etichetta: "Fascicolo tecnico", quota: 72 },
+      contatori: [
+        { etichetta: "Unità", valore: "20" },
+        { etichetta: "Componenti", valore: "148" },
+        { etichetta: "Certificati", valore: "96" },
       ],
-      domanda: "Quali materiali sono entrati in UN-0000?",
-      risposta: "Da ricostruire a mano",
+      colonne: ["Unità", "Distinta", "Certificati", "Stato"],
+      righe: [
+        { unita: "UN-0014", distinta: "Completa", certificati: "6 su 6", stato: "ok" },
+        { unita: "UN-0015", distinta: "Completa", certificati: "5 su 6", stato: "attesa" },
+        { unita: "UN-0016", distinta: "Completa", certificati: "6 su 6", stato: "ok" },
+      ],
+    },
+    // Seconda dashboard, sovrapposta: il dettaglio di un singolo componente.
+    dettaglio: {
+      titolo: "Componente",
+      riferimento: "CP-0231",
+      campi: [
+        { etichetta: "Materiale", valore: "MAT-002" },
+        { etichetta: "Marcatura", valore: "Presente" },
+        { etichetta: "Certificato", valore: "CERT-0016" },
+      ],
+      stato: "Collegato alla sua unità",
     },
   },
 
-  // 03 — METODO
-  metodo: {
-    eyebrow: "Come funziona",
-    titoloPrima: "Importa. Collega.",
-    titoloSpicca: "Verifica.",
-    passaggi: [
-      {
-        numero: "01",
-        icona: "import",
-        titolo: "Importa",
-        testo: "Parti dalla distinta e dagli identificativi delle unità.",
-        mock: {
-          tipo: "tabella",
-          colonne: ["Unità", "Componente", "Materiale"],
-          righe: [
-            ["UN-0000", "Componente A", "MAT-001"],
-            ["UN-0000", "Componente B", "MAT-002"],
-            ["UN-0001", "Componente A", "MAT-001"],
-          ],
-        },
-      },
-      {
-        numero: "02",
-        icona: "link",
-        titolo: "Collega",
-        testo: "Certificati e riferimenti di fornitura si agganciano ai componenti.",
-        mock: {
-          tipo: "relazione",
-          da: { etichetta: "Componente B", dettaglio: "MAT-002" },
-          a: { etichetta: "Certificato", dettaglio: "CERT-0000" },
-        },
-      },
-      {
-        numero: "03",
-        icona: "check",
-        titolo: "Verifica",
-        testo: "Il sistema segnala le lacune prima che produciate i documenti.",
-        mock: {
-          tipo: "controllo",
-          voci: [
-            { nome: "Certificato materiale", stato: "ok" },
-            { nome: "Riferimento di fornitura", stato: "ok" },
-            { nome: "Documento di produzione", stato: "attesa" },
-          ],
-        },
-      },
-    ],
-  },
-
-  // 04 — COSA COLLEGA
-  collegamenti: {
-    eyebrow: "Cosa collega",
-    titolo: "Da ogni unità, risali ai suoi materiali.",
+  // ── 2. OTTIENI ────────────────────────────────────────────────────────────
+  ottieni: {
+    etichetta: "Ottieni",
+    titolo: "Ottieni il certificato in pochissimi minuti.",
     testo:
-      "Una vista per apparecchiatura riunisce componenti, marcature e certificati. I dati estratti dai PDF restano da confermare a mano.",
-    percorso: [
-      { etichetta: "Unità", dettaglio: "Apparecchiatura e commessa" },
-      { etichetta: "Componente", dettaglio: "Materiale e marcatura" },
-      { etichetta: "Certificato", dettaglio: "Documento e dove è usato" },
-    ],
-    // La vista per apparecchiatura: è la grafica principale del sito.
-    mock: {
-      unita: {
-        titolo: "Vista apparecchiatura",
-        codice: "UN-0000",
-        meta: ["Commessa di esempio", "Linea di esempio"],
-      },
-      componenti: {
-        titolo: "Componenti",
-        righe: [
-          { nome: "Componente A", materiale: "MAT-001", marcatura: "Presente", stato: "ok" },
-          { nome: "Componente B", materiale: "MAT-002", marcatura: "Presente", stato: "ok" },
-          { nome: "Componente C", materiale: "MAT-003", marcatura: "Da verificare", stato: "attesa" },
+      "L'applicativo collega distinte, componenti e certificati, segnala ciò che manca e prepara la documentazione per la verifica finale.",
+    cruscotto: {
+      titolo: "Certificato tecnico",
+      riferimento: "UN-0016",
+      passi: [
+        {
+          numero: "01",
+          nome: "Distinte e componenti",
+          dettaglio: "12 componenti collegati",
+          stato: "fatto",
+        },
+        {
+          numero: "02",
+          nome: "Certificati",
+          dettaglio: "6 documenti associati",
+          stato: "fatto",
+        },
+        {
+          numero: "03",
+          nome: "Preparazione della documentazione",
+          dettaglio: "Raccolta delle evidenze",
+          stato: "corso",
+          avanzamento: 60,
+        },
+        {
+          numero: "04",
+          nome: "Verifica finale",
+          dettaglio: "A cura del team",
+          stato: "attesa",
+        },
+      ],
+    },
+  },
+
+  // ── 3. MANTIENI ───────────────────────────────────────────────────────────
+  mantieni: {
+    etichetta: "Mantieni",
+    titolo: "Ogni componente e certificato sotto controllo.",
+    testo:
+      "Distinte, componenti e certificati restano collegati alle singole unità: il tuo team vede quali documenti sono disponibili e quali informazioni mancano.",
+    // Il flusso: materiali e documenti → Tracciamy → controllo finale del team
+    flusso: {
+      ingresso: {
+        titolo: "Materiali e documenti",
+        voci: [
+          { nome: "Distinte", dettaglio: "Struttura delle unità" },
+          { nome: "Componenti", dettaglio: "Materiale e marcatura" },
+          { nome: "Certificati", dettaglio: "Documenti dei fornitori" },
         ],
-        colonne: ["Componente", "Materiale", "Marcatura"],
       },
-      certificato: {
-        titolo: "Certificato",
-        codice: "CERT-0000",
-        campi: [
-          { etichetta: "Materiale", valore: "MAT-002" },
-          { etichetta: "Fornitore", valore: "Fornitore di esempio" },
+      centro: {
+        titolo: "Tracciamy",
+        dettaglio: "Collega ogni documento alla sua unità",
+        legami: [
+          { da: "CP-0231", a: "CERT-0016", stato: "ok" },
+          { da: "CP-0232", a: "CERT-0017", stato: "ok" },
+          { da: "CP-0233", a: "Da associare", stato: "attesa" },
         ],
-        usoTitolo: "Dove è usato",
-        uso: ["UN-0000 · Componente B", "UN-0001 · Componente B"],
-        avviso: "Dati estratti dal PDF: da confermare a mano.",
+      },
+      uscita: {
+        titolo: "Controllo finale del team",
+        disponibili: { etichetta: "Documenti disponibili", valore: "5 su 6" },
+        mancanti: { etichetta: "Da completare", valore: "1" },
+        nota: "La verifica resta in capo al team.",
       },
     },
   },
 
-  // 05 — AMBITI
-  ambiti: {
-    eyebrow: "ASME e PED",
-    titolo: "Due percorsi, la stessa esigenza di evidenze.",
-    colonne: [
-      {
-        sigla: "ASME",
-        stato: "Flusso già realizzato",
-        testo:
-          "Sviluppato per W&H Sterilization Italia sulle camere degli sterilizzatori: lotti, componenti, certificati e controlli di completezza.",
-        passi: [
-          { nome: "Lotti e unità", fatto: true },
-          { nome: "Componenti", fatto: true },
-          { nome: "Certificati dei materiali", fatto: true },
-          { nome: "Controlli di completezza", fatto: true },
-        ],
-      },
-      {
-        sigla: "PED",
-        stato: "Percorso da configurare",
-        testo:
-          "Si parte da una commessa reale per definire dati, controlli e documenti, sui requisiti applicabili al tuo prodotto.",
-        passi: [
-          { nome: "Commessa di partenza", fatto: false },
-          { nome: "Dati da gestire", fatto: false },
-          { nome: "Controlli applicabili", fatto: false },
-          { nome: "Documenti previsti", fatto: false },
-        ],
-      },
-    ],
-    nota: "Esempio di flusso applicativo W&H. Dati a scopo dimostrativo, previa autorizzazione.",
+  // ── 4. L'APPLICATIVO TRACCIAMY ────────────────────────────────────────────
+  applicativo: {
+    etichetta: "L'applicativo Tracciamy",
+    titolo: "Il nostro expertise in una piattaforma.",
+    testoRiga1: "In pochi minuti la piattaforma prepara il certificato.",
+    testoRiga2: "Nel frattempo tu monitori ogni passo in tempo reale.",
+    cruscotto: {
+      titolo: "Tracciamy",
+      sezioni: [
+        { gruppo: "Commessa", voci: ["Unità", "Distinte", "Componenti"] },
+        { gruppo: "Documenti", voci: ["Certificati", "Fascicolo"] },
+      ],
+      attiva: "Componenti",
+      barra: { etichetta: "Fascicolo tecnico", quota: 72 },
+      colonne: ["Componente", "Materiale", "Certificato", "Stato"],
+      righe: [
+        { componente: "CP-0231", materiale: "MAT-002", certificato: "CERT-0016", stato: "ok" },
+        { componente: "CP-0232", materiale: "MAT-004", certificato: "CERT-0017", stato: "ok" },
+        { componente: "CP-0233", materiale: "MAT-007", certificato: "Da associare", stato: "attesa" },
+        { componente: "CP-0234", materiale: "MAT-002", certificato: "CERT-0016", stato: "ok" },
+      ],
+      riepilogo: [
+        { etichetta: "Componenti collegati", valore: "3 su 4" },
+        { etichetta: "Informazioni mancanti", valore: "1" },
+      ],
+    },
   },
 
-  // 06 — CONTATTI
+  // ── 5. PER CHI PRODUCE APPARECCHIATURE IN PRESSIONE ───────────────────────
+  pubblico: {
+    etichetta: "Per chi produce apparecchiature in pressione",
+    titolo: "La soluzione ideale per tracciare ogni unità prodotta.",
+    testo:
+      "Tracciamy è studiata per chi gestisce distinte, materiali e certificati di fornitori. Aiuta il team di qualità, produzione e ufficio tecnico a ritrovare ciò che serve per ogni unità e a preparare la documentazione.",
+  },
+
+  // ── 6. CONTATTI ───────────────────────────────────────────────────────────
   contattiSezione: {
-    eyebrow: "Parliamone",
-    titoloPrima: "Raccontaci come tracciate",
-    titoloSpicca: "oggi",
-    titoloDopo: "materiali e documenti.",
-    testo: "Ti rispondiamo noi di Virtech, senza impegno.",
+    titolo: "Richiedi informazioni.",
+    testo: "Ti aiutiamo a certificare velocemente.",
   },
 
   footer: {
-    claim: "Tracciabilità dei materiali per processi ASME e PED. Un prodotto Virtech.",
+    claim: "Tracciabilità dei materiali per chi produce apparecchiature in pressione.",
     legale: "Virtech S.r.l.",
   },
 } as const;
