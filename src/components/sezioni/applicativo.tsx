@@ -2,15 +2,15 @@ import { site } from "@/content/site";
 import { Entra } from "../entra";
 import { Inclina } from "../inclina";
 import { Simbolo } from "../logo";
-import { Contenitore, Freccia, Spunta } from "../ui";
+import { Freccia, Spunta } from "../ui";
 
 const { applicativo, azioni, notaDemo } = site;
 const { cruscotto } = applicativo;
 
 /**
  * La dashboard dell'applicativo: superficie bianca, pochi contenuti ben
- * distribuiti. A farla emergere sono il bordo, le ombre stratificate e la
- * sfumata ambientale dietro, non un fondo scuro.
+ * distribuiti. A farla emergere sono il piano tinto che le sta sotto, le ombre
+ * stratificate e la luce alle sue spalle, non un fondo scuro.
  *
  * Rappresentazione illustrativa: nessuna funzione non confermata, dati
  * dimostrativi che si sostituiscono da `site.ts` senza toccare la grafica.
@@ -41,23 +41,6 @@ function Cruscotto() {
               {voce}
             </span>
           ))}
-        </div>
-
-        {/* Avanzamento del fascicolo */}
-        <div className="mt-5 flex items-baseline justify-between gap-3">
-          <span className="etichetta-dato">{cruscotto.barra.etichetta}</span>
-          <span className="text-[1.0625rem] font-extrabold tabular-nums">
-            {cruscotto.barra.quota}%
-          </span>
-        </div>
-        <div
-          aria-hidden="true"
-          className="mt-2 h-2 overflow-hidden rounded-pill bg-[color-mix(in_srgb,var(--scuro)_9%,var(--chiaro))]"
-        >
-          <span
-            className="block h-full rounded-pill bg-verde"
-            style={{ width: `${cruscotto.barra.quota}%` }}
-          />
         </div>
 
         {/* Componenti e certificato associato */}
@@ -109,41 +92,72 @@ function Stato({ stato }: { stato: "ok" | "attesa" }) {
   );
 }
 
+/**
+ * L'avanzamento del fascicolo non sta dentro la dashboard: galleggia sul suo
+ * bordo. È il dettaglio che fa leggere l'interfaccia come parte della scena e
+ * non come un'immagine incollata dentro un rettangolo.
+ */
+function Avanzamento() {
+  return (
+    <div className="galleggia px-4 py-3">
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="etichetta-dato">{cruscotto.barra.etichetta}</span>
+        <span className="text-[1.0625rem] font-extrabold tabular-nums">
+          {cruscotto.barra.quota}%
+        </span>
+      </div>
+      <div
+        aria-hidden="true"
+        className="mt-2 h-1.5 overflow-hidden rounded-pill bg-[color-mix(in_srgb,var(--scuro)_9%,var(--chiaro))]"
+      >
+        <span
+          className="block h-full rounded-pill bg-verde"
+          style={{ width: `${cruscotto.barra.quota}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function Applicativo() {
   return (
-    // Stesso linguaggio cromatico della sezione successiva: niente fondo scuro,
-    // la dashboard emerge grazie al bianco, alle ombre e all'alone verde.
-    <section id="applicativo" className="alone-tenue relative overflow-hidden py-20 sm:py-28">
-      <Contenitore className="relative">
-        <Entra className="mx-auto max-w-2xl text-center">
-          <p className="occhiello">{applicativo.etichetta}</p>
-          <h2 className="titolo-sezione mt-5">
-            <span className="spicca">{applicativo.titoloSpicca}</span>
-            {applicativo.titoloDopo}
-          </h2>
-          <p className="descrizione mt-6">
-            {applicativo.testoRiga1}
-            <br className="hidden sm:block" /> {applicativo.testoRiga2}
-          </p>
-          <div className="mt-9 flex justify-center">
-            <a href="#contatti" className="bottone bottone-verde">
+    <section id="applicativo" className="alone-tenue relative py-20 sm:py-28">
+      {/* Misura più larga del resto della pagina: è il momento in cui il
+          prodotto si mostra, e si vede che la composizione si apre. */}
+      <div className="mx-auto w-full max-w-[82rem] px-5 sm:px-8">
+        {/* Composizione rovesciata rispetto a "Ottieni": qui viene prima
+            l'interfaccia e il testo la commenta da destra. */}
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.22fr_0.78fr] lg:gap-16">
+          <Entra className="relative lg:order-1">
+            <div className="scena p-4 sm:p-7">
+              <Inclina>
+                <Cruscotto />
+              </Inclina>
+            </div>
+
+            {/* Sborda dal piano tinto verso la colonna del testo */}
+            <div className="mt-4 w-full sm:absolute sm:-bottom-5 sm:right-4 sm:mt-0 sm:w-[15rem] lg:-right-8">
+              <Avanzamento />
+            </div>
+          </Entra>
+
+          <Entra ritardo={160} className="lg:order-2">
+            <p className="occhiello">{applicativo.etichetta}</p>
+            <h2 className="titolo-sezione mt-5">
+              <span className="spicca">{applicativo.titoloSpicca}</span>
+              {applicativo.titoloDopo}
+            </h2>
+            <p className="descrizione mt-6">
+              {applicativo.testoRiga1} {applicativo.testoRiga2}
+            </p>
+            <a href="#contatti" className="bottone bottone-verde mt-9">
               {azioni.contatta}
               <Freccia />
             </a>
-          </div>
-        </Entra>
-
-        <Entra ritardo={180} className="relative mt-16">
-          <div
-            aria-hidden="true"
-            className="respiro pointer-events-none absolute -inset-x-6 -top-8 bottom-0 rounded-[50%] bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--verde)_26%,transparent),transparent_70%)]"
-          />
-          <Inclina className="relative mx-auto max-w-3xl">
-            <Cruscotto />
-          </Inclina>
-          <p className="nota-dimostrativa mt-6 text-center">{notaDemo}</p>
-        </Entra>
-      </Contenitore>
+            <p className="nota-dimostrativa mt-8">{notaDemo}</p>
+          </Entra>
+        </div>
+      </div>
     </section>
   );
 }

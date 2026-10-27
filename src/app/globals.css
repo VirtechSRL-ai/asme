@@ -123,6 +123,16 @@ body {
     text-wrap: balance;
   }
 
+  /* Taglia editoriale, per le due sezioni che fanno un'affermazione invece di
+     spiegare un passaggio: il posizionamento e il percorso di adozione. */
+  .titolo-display {
+    font-size: clamp(2.125rem, 1.1rem + 4.2vw, 3.375rem);
+    font-weight: 700;
+    letter-spacing: -0.044em;
+    line-height: 1.0;
+    text-wrap: balance;
+  }
+
   .titolo-minore {
     font-size: clamp(1.1875rem, 1.05rem + 0.6vw, 1.4375rem);
     font-weight: 600;
@@ -215,36 +225,61 @@ body {
     position: relative;
     background-color: var(--chiaro);
     background-image:
+      /* 1 · la luce entra dall'alto a sinistra e attraversa la hero in
+         diagonale: è la sorgente da cui discende tutto il resto */
       radial-gradient(
-        ellipse 62% 16% at 50% 0%,
-        color-mix(in srgb, var(--verde) 30%, transparent),
-        transparent 70%
+        ellipse 78% 17% at 0% 3%,
+        color-mix(in srgb, var(--verde) 52%, transparent),
+        transparent 66%
       ),
-      radial-gradient(
-        ellipse 48% 12% at 6% 14%,
-        color-mix(in srgb, var(--verde) 20%, transparent),
-        transparent 72%
-      ),
-      radial-gradient(
-        ellipse 52% 12% at 96% 30%,
-        color-mix(in srgb, var(--verde) 16%, transparent),
-        transparent 72%
-      ),
-      radial-gradient(
-        ellipse 70% 14% at 50% 52%,
-        color-mix(in srgb, var(--verde) 12%, transparent),
-        transparent 74%
-      ),
-      radial-gradient(
-        ellipse 44% 12% at 10% 74%,
-        color-mix(in srgb, var(--verde) 18%, transparent),
-        transparent 72%
-      ),
-      radial-gradient(
-        ellipse 56% 14% at 88% 93%,
-        color-mix(in srgb, var(--verde) 22%, transparent),
-        transparent 72%
-      );
+      /* 2 · contro-luce a destra, più tenue: tiene la diagonale */
+        radial-gradient(
+          ellipse 62% 13% at 100% 9%,
+          color-mix(in srgb, var(--verde) 30%, transparent),
+          transparent 68%
+        ),
+      /* 3 · il marchio di transizione emerge da qui */
+        radial-gradient(
+          ellipse 44% 6% at 50% 12%,
+          color-mix(in srgb, var(--verde) 28%, transparent),
+          transparent 70%
+        ),
+      /* 4 · dietro il processo di Ottieni, dal lato della dashboard */
+        radial-gradient(
+          ellipse 52% 8% at 96% 19%,
+          color-mix(in srgb, var(--verde) 34%, transparent),
+          transparent 70%
+        ),
+      /* 5 · respiro fra la lastra scura e l'applicativo */
+        radial-gradient(
+          ellipse 46% 7% at 4% 38%,
+          color-mix(in srgb, var(--verde) 26%, transparent),
+          transparent 72%
+        ),
+      /* 6 · sotto la dashboard dell'applicativo, la luce più ampia */
+        radial-gradient(
+          ellipse 78% 9% at 46% 45%,
+          color-mix(in srgb, var(--verde) 36%, transparent),
+          transparent 70%
+        ),
+      /* 7 · la griglia dei settori, da sinistra */
+        radial-gradient(
+          ellipse 54% 8% at 0% 62%,
+          color-mix(in srgb, var(--verde) 32%, transparent),
+          transparent 70%
+        ),
+      /* 8 · e dal lato opposto, più in basso */
+        radial-gradient(
+          ellipse 50% 7% at 100% 72%,
+          color-mix(in srgb, var(--verde) 28%, transparent),
+          transparent 70%
+        ),
+      /* 9 · il percorso del team, al centro, verso la chiusura */
+        radial-gradient(
+          ellipse 72% 9% at 52% 85%,
+          color-mix(in srgb, var(--verde) 34%, transparent),
+          transparent 70%
+        );
     background-repeat: no-repeat;
   }
 
@@ -252,6 +287,158 @@ body {
   .alone-chiaro,
   .alone-tenue {
     background: transparent;
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     VELO DELLA HERO
+     La prima schermata è la più luminosa della pagina: una zona definita, con
+     il suo bordo inferiore che si dissolve invece di tagliare. Sotto ci
+     continua l'ambiente, quindi il passaggio non è uno stacco.
+     ───────────────────────────────────────────────────────────────────────── */
+  .velo-hero {
+    position: relative;
+  }
+
+  .velo-hero::before {
+    content: "";
+    position: absolute;
+    inset: -7rem 0 0 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        ellipse 66% 62% at 4% 22%,
+        color-mix(in srgb, var(--verde) 55%, transparent),
+        transparent 62%
+      ),
+      radial-gradient(
+        ellipse 56% 56% at 99% 6%,
+        color-mix(in srgb, var(--verde) 32%, transparent),
+        transparent 64%
+      ),
+      radial-gradient(
+        ellipse 95% 34% at 50% 102%,
+        color-mix(in srgb, var(--verde) 30%, transparent),
+        transparent 68%
+      );
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     SCENA — il piano tinto su cui poggia una dashboard
+     Serve a non lasciare l'interfaccia appoggiata sul nulla: il pannello
+     bianco emerge da una superficie colorata che gli appartiene.
+     ───────────────────────────────────────────────────────────────────────── */
+  .scena {
+    position: relative;
+    border-radius: clamp(1.25rem, 2.4vw, 2rem);
+    background-image:
+      radial-gradient(
+        ellipse 68% 96% at 50% 116%,
+        color-mix(in srgb, var(--verde) 48%, transparent),
+        transparent 68%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--verde) 7%, var(--chiaro)) 0%,
+        color-mix(in srgb, var(--verde) 22%, var(--chiaro)) 100%
+      );
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--verde) 24%, transparent);
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     PIASTRA — il riquadro tinto che porta un glifo o un'icona
+     ───────────────────────────────────────────────────────────────────────── */
+  .piastra {
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background-image: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--verde) 36%, var(--chiaro)),
+      color-mix(in srgb, var(--verde) 13%, var(--chiaro))
+    );
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--verde) 38%, transparent);
+    color: var(--verde-testo);
+    transition:
+      background-image 0.4s var(--curva),
+      box-shadow 0.4s var(--curva),
+      transform 0.4s var(--curva);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .piastra {
+      background-image: linear-gradient(
+        145deg,
+        var(--verde),
+        color-mix(in srgb, var(--verde) 72%, var(--chiaro))
+      );
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--verde) 70%, transparent);
+      transform: translateY(-2px);
+      color: var(--scuro);
+    }
+  }
+
+  /* Numero di tappa: tipografico e leggibile, non una filigrana */
+  .numero-tappa {
+    font-size: clamp(2.5rem, 1.5rem + 3.2vw, 3.75rem);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: var(--verde-testo);
+  }
+
+  .lastra-scura .numero-tappa,
+  .alone-scuro .numero-tappa {
+    color: var(--verde);
+  }
+
+  /* Carta di settore: una luce d'angolo che si sposta al passaggio del mouse.
+     È l'unico movimento della griglia, e serve a far capire che è viva. */
+  .carta-settore::after {
+    content: "";
+    position: absolute;
+    right: -26%;
+    top: -58%;
+    width: 66%;
+    height: 150%;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--verde) 24%, transparent),
+      transparent 68%
+    );
+    opacity: 0.75;
+    transition:
+      opacity 0.45s var(--curva),
+      transform 0.45s var(--curva);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .carta-settore:hover::after {
+      opacity: 1;
+      transform: translate(-10%, 8%);
+    }
+  }
+
+  .indice-carta {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    /* Non scende sotto l'85%: più chiaro di così resta sotto i 4,5:1 */
+    color: color-mix(in srgb, var(--verde-testo) 85%, var(--chiaro));
+  }
+
+  /* Cartellino che galleggia sopra due superfici e le lega */
+  .galleggia {
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--scuro) 8%, transparent),
+      0 10px 24px -10px color-mix(in srgb, var(--scuro) 24%, transparent),
+      0 30px 60px -40px color-mix(in srgb, var(--verde) 75%, transparent);
   }
 
   /* Lastra profonda: una sezione scura che galleggia nell'ambiente chiaro.
@@ -278,6 +465,23 @@ body {
       0 30px 70px -40px color-mix(in srgb, var(--scuro) 60%, transparent),
       0 0 0 1px color-mix(in srgb, var(--verde) 14%, transparent);
     overflow: hidden;
+  }
+
+  /* Seconda lastra scura, con la luce dalla parte opposta: le due sezioni
+     profonde della pagina non devono sembrare la stessa cosa ripetuta. */
+  .lastra-rovescia {
+    background-image:
+      radial-gradient(
+        ellipse 70% 70% at 96% 6%,
+        color-mix(in srgb, var(--verde) 26%, transparent),
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse 50% 60% at 0% 100%,
+        color-mix(in srgb, var(--verde) 14%, transparent),
+        transparent 70%
+      ),
+      linear-gradient(200deg, var(--scuro-fondo) 0%, var(--scuro) 55%);
   }
 
   .alone-scuro {
@@ -645,6 +849,18 @@ body {
     transform: scaleY(1);
   }
 
+  /* Stessa idea in orizzontale, per i flussi che si leggono da sinistra */
+  .linea-flusso-x {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s var(--curva) 0.25s;
+  }
+
+  .entra[data-visibile="true"] .linea-flusso-x,
+  .entra-cascata[data-visibile="true"] .linea-flusso-x {
+    transform: scaleX(1);
+  }
+
   /* Logo di transizione fra hero e sezione successiva: emerge dal fondale,
      non è appoggiato sopra la pagina. */
   .transizione-logo {
@@ -671,7 +887,9 @@ body {
     }
   }
 
-  /* Luce ambientale con respiro lentissimo */
+  /* Luce ambientale con respiro lentissimo.
+     Chi la usa non deve darle w-full: la scala del 3% la allargherebbe oltre
+     il viewport e aprirebbe uno scorrimento orizzontale sui telefoni. */
   .respiro {
     animation: respiro 12s ease-in-out infinite;
   }

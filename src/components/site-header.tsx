@@ -27,10 +27,15 @@ export function SiteHeader() {
     };
   }, [aperto]);
 
+  // In cima l'intestazione resta trasparente, così la luce della hero arriva
+  // fino al bordo superiore invece di fermarsi contro una fascia piena; appena
+  // si scorre diventa una lastra velata che stacca dai contenuti.
   return (
     <header
-      className={`sticky top-0 z-50 bg-chiaro transition-shadow duration-300 ${
-        scorso || aperto ? "border-b border-bordo" : "border-b border-transparent"
+      className={`sticky top-0 z-50 transition-[background-color,border-color] duration-300 ${
+        scorso || aperto
+          ? "border-b border-bordo bg-[color-mix(in_srgb,var(--chiaro)_78%,transparent)] backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
       <Contenitore>

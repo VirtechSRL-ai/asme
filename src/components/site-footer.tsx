@@ -64,7 +64,7 @@ export async function SiteFooter() {
     <footer id="contatti" className="alone-scuro relative overflow-hidden">
       <div
         aria-hidden="true"
-        className="respiro pointer-events-none absolute -top-40 left-1/2 h-[30rem] w-full max-w-[52rem] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--verde)_18%,transparent),transparent_70%)]"
+        className="respiro pointer-events-none absolute -top-40 left-1/2 h-[30rem] w-[94%] max-w-[52rem] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--verde)_18%,transparent),transparent_70%)]"
       />
 
       <Contenitore className="relative">

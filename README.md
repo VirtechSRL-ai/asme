@@ -17,17 +17,22 @@ Poi apri http://localhost:3000.
 
 Un file per sezione, in `src/components/sezioni/`:
 
-| #   | Sezione         | File              | Composizione                                   |
-| --- | --------------- | ----------------- | ---------------------------------------------- |
-| 01  | Hero            | `hero.tsx`        | titolo centrato, due dashboard sintetiche      |
-| --  | Transizione     | `transizione.tsx` | il solo simbolo del marchio fra hero e Ottieni |
-| 02  | Ottieni         | `ottieni.tsx`     | testo a sinistra, processo in quattro passaggi |
-| 03  | Mantieni        | `mantieni.tsx`    | flusso a sinistra, testo a destra              |
-| 04  | L'applicativo   | `applicativo.tsx` | dashboard tridimensionale su fondo scuro       |
-| 05  | Per chi produce | `pubblico.tsx`    | posizionamento, titolo e testo affiancati      |
-| 06  | Settori         | `settori.tsx`     | griglia editoriale a sei colonne, card 4+2/2+2+2/6 |
-| 07  | Team            | `team.tsx`        | tre tappe collegate da una linea continua      |
-| 08  | Contatti        | `site-footer.tsx` | chiusura, recapiti e logo Virtech              |
+| #   | Sezione         | File              | Composizione                                              |
+| --- | --------------- | ----------------- | --------------------------------------------------------- |
+| 01  | Hero            | `hero.tsx`        | titolo centrato, due pannelli sfalsati e un cartellino che li attraversa |
+| --  | Transizione     | `transizione.tsx` | il solo simbolo del marchio fra hero e Ottieni            |
+| 02  | Ottieni         | `ottieni.tsx`     | testo stretto a sinistra, quattro fasi su un piano tinto a destra |
+| 03  | Mantieni        | `mantieni.tsx`    | lastra scura: testo in alto, flusso orizzontale a tutta misura |
+| 04  | L'applicativo   | `applicativo.tsx` | misura più larga, dashboard a sinistra, testo a destra    |
+| 05  | Per chi produce | `pubblico.tsx`    | seconda lastra scura, solo tipografia, luce dall'angolo opposto |
+| 06  | Settori         | `settori.tsx`     | griglia editoriale a dodici colonne, card 5+4+3 / 4+4+4   |
+| 07  | Team            | `team.tsx`        | rotaia continua con tre nodi e numeri tipografici         |
+| 08  | Contatti        | `site-footer.tsx` | chiusura, recapiti e logo Virtech                         |
+
+Nessuna sezione ripete lo schema della precedente: cambiano l'allineamento, la
+misura, il rapporto fra testo e interfaccia e la profondità del fondo. Due
+lastre scure spezzano la sequenza luminosa, e la loro luce arriva da angoli
+opposti perché non si somiglino.
 
 L'ordine risponde, una domanda alla volta, a ciò che il visitatore si chiede:
 che cos'è, che cosa ottengo, come restano collegate le informazioni, com'è
@@ -46,13 +51,24 @@ Le colonne si alternano fra una sezione e l'altra per dare ritmo allo
 scorrimento.
 
 **Il fondale è uno solo per tutta la pagina.** La classe `.ambiente` su `<main>`
-colloca le luci verdi in percentuale sull'altezza totale, così le sfumature
-attraversano i confini invece di interrompersi a ogni stacco; le sezioni chiare
-non hanno fondo proprio. A rompere la monotonia è `.lastra-scura`: la sezione
-"Mantieni" è una lastra profonda con angoli arrotondati che galleggia
-nell'ambiente chiaro, invece di una banda scura a tutta larghezza che taglierebbe
-la pagina in due. Nessuna texture geometrica: la profondità viene da luce,
-colore e ombre.
+colloca nove luci verdi in percentuale sull'altezza totale, una per zona, così
+le sfumature attraversano i confini invece di interrompersi a ogni stacco; le
+sezioni chiare non hanno fondo proprio. Se cambia l'ordine delle sezioni vanno
+riviste quelle percentuali, altrimenti le luci finiscono dietro le lastre scure
+e si perdono.
+
+Sopra l'ambiente, la hero ha il suo `.velo-hero`: una zona più intensa, con il
+bordo inferiore mascherato in dissolvenza, che dà alla prima schermata la
+diagonale luminosa senza tagliarla via dal resto. L'intestazione resta
+trasparente finché non si scorre, altrimenti quella luce si fermerebbe contro
+una fascia piena.
+
+A rompere la sequenza luminosa sono le due lastre scure, `.lastra-scura` per
+"Mantieni" e la stessa con `.lastra-rovescia` per "Per chi produce": angoli
+arrotondati, luce da angoli opposti, e nessuna banda a tutta larghezza che
+taglierebbe la pagina in due. Le dashboard poggiano su `.scena`, un piano tinto
+che le tiene nella composizione invece di lasciarle appoggiate sul nulla.
+Nessuna texture geometrica: la profondità viene da luce, colore e ombre.
 
 Il verde ufficiale evidenzia una parola o una breve espressione nei titoli, in
 posizioni diverse da sezione a sezione, e una sezione resta senza: deve restare
@@ -146,7 +162,14 @@ dove esiste un vero hover — quindi sui dispositivi touch il pannello resta fer
 e leggibile — e rispetta `prefers-reduced-motion`.
 
 Gli hover dei bottoni sono in `globals.css`: sollevamento di 2px, alone verde e
-freccia che avanza.
+freccia che avanza. Le card dei settori sollevano la superficie, riempiono di
+verde la piastra del glifo e spostano la luce d'angolo. I raccordi dei diagrammi
+si disegnano all'ingresso della sezione (`.linea-flusso` in verticale,
+`.linea-flusso-x` per la rotaia del percorso di adozione).
+
+Nota tecnica: `.respiro` anima una scala del 3%, quindi un elemento che la usa
+non deve avere `w-full`, o sui telefoni esce dal viewport e apre uno
+scorrimento orizzontale.
 
 Nota tecnica: gli aloni decorativi usano `max-width`, non `overflow-x: hidden`
 sull'`html`, che renderebbe la pagina un contenitore di scorrimento e
