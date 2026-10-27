@@ -105,11 +105,13 @@ body {
   /* ───────────────────────────────────────────────────────────────────────────
      TIPOGRAFIA — Manrope, una sola famiglia
      ───────────────────────────────────────────────────────────────────────── */
+  /* Un unico titolo su due righe: stessa dimensione, stesso peso, stessa
+     famiglia. La seconda riga non è un sottotitolo. */
   .titolo-hero {
-    font-size: clamp(2.375rem, 1.1rem + 5.4vw, 4.25rem);
+    font-size: clamp(2rem, 0.8rem + 4.4vw, 3.25rem);
     font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 0.98;
+    letter-spacing: -0.038em;
+    line-height: 1.04;
     text-wrap: balance;
   }
 
@@ -239,6 +241,59 @@ body {
       color-mix(in srgb, var(--scuro) 4%, transparent) 0 1px,
       transparent 1px 24px
     );
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     FASCIA DI TRANSIZIONE
+     Lega la hero alla sezione successiva: il fondo parte dal verde tenue della
+     hero e si spegne nel chiaro, così le due superfici non si scontrano.
+     ───────────────────────────────────────────────────────────────────────── */
+  .fascia {
+    position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--verde) 16%, var(--chiaro)) 0%,
+      color-mix(in srgb, var(--verde) 7%, var(--chiaro)) 55%,
+      var(--chiaro) 100%
+    );
+    border-top: 1px solid color-mix(in srgb, var(--verde) 22%, transparent);
+  }
+
+  .fascia-pista {
+    display: flex;
+    width: max-content;
+    animation: fascia-scorre 38s linear infinite;
+    /* I bordi sfumano, così i marchi entrano ed escono senza tagli netti */
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+  }
+
+  .fascia-pista:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes fascia-scorre {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      /* Metà esatta: la pista contiene due copie identiche, quindi il ciclo
+         riparte senza salti visibili. */
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fascia-pista {
+      animation: none;
+      transform: none;
+    }
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
@@ -378,6 +433,25 @@ body {
       color-mix(in srgb, var(--verde) 45%, transparent),
       transparent
     );
+  }
+
+  /* Applicato solo alle dashboard che ne beneficiano, non a ogni superficie */
+  .pannello-vivo {
+    transition:
+      transform 0.45s var(--curva),
+      box-shadow 0.45s var(--curva),
+      border-color 0.45s var(--curva);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pannello-vivo:hover {
+      transform: translateY(-6px);
+      border-color: color-mix(in srgb, var(--verde) 55%, var(--bordo));
+      box-shadow:
+        0 1px 2px color-mix(in srgb, var(--scuro) 8%, transparent),
+        0 22px 44px -18px color-mix(in srgb, var(--scuro) 24%, transparent),
+        0 60px 110px -60px color-mix(in srgb, var(--verde) 60%, transparent);
+    }
   }
 
   .pannello-testa {

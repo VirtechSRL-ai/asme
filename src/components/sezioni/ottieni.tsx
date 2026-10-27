@@ -66,10 +66,6 @@ function Passaggi() {
                     </span>
                     {evidenziato ? <span className="stato stato-ok">In corso</span> : null}
                   </span>
-                  <span className="mt-0.5 block text-[0.875rem] text-secondario">
-                    {passo.dettaglio}
-                  </span>
-
                   {evidenziato && "avanzamento" in passo ? (
                     <span
                       aria-hidden="true"

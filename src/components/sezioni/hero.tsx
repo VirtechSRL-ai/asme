@@ -5,121 +5,121 @@ import { Contenitore, Freccia, Spunta } from "../ui";
 const { hero, azioni, notaDemo } = site;
 const { cruscotto, dettaglio } = hero;
 
+/** Anello percentuale: comunica la quota senza bisogno di un grafico intero. */
+function Anello({ quota, tono }: { quota: number; tono: "verde" | "neutro" }) {
+  const r = 20;
+  const circonferenza = 2 * Math.PI * r;
+  const colore = tono === "verde" ? "var(--verde)" : "var(--testo-secondario)";
+
+  return (
+    <svg viewBox="0 0 48 48" className="h-12 w-12 shrink-0" aria-hidden="true">
+      <circle
+        cx="24"
+        cy="24"
+        r={r}
+        fill="none"
+        strokeWidth="5"
+        stroke="color-mix(in srgb, var(--scuro) 10%, var(--chiaro))"
+      />
+      <circle
+        cx="24"
+        cy="24"
+        r={r}
+        fill="none"
+        strokeWidth="5"
+        stroke={colore}
+        strokeLinecap="round"
+        strokeDasharray={`${(circonferenza * quota) / 100} ${circonferenza}`}
+        transform="rotate(-90 24 24)"
+      />
+      <text
+        x="24"
+        y="24"
+        textAnchor="middle"
+        dominantBaseline="central"
+        className="fill-[var(--scuro)] text-[0.6875rem] font-extrabold"
+        style={{ fontSize: "11px" }}
+      >
+        {quota}%
+      </text>
+    </svg>
+  );
+}
+
 /**
- * Dashboard principale della hero: lo stato di una commessa, con avanzamento
- * del fascicolo, contatori e le prime unità. Dati dimostrativi.
+ * Dashboard della hero, volutamente essenziale: titolo, filtri e due sole
+ * tessere. Deve far capire l'argomento in un colpo d'occhio, non mostrare
+ * l'applicativo intero. Dati dimostrativi.
  */
 function Cruscotto() {
   return (
-    <div className="pannello">
+    <div className="pannello pannello-vivo">
       <div className="pannello-testa">
         <span>{cruscotto.titolo}</span>
-        <span className="codice">{cruscotto.riferimento}</span>
+        <span className="flex gap-1.5">
+          {cruscotto.filtri.map((filtro, i) => (
+            <span
+              key={filtro}
+              className={`rounded-pill px-2.5 py-1 text-[0.6875rem] font-bold normal-case tracking-normal ${
+                i === 0
+                  ? "bg-scuro text-chiaro"
+                  : "border border-bordo text-secondario"
+              }`}
+            >
+              {filtro}
+            </span>
+          ))}
+        </span>
       </div>
 
-      <div className="p-5 pb-12 sm:p-6 sm:pb-14">
-        {/* Avanzamento del fascicolo */}
-        <div className="flex items-baseline justify-between gap-3">
-          <span className="etichetta-dato">{cruscotto.avanzamento.etichetta}</span>
-          <span className="text-[1.125rem] font-extrabold tabular-nums">
-            {cruscotto.avanzamento.quota}%
-          </span>
-        </div>
-        <div
-          aria-hidden="true"
-          className="mt-2 h-2.5 overflow-hidden rounded-pill bg-[color-mix(in_srgb,var(--scuro)_9%,var(--chiaro))]"
-        >
-          <span
-            className="block h-full rounded-pill bg-verde"
-            style={{ width: `${cruscotto.avanzamento.quota}%` }}
-          />
-        </div>
-
-        {/* Contatori */}
-        <dl className="mt-5 grid grid-cols-3 gap-3">
-          {cruscotto.contatori.map((c) => (
-            <div
-              key={c.etichetta}
-              className="rounded-[14px] border border-bordo bg-chiaro px-3 py-3"
-            >
-              <dt className="etichetta-dato">{c.etichetta}</dt>
-              <dd className="mt-1 text-[1.5rem] font-extrabold leading-none tabular-nums">
-                {c.valore}
-              </dd>
-            </div>
-          ))}
-        </dl>
-
-        {/* Prime unità della commessa */}
-        <div className="mt-5 overflow-hidden rounded-[14px] border border-bordo">
-          <div className="hidden grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 border-b border-bordo bg-verde-velo px-4 py-2.5 sm:grid">
-            {cruscotto.colonne.map((colonna) => (
-              <span key={colonna} className="etichetta-dato min-w-0 truncate">
-                {colonna}
+      <div className="grid grid-cols-2 gap-3 p-4 pb-9">
+        {cruscotto.tessere.map((tessera) => (
+          <div
+            key={tessera.etichetta}
+            className="flex items-center gap-3 rounded-[14px] border border-bordo bg-chiaro px-3 py-3"
+          >
+            <Anello quota={tessera.quota} tono={tessera.tono} />
+            <span className="min-w-0">
+              <span className="block text-[1.625rem] font-extrabold leading-none tabular-nums">
+                {tessera.valore}
               </span>
-            ))}
+              <span className="mt-1 flex items-center gap-1.5 text-[0.8125rem] text-secondario">
+                <span
+                  aria-hidden="true"
+                  className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+                    tessera.tono === "verde" ? "bg-verde" : "bg-[var(--testo-secondario)]"
+                  }`}
+                />
+                <span className="leading-tight">{tessera.etichetta}</span>
+              </span>
+            </span>
           </div>
-
-          {cruscotto.righe.map((riga) => (
-            <div
-              key={riga.unita}
-              className="flex flex-col gap-1.5 border-b border-bordo px-4 py-3 last:border-b-0 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-3"
-            >
-              <span className="flex items-center justify-between gap-3 sm:block sm:min-w-0">
-                <span className="truncate text-[0.9375rem] font-extrabold tabular-nums">
-                  {riga.unita}
-                </span>
-                <span className="sm:hidden">
-                  <Stato stato={riga.stato} />
-                </span>
-              </span>
-              <span className="min-w-0 truncate text-[0.875rem] text-secondario">
-                <span className="sm:hidden">Distinta: </span>
-                {riga.distinta}
-              </span>
-              <span className="min-w-0 truncate text-[0.875rem] tabular-nums text-secondario">
-                <span className="sm:hidden">Certificati: </span>
-                {riga.certificati}
-              </span>
-              <span className="hidden sm:block">
-                <Stato stato={riga.stato} />
-              </span>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   );
 }
 
-function Stato({ stato }: { stato: "ok" | "attesa" }) {
-  return stato === "ok" ? (
-    <span className="stato stato-ok">
-      <Spunta className="h-3 w-3" />
-      Completa
-    </span>
-  ) : (
-    <span className="stato stato-attesa">Da completare</span>
-  );
-}
-
-/** Seconda dashboard, più piccola: il dettaglio di un singolo componente. */
+/** Seconda dashboard, più piccola e discreta: una singola unità. */
 function Dettaglio() {
   return (
-    <div className="pannello">
+    <div className="pannello pannello-vivo">
       <div className="pannello-testa">
         <span>{dettaglio.titolo}</span>
         <span className="codice">{dettaglio.riferimento}</span>
       </div>
-      <dl>
+      <dl className="flex">
         {dettaglio.campi.map((campo) => (
-          <div key={campo.etichetta} className="pannello-riga justify-between">
-            <dt className="text-[0.875rem] text-secondario">{campo.etichetta}</dt>
-            <dd className="text-[0.9375rem] font-bold tabular-nums">{campo.valore}</dd>
+          <div
+            key={campo.etichetta}
+            className="flex-1 border-r border-bordo px-4 py-3 last:border-r-0"
+          >
+            <dt className="etichetta-dato">{campo.etichetta}</dt>
+            <dd className="mt-1 text-[0.9375rem] font-bold tabular-nums">{campo.valore}</dd>
           </div>
         ))}
       </dl>
-      <div className="border-t border-bordo px-[1.125rem] py-3">
+      <div className="border-t border-bordo px-4 py-2.5">
         <span className="stato stato-ok">
           <Spunta className="h-3 w-3" />
           {dettaglio.stato}
@@ -131,25 +131,24 @@ function Dettaglio() {
 
 export function Hero() {
   return (
-    <section className="alone-chiaro relative overflow-hidden pt-12 pb-20 sm:pt-16 sm:pb-24">
+    <section className="alone-chiaro relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
       <div aria-hidden="true" className="trama pointer-events-none absolute inset-0 opacity-70" />
       <div
         aria-hidden="true"
-        className="respiro pointer-events-none absolute -top-72 left-1/2 h-[36rem] w-full max-w-[60rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--verde)_30%,transparent),transparent_68%)]"
+        className="respiro pointer-events-none absolute -top-72 left-1/2 h-[36rem] w-full max-w-[58rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--verde)_28%,transparent),transparent_68%)]"
       />
 
       <Contenitore className="relative">
-        <Entra className="mx-auto max-w-3xl text-center">
+        <Entra className="mx-auto max-w-[66rem] text-center">
           <p className="occhiello">{hero.etichetta}</p>
 
+          {/* Un unico titolo su due righe, stessa dimensione e stesso peso */}
           <h1 className="titolo-hero mt-7">
-            {hero.titolo}
-            <span className="mt-1 block font-bold tracking-[-0.035em] text-secondario [font-size:0.72em]">
-              {hero.sottotitolo}
-            </span>
+            <span className="block">{hero.titoloRiga1}</span>
+            <span className="block">{hero.titoloRiga2}</span>
           </h1>
 
-          <p className="descrizione mx-auto mt-7 max-w-xl">{hero.testo}</p>
+          <p className="descrizione mx-auto mt-6 max-w-lg">{hero.testo}</p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a href="#contatti" className="bottone bottone-verde w-full sm:w-auto">
@@ -163,14 +162,14 @@ export function Hero() {
           </div>
         </Entra>
 
-        {/* Due dashboard centrate: la seconda scala sotto la prima e la
-            sovrappone leggermente, per dare l'idea di più livelli. */}
-        <Entra ritardo={200} className="relative mx-auto mt-16 max-w-3xl">
+        {/* Due dashboard compatte, centrate: la seconda più stretta e sfalsata,
+            così suggerisce la profondità senza occupare la schermata. */}
+        <Entra ritardo={200} className="relative mx-auto mt-14 w-full max-w-[26rem]">
           <Cruscotto />
-          <div className="relative z-10 mx-auto -mt-10 w-[min(26rem,92%)] sm:-mt-12">
+          <div className="relative z-10 mx-auto -mt-5 w-[86%] translate-x-3">
             <Dettaglio />
           </div>
-          <p className="nota-dimostrativa mt-6 text-center">{notaDemo}</p>
+          <p className="nota-dimostrativa mt-5 text-center">{notaDemo}</p>
         </Entra>
       </Contenitore>
     </section>

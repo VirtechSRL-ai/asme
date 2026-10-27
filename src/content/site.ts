@@ -42,42 +42,47 @@ export const site = {
 
   // ── 1. HERO ───────────────────────────────────────────────────────────────
   hero: {
-    etichetta: "Per chi produce apparecchiature in pressione",
-    titolo: "Tracciabilità dei materiali",
-    sottotitolo: "dalla distinta al fascicolo tecnico.",
+    etichetta: "Per chi produce apparecchiature in pressione.",
+    // Le due righe sono un unico titolo: stessa dimensione, stesso peso.
+    titoloRiga1: "Tracciabilità dei materiali",
+    titoloRiga2: "dalla distinta al fascicolo tecnico.",
     testo:
       "Riduciamo del 90% il tempo necessario a preparare la documentazione di tracciabilità.",
-    // Dashboard principale: stato di avanzamento della commessa.
+    // Dashboard sintetica: due sole tessere, come nella reference.
     cruscotto: {
-      titolo: "Commessa in lavorazione",
-      riferimento: "CM-0042",
-      avanzamento: { etichetta: "Fascicolo tecnico", quota: 72 },
-      contatori: [
-        { etichetta: "Unità", valore: "20" },
-        { etichetta: "Componenti", valore: "148" },
-        { etichetta: "Certificati", valore: "96" },
-      ],
-      colonne: ["Unità", "Distinta", "Certificati", "Stato"],
-      righe: [
-        { unita: "UN-0014", distinta: "Completa", certificati: "6 su 6", stato: "ok" },
-        { unita: "UN-0015", distinta: "Completa", certificati: "5 su 6", stato: "attesa" },
-        { unita: "UN-0016", distinta: "Completa", certificati: "6 su 6", stato: "ok" },
+      titolo: "Documenti",
+      filtri: ["Tutti", "Distinte", "Certificati"],
+      tessere: [
+        { quota: 96, valore: "96", etichetta: "Collegati", tono: "verde" },
+        { quota: 4, valore: "4", etichetta: "Da completare", tono: "neutro" },
       ],
     },
-    // Seconda dashboard, sovrapposta: il dettaglio di un singolo componente.
+    // Seconda dashboard, più discreta: una sola unità.
     dettaglio: {
-      titolo: "Componente",
-      riferimento: "CP-0231",
+      titolo: "Unità",
+      riferimento: "UN-0016",
       campi: [
-        { etichetta: "Materiale", valore: "MAT-002" },
-        { etichetta: "Marcatura", valore: "Presente" },
-        { etichetta: "Certificato", valore: "CERT-0016" },
+        { etichetta: "Certificati", valore: "6 su 6" },
+        { etichetta: "Distinta", valore: "Completa" },
       ],
-      stato: "Collegato alla sua unità",
+      stato: "Pronta per la verifica",
     },
   },
 
-  // ── 2. OTTIENI ────────────────────────────────────────────────────────────
+  // ── 2. FASCIA DI TRANSIZIONE ──────────────────────────────────────────────
+  fascia: {
+    // Ripetuto nella banda scorrevole fra hero e sezione successiva.
+    parole: [
+      "Distinte",
+      "Componenti",
+      "Materiali",
+      "Certificati",
+      "Fascicolo tecnico",
+      "Unità prodotte",
+    ],
+  },
+
+  // ── 3. OTTIENI ────────────────────────────────────────────────────────────
   ottieni: {
     etichetta: "Ottieni",
     titolo: "Ottieni il certificato in pochissimi minuti.",
@@ -87,98 +92,61 @@ export const site = {
       titolo: "Certificato tecnico",
       riferimento: "UN-0016",
       passi: [
-        {
-          numero: "01",
-          nome: "Distinte e componenti",
-          dettaglio: "12 componenti collegati",
-          stato: "fatto",
-        },
-        {
-          numero: "02",
-          nome: "Certificati",
-          dettaglio: "6 documenti associati",
-          stato: "fatto",
-        },
+        { numero: "01", nome: "Distinte e componenti", stato: "fatto" },
+        { numero: "02", nome: "Certificati", stato: "fatto" },
         {
           numero: "03",
           nome: "Preparazione della documentazione",
-          dettaglio: "Raccolta delle evidenze",
           stato: "corso",
           avanzamento: 60,
         },
-        {
-          numero: "04",
-          nome: "Verifica finale",
-          dettaglio: "A cura del team",
-          stato: "attesa",
-        },
+        { numero: "04", nome: "Verifica finale", stato: "attesa" },
       ],
     },
   },
 
-  // ── 3. MANTIENI ───────────────────────────────────────────────────────────
+  // ── 4. MANTIENI ───────────────────────────────────────────────────────────
   mantieni: {
     etichetta: "Mantieni",
     titolo: "Ogni componente e certificato sotto controllo.",
     testo:
       "Distinte, componenti e certificati restano collegati alle singole unità: il tuo team vede quali documenti sono disponibili e quali informazioni mancano.",
-    // Il flusso: materiali e documenti → Tracciamy → controllo finale del team
+    // Un solo messaggio: materiali e documenti → Tracciamy → controllo del team
     flusso: {
-      ingresso: {
-        titolo: "Materiali e documenti",
-        voci: [
-          { nome: "Distinte", dettaglio: "Struttura delle unità" },
-          { nome: "Componenti", dettaglio: "Materiale e marcatura" },
-          { nome: "Certificati", dettaglio: "Documenti dei fornitori" },
-        ],
-      },
-      centro: {
-        titolo: "Tracciamy",
-        dettaglio: "Collega ogni documento alla sua unità",
-        legami: [
-          { da: "CP-0231", a: "CERT-0016", stato: "ok" },
-          { da: "CP-0232", a: "CERT-0017", stato: "ok" },
-          { da: "CP-0233", a: "Da associare", stato: "attesa" },
-        ],
-      },
+      ingresso: { titolo: "Materiali e documenti", voci: ["Distinte", "Componenti", "Certificati"] },
+      centro: { titolo: "Tracciamy", dettaglio: "Collega tutto all'unità" },
       uscita: {
         titolo: "Controllo finale del team",
-        disponibili: { etichetta: "Documenti disponibili", valore: "5 su 6" },
-        mancanti: { etichetta: "Da completare", valore: "1" },
-        nota: "La verifica resta in capo al team.",
+        disponibili: "5 su 6 disponibili",
+        mancanti: "1 da completare",
       },
     },
   },
 
-  // ── 4. L'APPLICATIVO TRACCIAMY ────────────────────────────────────────────
+  // ── 5. L'APPLICATIVO TRACCIAMY ────────────────────────────────────────────
   applicativo: {
     etichetta: "L'applicativo Tracciamy",
-    titolo: "Il nostro expertise in una piattaforma.",
+    // "expertise" in italiano è femminile: "la nostra", non "il nostro".
+    // È l'unico errore grammaticale trovato nei testi approvati.
+    titolo: "La nostra expertise in una piattaforma.",
     testoRiga1: "In pochi minuti la piattaforma prepara il certificato.",
     testoRiga2: "Nel frattempo tu monitori ogni passo in tempo reale.",
     cruscotto: {
       titolo: "Tracciamy",
-      sezioni: [
-        { gruppo: "Commessa", voci: ["Unità", "Distinte", "Componenti"] },
-        { gruppo: "Documenti", voci: ["Certificati", "Fascicolo"] },
-      ],
+      riferimento: "CM-0042",
+      voci: ["Unità", "Componenti", "Certificati"],
       attiva: "Componenti",
       barra: { etichetta: "Fascicolo tecnico", quota: 72 },
-      colonne: ["Componente", "Materiale", "Certificato", "Stato"],
+      colonne: ["Componente", "Certificato", "Stato"],
       righe: [
-        { componente: "CP-0231", materiale: "MAT-002", certificato: "CERT-0016", stato: "ok" },
-        { componente: "CP-0232", materiale: "MAT-004", certificato: "CERT-0017", stato: "ok" },
-        { componente: "CP-0233", materiale: "MAT-007", certificato: "Da associare", stato: "attesa" },
-        { componente: "CP-0234", materiale: "MAT-002", certificato: "CERT-0016", stato: "ok" },
-      ],
-      riepilogo: [
-        { etichetta: "Componenti collegati", valore: "3 su 4" },
-        { etichetta: "Informazioni mancanti", valore: "1" },
+        { componente: "CP-0231", certificato: "CERT-0016", stato: "ok" },
+        { componente: "CP-0232", certificato: "CERT-0017", stato: "ok" },
+        { componente: "CP-0233", certificato: "Da associare", stato: "attesa" },
       ],
     },
   },
 
-  // ── 5. PER CHI PRODUCE APPARECCHIATURE IN PRESSIONE ───────────────────────
+  // ── 6. PER CHI PRODUCE APPARECCHIATURE IN PRESSIONE ───────────────────────
   pubblico: {
     etichetta: "Per chi produce apparecchiature in pressione",
     titolo: "La soluzione ideale per tracciare ogni unità prodotta.",
@@ -186,7 +154,7 @@ export const site = {
       "Tracciamy è studiata per chi gestisce distinte, materiali e certificati di fornitori. Aiuta il team di qualità, produzione e ufficio tecnico a ritrovare ciò che serve per ogni unità e a preparare la documentazione.",
   },
 
-  // ── 6. CONTATTI ───────────────────────────────────────────────────────────
+  // ── 7. CONTATTI ───────────────────────────────────────────────────────────
   contattiSezione: {
     titolo: "Richiedi informazioni.",
     testo: "Ti aiutiamo a certificare velocemente.",
