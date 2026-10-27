@@ -7,7 +7,6 @@ import { Ottieni } from "@/components/sezioni/ottieni";
 import { Pubblico } from "@/components/sezioni/pubblico";
 import { Settori } from "@/components/sezioni/settori";
 import { Team } from "@/components/sezioni/team";
-import { Transizione } from "@/components/sezioni/transizione";
 
 /**
  * L'ordine risponde, una domanda alla volta, a ciò che il visitatore si chiede:
@@ -23,7 +22,6 @@ export default function Home() {
           attraversano i confini invece di fermarsi a ogni stacco. */}
       <main id="contenuto" className="ambiente flex-1">
         <Hero />
-        <Transizione />
         <Ottieni />
         <Mantieni />
         <Applicativo />

@@ -124,18 +124,93 @@ export const site = {
     titoloDopo: " in una piattaforma.",
     testoRiga1: "In pochi minuti la piattaforma prepara il certificato.",
     testoRiga2: "Nel frattempo tu monitori ogni passo in tempo reale.",
-    cruscotto: {
-      titolo: "Tracciamy",
-      riferimento: "CM-0042",
-      voci: ["Unità", "Componenti", "Certificati"],
-      attiva: "Componenti",
-      barra: { etichetta: "Fascicolo tecnico", quota: 72 },
-      colonne: ["Componente", "Certificato", "Stato"],
-      righe: [
-        { componente: "CP-0231", certificato: "CERT-0016", stato: "ok" },
-        { componente: "CP-0232", certificato: "CERT-0017", stato: "ok" },
-        { componente: "CP-0233", certificato: "Da associare", stato: "attesa" },
+
+    // ── La schermata dell'applicativo ──────────────────────────────────────
+    // Ricostruzione illustrativa della schermata reale di Tracciamy: stessa
+    // struttura (barra laterale, intestazione del lotto, prossima azione,
+    // schede, percorso in fasi), contenuti tutti sostituiti.
+    //
+    // Niente di identificabile: via il marchio del cliente, via il suo nome,
+    // via l'indirizzo dell'utente, via i nomi dei fornitori citati nelle
+    // descrizioni delle fasi. I numeri sono diversi da quelli della schermata
+    // di partenza, perché non devono passare per risultati di qualcuno.
+    //
+    // Le fasi sono quelle che la schermata mostra davvero: nessuna funzione
+    // aggiunta. La settima resta fuori dall'elenco perché nella schermata di
+    // riferimento non è visibile e non va inventata.
+    schermata: {
+      azienda: "Azienda dimostrativa",
+      reparto: "Tracciabilità ASME",
+      utente: "demo@azienda.it",
+      esci: "Esci",
+      comprimi: "Comprimi",
+      menu: [
+        { nome: "Dashboard", icona: "griglia" },
+        { nome: "Lotti", icona: "cartella" },
+        { nome: "Libreria certificati", icona: "documento" },
+        { nome: "Archivio", icona: "archivio" },
+        { nome: "Impostazioni", icona: "ingranaggio" },
       ],
+      menuAttivo: "Lotti",
+      briciole: ["Lotti", "Lotto 1"],
+      lotto: {
+        etichetta: "Lotto 1",
+        nome: "DEMO",
+        stato: "Generato",
+        meta: ["48 camere", "384 componenti", "Revisione R1"],
+        azione: "Verifica chiusura",
+      },
+      prossima: {
+        etichetta: "Prossima azione",
+        titolo: "Documenti ASME e fascicolo",
+        dettaglio: "2 documenti generati",
+        bottone: "Produci documenti",
+      },
+      schede: ["Riepilogo", "Produzione", "Materiali", "Controlli", "Documenti", "Revisioni"],
+      schedaAttiva: "Riepilogo",
+      percorso: {
+        titolo: "Percorso del lotto",
+        testo:
+          "Segui le fasi in ordine fino al fascicolo ASME e alla finalizzazione del lotto. Ogni risultato resta consultabile.",
+        avanzamento: "5 di 7 completate",
+        quota: 71,
+        azione: "Visualizza",
+        statoFase: "Completato",
+        fasi: [
+          {
+            numero: "1",
+            nome: "Dati del lotto",
+            testo: "Importa il registro di produzione che contiene camere e componenti.",
+            esito: "48 camere importate",
+          },
+          {
+            numero: "2",
+            nome: "Numeri National Board",
+            testo:
+              "Assegna a ogni camera il numero progressivo richiesto per la registrazione ASME.",
+            esito: "48 assegnati · 0 mancanti",
+          },
+          {
+            numero: "3",
+            nome: "Certificati dei materiali",
+            testo: "Raccoglie i PDF dei fornitori e li collega ai componenti di questo lotto.",
+            esito: "7 PDF su 7 riferimenti · 7 verificati",
+          },
+          {
+            numero: "4",
+            nome: "Assegnazione ganci",
+            testo: "Abbina a ogni camera sei ganci provenienti da un solo batch di fornitura.",
+            esito: "48 camere coperte su 48",
+          },
+          {
+            numero: "5",
+            nome: "Controllo di completezza",
+            testo:
+              "Controlla National Board, componenti, certificati e ganci prima di produrre i documenti.",
+            esito: "Controllo tecnico verde",
+          },
+        ],
+      },
     },
   },
 

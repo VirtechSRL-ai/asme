@@ -196,7 +196,9 @@ body {
   }
 
   .etichetta-dato {
-    font-size: 0.6875rem;
+    /* Non sotto i 12px: a 11 l'occhiello maiuscolo smette di essere leggibile
+       su schermo, e qui di etichette ce ne sono quindici */
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -238,10 +240,10 @@ body {
           color-mix(in srgb, var(--verde) 30%, transparent),
           transparent 68%
         ),
-      /* 3 · il marchio di transizione emerge da qui */
+      /* 3 · raccordo fra la hero e il processo, dove finisce il filmato */
         radial-gradient(
-          ellipse 44% 6% at 50% 12%,
-          color-mix(in srgb, var(--verde) 28%, transparent),
+          ellipse 56% 7% at 44% 13%,
+          color-mix(in srgb, var(--verde) 26%, transparent),
           transparent 70%
         ),
       /* 4 · dietro il processo di Ottieni, dal lato della dashboard */
@@ -307,21 +309,102 @@ body {
     background-image:
       radial-gradient(
         ellipse 66% 62% at 4% 22%,
-        color-mix(in srgb, var(--verde) 55%, transparent),
+        color-mix(in srgb, var(--verde) 34%, transparent),
         transparent 62%
       ),
       radial-gradient(
         ellipse 56% 56% at 99% 6%,
-        color-mix(in srgb, var(--verde) 32%, transparent),
+        color-mix(in srgb, var(--verde) 22%, transparent),
         transparent 64%
       ),
       radial-gradient(
         ellipse 95% 34% at 50% 102%,
-        color-mix(in srgb, var(--verde) 30%, transparent),
+        color-mix(in srgb, var(--verde) 26%, transparent),
         transparent 68%
       );
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     FILMATO DI FONDO DELLA HERO
+     Il video è già stato corretto nei colori verso la palette in fase di
+     codifica, quindi qui non serve nessun filtro: basta tenerlo sotto il
+     contenuto, smorzarlo e farlo dissolvere nei bordi.
+
+     La maschera radiale lo spegne verso i lati e verso il basso, così non
+     esiste un rettangolo video: il filmato finisce nel fondale della pagina
+     senza bordo né taglio netto. L'immagine di posa sta sul contenitore, non
+     sul <video>, perciò resta visibile anche se il filmato non parte e con
+     movimento ridotto, dove il video viene proprio rimosso dal rendering.
+     ───────────────────────────────────────────────────────────────────────── */
+  .scena-video {
+    position: absolute;
+    inset: -6rem 0 0 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background-position: center top;
+    background-size: cover;
+    -webkit-mask-image: radial-gradient(
+      124% 96% at 24% 26%,
+      #000 26%,
+      rgba(0, 0, 0, 0.72) 55%,
+      rgba(0, 0, 0, 0.28) 74%,
+      transparent 88%
+    );
+    mask-image: radial-gradient(
+      124% 96% at 24% 26%,
+      #000 26%,
+      rgba(0, 0, 0, 0.72) 55%,
+      rgba(0, 0, 0, 0.28) 74%,
+      transparent 88%
+    );
+  }
+
+  .scena-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    /* Valore scelto guardando il contrasto reale del testo sopra le parti
+       più sature del filmato, non a occhio */
+    opacity: 0.72;
+  }
+
+  /* Secondo velo: spegne il filmato dove passano titolo e pulsanti e lo
+     riporta al colore della pagina sul bordo inferiore. */
+  .scena-video::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(
+        ellipse 58% 46% at 50% 44%,
+        color-mix(in srgb, var(--chiaro) 80%, transparent),
+        transparent 74%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 48%,
+        color-mix(in srgb, var(--chiaro) 70%, transparent) 82%,
+        var(--chiaro) 100%
+      );
+  }
+
+  /* Sopra il filmato il testo secondario non regge: misurato sui pixel
+     renderizzati stava a 4,05:1 contro i 4,5 richiesti. Qui scurisce, senza
+     toccare la dimensione — ed è anche la frase commerciale della pagina,
+     quindi un po' più di peso le sta bene. */
+  .velo-hero .descrizione {
+    color: color-mix(in srgb, var(--scuro) 82%, var(--chiaro));
+    font-weight: 500;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scena-video video {
+      display: none;
+    }
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
@@ -394,31 +477,82 @@ body {
     color: var(--verde);
   }
 
-  /* Carta di settore: una luce d'angolo che si sposta al passaggio del mouse.
-     È l'unico movimento della griglia, e serve a far capire che è viva. */
-  .carta-settore::after {
-    content: "";
-    position: absolute;
-    right: -26%;
-    top: -58%;
-    width: 66%;
-    height: 150%;
-    pointer-events: none;
-    background: radial-gradient(
-      ellipse at center,
-      color-mix(in srgb, var(--verde) 24%, transparent),
-      transparent 68%
-    );
-    opacity: 0.75;
+  /* ───────────────────────────────────────────────────────────────────────────
+     SELETTORE DEI SETTORI
+     Righe compatte a sinistra, scheda grande a destra.
+     ───────────────────────────────────────────────────────────────────────── */
+  .riga-settore {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+    border-radius: var(--r-card);
+    padding: 0.75rem 0.875rem;
+    background-color: color-mix(in srgb, #ffffff 52%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--scuro) 7%, transparent);
     transition:
-      opacity 0.45s var(--curva),
-      transform 0.45s var(--curva);
+      background-color 0.35s var(--curva),
+      box-shadow 0.35s var(--curva),
+      transform 0.35s var(--curva);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .carta-settore:hover::after {
+    .riga-settore:hover {
+      background-color: #ffffff;
+      transform: translateX(3px);
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--verde) 38%, transparent),
+        0 10px 22px -14px color-mix(in srgb, var(--scuro) 32%, transparent);
+    }
+  }
+
+  .riga-settore-scelta,
+  .riga-settore-scelta:hover {
+    background-color: #ffffff;
+    transform: none;
+    box-shadow:
+      inset 0 0 0 1.5px color-mix(in srgb, var(--verde) 58%, transparent),
+      0 1px 2px color-mix(in srgb, var(--scuro) 4%, transparent),
+      0 14px 30px -16px color-mix(in srgb, var(--scuro) 20%, transparent),
+      0 32px 64px -44px color-mix(in srgb, var(--verde) 85%, transparent);
+  }
+
+  /* La piastra del settore scelto è piena, come quella sotto il mouse */
+  .riga-settore-scelta .piastra {
+    background-image: linear-gradient(
+      145deg,
+      var(--verde),
+      color-mix(in srgb, var(--verde) 72%, var(--chiaro))
+    );
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--verde) 70%, transparent);
+    color: var(--scuro);
+  }
+
+  /* Riga di fase dentro la schermata ricostruita: si accende al passaggio del
+     mouse, come farebbe nel programma. È solo questo — non è un comando. */
+  .riga-fase {
+    transition: background-color 0.25s var(--curva);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .riga-fase:hover {
+      background-color: color-mix(in srgb, var(--verde) 6%, #ffffff);
+    }
+  }
+
+  /* Il contenuto della scheda rientra a ogni cambio di settore */
+  .scheda-entra {
+    animation: scheda-entra 0.5s var(--curva) both;
+  }
+
+  @keyframes scheda-entra {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
       opacity: 1;
-      transform: translate(-10%, 8%);
+      transform: none;
     }
   }
 
@@ -531,65 +665,125 @@ body {
     transition: transform 0.25s var(--curva);
   }
 
-  .bottone:hover {
-    transform: translateY(-2px);
+  /* Il sollevamento vale solo dove esiste un vero puntatore: sui dispositivi
+     touch :hover resta appiccicato dopo il tocco e il pulsante sembra rotto. */
+  @media (hover: hover) and (pointer: fine) {
+    .bottone:hover {
+      transform: translateY(-2px);
+    }
+
+    .bottone:hover svg {
+      transform: translateX(4px);
+    }
   }
 
-  .bottone:hover svg {
-    transform: translateX(4px);
-  }
-
+  /* La pressione si sente ovunque, anche al tocco: è l'unico riscontro che
+     l'utente ha prima che la pagina si muova. */
   .bottone:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.978);
+    transition-duration: 0.08s;
+  }
+
+  .bottone:disabled,
+  .bottone[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+    box-shadow: none;
   }
 
   .bottone-verde {
-    background: var(--verde);
+    background-color: var(--verde);
     color: var(--scuro);
-  }
-
-  .bottone-verde:hover {
-    background: color-mix(in srgb, var(--verde) 82%, var(--chiaro));
-    box-shadow: 0 14px 34px -12px color-mix(in srgb, var(--verde) 70%, transparent);
+    box-shadow: 0 6px 18px -10px color-mix(in srgb, var(--verde) 70%, transparent);
   }
 
   .bottone-scuro {
-    background: var(--scuro);
+    background-color: var(--scuro);
     color: var(--chiaro);
-  }
-
-  .bottone-scuro:hover {
-    background: color-mix(in srgb, var(--scuro) 84%, var(--verde));
-    box-shadow: 0 14px 34px -14px color-mix(in srgb, var(--scuro) 60%, transparent);
   }
 
   .bottone-contorno {
     border: 2px solid var(--bordo);
-    background: color-mix(in srgb, var(--chiaro) 72%, transparent);
+    background-color: color-mix(in srgb, var(--chiaro) 72%, transparent);
     color: var(--scuro);
-  }
-
-  .bottone-contorno:hover {
-    border-color: var(--verde-testo);
-    color: var(--verde-testo);
-    background: var(--chiaro);
-    box-shadow: 0 12px 30px -16px color-mix(in srgb, var(--verde) 60%, transparent);
   }
 
   .su-scuro .bottone-contorno,
   .lastra-scura .bottone-contorno,
   .alone-scuro .bottone-contorno {
     border-color: var(--bordo-su-scuro);
-    background: transparent;
+    background-color: transparent;
     color: var(--chiaro);
   }
 
-  .su-scuro .bottone-contorno:hover,
-  .lastra-scura .bottone-contorno:hover,
-  .alone-scuro .bottone-contorno:hover {
-    border-color: var(--verde);
-    color: var(--verde);
-    background: color-mix(in srgb, var(--verde) 9%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    .bottone-verde:hover {
+      background-color: color-mix(in srgb, var(--verde) 84%, var(--chiaro));
+      box-shadow: 0 16px 36px -12px color-mix(in srgb, var(--verde) 78%, transparent);
+    }
+
+    .bottone-scuro:hover {
+      background-color: color-mix(in srgb, var(--scuro) 84%, var(--verde));
+      box-shadow: 0 14px 34px -14px color-mix(in srgb, var(--scuro) 60%, transparent);
+    }
+
+    .bottone-contorno:hover {
+      border-color: var(--verde-testo);
+      color: var(--verde-testo);
+      background-color: var(--chiaro);
+      box-shadow: 0 12px 30px -16px color-mix(in srgb, var(--verde) 60%, transparent);
+    }
+
+    .su-scuro .bottone-contorno:hover,
+    .lastra-scura .bottone-contorno:hover,
+    .alone-scuro .bottone-contorno:hover {
+      border-color: var(--verde);
+      color: var(--verde);
+      background-color: color-mix(in srgb, var(--verde) 9%, transparent);
+    }
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     VOCI DI NAVIGAZIONE
+     Un filetto che cresce da sinistra: dice dove sei senza spostare il testo.
+     ───────────────────────────────────────────────────────────────────────── */
+  .voce-nav {
+    position: relative;
+    border-radius: var(--r-pill);
+    padding: 0.5rem 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--testo-secondario);
+    transition: color 0.25s var(--curva);
+  }
+
+  .voce-nav::after {
+    content: "";
+    position: absolute;
+    left: 0.875rem;
+    right: 0.875rem;
+    bottom: 0.25rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--verde-testo);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--curva);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .voce-nav:hover {
+      color: var(--verde-testo);
+    }
+
+    .voce-nav:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  .voce-nav:focus-visible::after {
+    transform: scaleX(1);
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
@@ -859,32 +1053,6 @@ body {
   .entra[data-visibile="true"] .linea-flusso-x,
   .entra-cascata[data-visibile="true"] .linea-flusso-x {
     transform: scaleX(1);
-  }
-
-  /* Logo di transizione fra hero e sezione successiva: emerge dal fondale,
-     non è appoggiato sopra la pagina. */
-  .transizione-logo {
-    opacity: 0;
-    transform: translateY(16px) scale(0.96);
-    filter: blur(6px);
-    transition:
-      opacity 1s var(--curva),
-      transform 1s var(--curva),
-      filter 1s var(--curva);
-  }
-
-  .entra[data-visibile="true"] .transizione-logo {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .transizione-logo {
-      opacity: 1;
-      transform: none;
-      filter: none;
-    }
   }
 
   /* Luce ambientale con respiro lentissimo.

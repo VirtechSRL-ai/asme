@@ -16,7 +16,9 @@ const { cruscotto } = ottieni;
 function Passaggi() {
   return (
     <div className="relative">
-      <ol className="relative space-y-2.5">
+      {/* Le quattro fasi entrano una dopo l'altra: è un percorso, e si legge
+          meglio se arriva nell'ordine in cui va letto. */}
+      <Entra as="ol" cascata className="relative space-y-2.5">
         {cruscotto.passi.map((passo, i) => {
           const ultimo = i === cruscotto.passi.length - 1;
           const corso = passo.stato === "corso";
@@ -84,7 +86,7 @@ function Passaggi() {
             </li>
           );
         })}
-      </ol>
+      </Entra>
     </div>
   );
 }

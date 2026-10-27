@@ -41,7 +41,10 @@ export function Team() {
                     className="absolute left-0 top-0 hidden h-3.5 w-3.5 rounded-full bg-verde shadow-[0_0_0_5px_color-mix(in_srgb,var(--verde)_22%,transparent)] lg:block"
                   />
 
-                  <div className="pannello pannello-vivo h-full p-6 sm:p-7">
+                  {/* L'altezza si pareggia solo quando le tappe stanno in
+                      fila: impilate, pareggiarle lascerebbe buchi sotto le
+                      più corte. */}
+                  <div className="pannello pannello-vivo p-6 sm:p-7 lg:h-full">
                     <span className="numero-tappa block">{fase.numero}</span>
                     <h3 className="titolo-minore mt-5">{fase.nome}</h3>
                     <p className="mt-3 text-[0.9375rem] leading-relaxed text-secondario">

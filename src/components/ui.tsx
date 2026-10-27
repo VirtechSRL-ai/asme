@@ -84,6 +84,65 @@ export function Verifica({ className }: IconaProps) {
   );
 }
 
+/* ── Icone della barra laterale dell'applicativo ─────────────────────────── */
+
+export function Griglia({ className }: IconaProps) {
+  return (
+    <Svg className={className}>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.6" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.6" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.6" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.6" />
+    </Svg>
+  );
+}
+
+export function Cartella({ className }: IconaProps) {
+  return (
+    <Svg className={className}>
+      <path d="M3.5 7a2 2 0 0 1 2-2h3.3l1.8 2.2h8a2 2 0 0 1 2 2v7.8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z" />
+    </Svg>
+  );
+}
+
+export function Documento({ className }: IconaProps) {
+  return (
+    <Svg className={className}>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+      <path d="M8.5 13h7M8.5 16.5h4.5" />
+    </Svg>
+  );
+}
+
+export function Archivio({ className }: IconaProps) {
+  return (
+    <Svg className={className}>
+      <rect x="3.5" y="4" width="17" height="4.5" rx="1.4" />
+      <path d="M5 8.5v9.9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5" />
+      <path d="M10 12.5h4" />
+    </Svg>
+  );
+}
+
+export function Ingranaggio({ className }: IconaProps) {
+  return (
+    <Svg className={className}>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2.8v2.4M12 18.8v2.4M21.2 12h-2.4M5.2 12H2.8M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7M18.5 18.5l-1.7-1.7M7.2 7.2 5.5 5.5" />
+    </Svg>
+  );
+}
+
+export function Lucchetto({ className }: IconaProps) {
+  return (
+    <Svg className={className}>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2.4" />
+      <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" />
+    </Svg>
+  );
+}
+
 export function Posta({ className }: IconaProps) {
   return (
     <Svg className={className ?? "h-[1.125rem] w-[1.125rem]"}>

@@ -1,5 +1,6 @@
 import { site } from "@/content/site";
 import { Entra } from "../entra";
+import { SfondoVideo } from "../sfondo-video";
 import { Contenitore, Freccia, Spunta, Verifica } from "../ui";
 
 const { hero, azioni, notaDemo } = site;
@@ -56,7 +57,7 @@ function Cruscotto() {
           {cruscotto.filtri.map((filtro, i) => (
             <span
               key={filtro}
-              className={`rounded-pill px-2.5 py-1 text-[0.6875rem] font-bold normal-case tracking-normal ${
+              className={`rounded-pill px-2.5 py-1 text-[0.75rem] font-bold normal-case tracking-normal ${
                 i === 0 ? "bg-scuro text-chiaro" : "border border-bordo text-secondario"
               }`}
             >
@@ -145,8 +146,10 @@ function Stato() {
 
 export function Hero() {
   return (
-    <section className="velo-hero relative pt-10 pb-12 sm:pt-14 sm:pb-16">
-      <Contenitore className="relative">
+    <section className="velo-hero relative pt-10 pb-20 sm:pt-14 sm:pb-28">
+      <SfondoVideo />
+
+      <Contenitore className="relative z-10">
         <Entra className="mx-auto max-w-[66rem] text-center">
           <p className="occhiello">{hero.etichetta}</p>
 

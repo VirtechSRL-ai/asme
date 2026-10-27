@@ -49,7 +49,7 @@ export function SiteHeader() {
               <a
                 key={voce.href}
                 href={voce.href}
-                className="rounded-pill px-3.5 py-2 text-[0.9375rem] font-bold text-secondario transition-colors hover:bg-verde-velo hover:text-verde-testo"
+                className="voce-nav"
               >
                 {voce.etichetta}
               </a>

@@ -19,13 +19,12 @@ Un file per sezione, in `src/components/sezioni/`:
 
 | #   | Sezione         | File              | Composizione                                              |
 | --- | --------------- | ----------------- | --------------------------------------------------------- |
-| 01  | Hero            | `hero.tsx`        | titolo centrato, due pannelli sfalsati e un cartellino che li attraversa |
-| --  | Transizione     | `transizione.tsx` | il solo simbolo del marchio fra hero e Ottieni            |
+| 01  | Hero            | `hero.tsx`        | filmato di fondo, titolo centrato, due pannelli sfalsati e un cartellino che li attraversa |
 | 02  | Ottieni         | `ottieni.tsx`     | testo stretto a sinistra, quattro fasi su un piano tinto a destra |
 | 03  | Mantieni        | `mantieni.tsx`    | lastra scura: testo in alto, flusso orizzontale a tutta misura |
-| 04  | L'applicativo   | `applicativo.tsx` | misura più larga, dashboard a sinistra, testo a destra    |
+| 04  | L'applicativo   | `applicativo.tsx` | la misura più larga: riga d'apertura e la schermata a tutto campo |
 | 05  | Per chi produce | `pubblico.tsx`    | seconda lastra scura, solo tipografia, luce dall'angolo opposto |
-| 06  | Settori         | `settori.tsx`     | griglia editoriale a dodici colonne, card 5+4+3 / 4+4+4   |
+| 06  | Settori         | `settori.tsx`     | selettore: elenco a sinistra, settore scelto in grande a destra |
 | 07  | Team            | `team.tsx`        | rotaia continua con tre nodi e numeri tipografici         |
 | 08  | Contatti        | `site-footer.tsx` | chiusura, recapiti e logo Virtech                         |
 
@@ -41,14 +40,14 @@ chiedere una demo.
 
 I glifi dei sei settori sono in `src/components/glifi.tsx`: segni astratti
 disegnati sulle forme ricorrenti di ciascun ambito (un recipiente, uno skid, uno
-scambiatore), non icone generiche né fotografie di repertorio.
+scambiatore), non icone generiche né fotografie di repertorio. Il selettore dei
+settori è un vero `tablist`: frecce, Home e Fine, un solo elemento raggiungibile
+con Tab, la selezione segue il fuoco, e su touch funziona come un normale elenco
+di pulsanti senza dipendere da un hover che lì non esiste.
 
 Nei testi del percorso di adozione il prodotto era scritto «Tracciami»: corretto
 in «Tracciamy», l'unica modifica applicata. Il passaggio dal «tu» della
 descrizione al «voi» delle fasi è voluto ed è stato mantenuto.
-
-Le colonne si alternano fra una sezione e l'altra per dare ritmo allo
-scorrimento.
 
 **Il fondale è uno solo per tutta la pagina.** La classe `.ambiente` su `<main>`
 colloca nove luci verdi in percentuale sull'altezza totale, una per zona, così
@@ -76,13 +75,51 @@ selettivo. Sui fondi profondi si usa il verde pieno, che arriva a 12:1; sui fond
 chiari la sua versione scurita, perché il verde di marca su chiaro sta a 1,4:1 e
 come testo sarebbe illeggibile.
 
+### Il filmato della hero
+
+`public/hero-tracciamy.mp4` (681 KB) e `.webm` (364 KB), con `.webp` come
+immagine di posa. **La correzione cromatica verso la palette è dentro il file**,
+fatta in codifica con ffmpeg, non con un filtro CSS: un filtro a schermo costa a
+ogni fotogramma e rende peggio. Il filtro applicato è
+
+```
+hue=h=-8:s=0.70, eq=contrast=0.94:brightness=0.03, colorbalance=rh=-0.015:bh=0.045
+```
+
+che porta i verdi del filmato da tonalità 143–153 e saturazione 0,86 ai 139–151
+e 0,46–0,62 del verde di marca, e i bianchi a `#f7faff`, praticamente il
+`--chiaro`. Se si sostituisce il filmato, va rifatta questa taratura: senza, i
+colori non appartengono al sito.
+
+Il montaggio è in `src/components/sfondo-video.tsx` e nella classe
+`.scena-video`. Il filmato non ha bordi perché una maschera radiale lo spegne
+verso i lati e verso il basso, e un secondo velo lo smorza dove passano titolo e
+pulsanti. L'immagine di posa sta sul contenitore, non sul `<video>`: resta
+visibile prima del caricamento, se la riproduzione non parte e con
+`prefers-reduced-motion`, dove il `<video>` viene tolto dal rendering. Il
+contenitore è in posizione assoluta, quindi la pagina non cambia mai altezza.
+
 ### Le dashboard
 
-Sono rappresentazioni illustrative, non screenshot del prodotto. I codici
-(`CM-0042`, `UN-0016`, `CP-0231`, `CERT-0016`) sono fittizi e ogni pannello
-porta la nota «Dati dimostrativi, non statistiche reali». I contenuti stanno in
-`src/content/site.ts`, separati dalla grafica: sostituirli con dati veri o con
-uno screenshot non richiede di toccare i componenti.
+Sono rappresentazioni illustrative, non screenshot del prodotto, e ognuna porta
+la nota «Dati dimostrativi, non statistiche reali».
+
+`src/components/schermata.tsx` è la ricostruzione della schermata reale di
+Tracciamy: stessa struttura (barra laterale, intestazione del lotto, prossima
+azione, schede, percorso in fasi), **contenuti tutti sostituiti**. Via il
+marchio del cliente, il nome dell'azienda, l'indirizzo dell'utente e i nomi dei
+fornitori citati nelle descrizioni delle fasi; i numeri sono diversi da quelli
+della schermata di partenza, perché non devono passare per risultati di
+qualcuno. Le fasi mostrate sono solo quelle visibili nel riferimento: la settima
+non c'è, e non va inventata. I pulsanti interni sono `span`, non `button`: sono
+il disegno di un comando, e un comando che non fa nulla sarebbe peggio.
+
+È una questione di scala, non di zoom: i corpi di testo sono quelli giusti per
+essere letti alla larghezza a cui la finestra viene mostrata, non lo screenshot
+rimpicciolito.
+
+I contenuti stanno in `src/content/site.ts`, separati dalla grafica:
+sostituirli con dati veri non richiede di toccare i componenti.
 
 Nessuna dashboard dichiara funzioni non confermate — niente esportazioni
 automatiche, firme digitali, integrazioni o intelligenza artificiale — e la
@@ -162,10 +199,17 @@ dove esiste un vero hover — quindi sui dispositivi touch il pannello resta fer
 e leggibile — e rispetta `prefers-reduced-motion`.
 
 Gli hover dei bottoni sono in `globals.css`: sollevamento di 2px, alone verde e
-freccia che avanza. Le card dei settori sollevano la superficie, riempiono di
-verde la piastra del glifo e spostano la luce d'angolo. I raccordi dei diagrammi
-si disegnano all'ingresso della sezione (`.linea-flusso` in verticale,
-`.linea-flusso-x` per la rotaia del percorso di adozione).
+freccia che avanza, **tutti dentro `@media (hover: hover)`**, perché su touch
+`:hover` resta appiccicato dopo il tocco e il pulsante sembra rotto. Il
+riscontro alla pressione (`:active`, una riduzione dello 0,978) invece vale
+ovunque: al tocco è l'unico segnale prima che la pagina si muova. Le voci di
+navigazione hanno un filetto che cresce da sinistra, anche al fuoco da tastiera.
+
+Le righe dei settori si sollevano e riempiono di verde la piastra del glifo; la
+riga scelta resta piena. Le righe di fase della schermata si accendono al
+passaggio del mouse. I raccordi dei diagrammi si disegnano all'ingresso della
+sezione (`.linea-flusso` in verticale, `.linea-flusso-x` per la rotaia del
+percorso di adozione), e le quattro fasi di «Ottieni» entrano in cascata.
 
 Nota tecnica: `.respiro` anima una scala del 3%, quindi un elemento che la usa
 non deve avere `w-full`, o sui telefoni esce dal viewport e apre uno
@@ -202,6 +246,16 @@ Con Chrome headless su sei larghezze (360, 390, 820, 1024, 1280, 1440 px):
 - nessun testo sotto il contrasto minimo WCAG AA, compresi i colori calcolati
   con `color-mix`;
 - favicon servita e realmente trasparente.
+
+Il contrasto del testo sopra il filmato **non si può misurare dai colori
+calcolati**, perché il fondo è un fotogramma: si misura sui pixel renderizzati,
+prendendo il punto più scuro della banda attorno al testo. È così che è venuto
+fuori che il sottotitolo stava a 4,05:1, sotto i 4,5 richiesti, e per questo
+`.velo-hero .descrizione` scurisce.
+
+Verificati anche: riproduzione effettiva del filmato, rimozione del `<video>`
+con `prefers-reduced-motion` e comparsa dell'immagine di posa al suo posto,
+selettore dei settori da mouse, da frecce, da Home e Fine.
 
 ## Comandi
 
