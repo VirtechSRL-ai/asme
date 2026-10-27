@@ -31,11 +31,13 @@ export const site = {
     { etichetta: "Ottieni", href: "#ottieni" },
     { etichetta: "Mantieni", href: "#mantieni" },
     { etichetta: "L'applicativo", href: "#applicativo" },
+    { etichetta: "Settori", href: "#settori" },
   ],
 
   azioni: {
     contatta: "Contattaci",
     cosaOttieni: "Cosa ottieni",
+    demo: "Richiedi una demo",
   },
 
   notaDemo: "Dati dimostrativi, non statistiche reali.",
@@ -145,7 +147,82 @@ export const site = {
       "Tracciamy è studiata per chi gestisce distinte, materiali e certificati di fornitori. Aiuta il team di qualità, produzione e ufficio tecnico a ritrovare ciò che serve per ogni unità e a preparare la documentazione.",
   },
 
-  // ── 7. CONTATTI ───────────────────────────────────────────────────────────
+  // ── 7. PROGETTATO PER IL TUO SETTORE ──────────────────────────────────────
+  settori: {
+    titolo: "Progettato per il tuo settore",
+    voci: [
+      {
+        glifo: "recipiente",
+        nome: "Metalmeccanica e manifattura industriale",
+        testo:
+          "Costruttori di apparecchiature a pressione, serbatoi, carpenterie specializzate e componenti metallici.",
+      },
+      {
+        glifo: "impianto",
+        nome: "Impiantistica industriale",
+        testo:
+          "Costruttori di skid, tubazioni di processo, impianti modulari e sistemi industriali complessi.",
+      },
+      {
+        glifo: "calore",
+        nome: "Energia e termotecnica",
+        testo:
+          "Produttori di caldaie, generatori di vapore, scambiatori di calore e sistemi energetici.",
+      },
+      {
+        glifo: "reattore",
+        nome: "Chimico, petrolchimico e Oil & Gas",
+        testo:
+          "Costruttori di reattori, separatori, recipienti e apparecchiature per impianti di processo.",
+      },
+      {
+        glifo: "freddo",
+        nome: "Refrigerazione industriale",
+        testo:
+          "Produttori di chiller, gruppi frigoriferi e componenti di sistemi frigoriferi in pressione.",
+      },
+      {
+        glifo: "autoclave",
+        nome: "Alimentare e farmaceutico",
+        testo:
+          "Costruttori di autoclavi, sterilizzatori e apparecchiature di processo per ambienti regolamentati.",
+      },
+    ],
+  },
+
+  // ── 8. IL NOSTRO TEAM AL TUO FIANCO ───────────────────────────────────────
+  // Nei testi forniti il prodotto era scritto "Tracciami": corretto in
+  // "Tracciamy", l'unica modifica applicata. Il passaggio dal "tu" della
+  // descrizione al "voi" delle fasi è voluto e resta com'era.
+  team: {
+    etichetta: "Il nostro team al tuo fianco",
+    titolo: "Dalla prima analisi alla piena operatività.",
+    testo:
+      "Non ti lasciamo solo con una piattaforma. Ti accompagniamo in ogni fase, dall'analisi dei processi produttivi fino all'utilizzo quotidiano di Tracciamy.",
+    cta: "Richiedi una demo",
+    fasi: [
+      {
+        numero: "01",
+        nome: "Partiamo dal vostro processo",
+        testo:
+          "Analizziamo insieme come gestite oggi materiali, distinte, certificati e documentazione tecnica. Individuiamo le attività manuali e definiamo come semplificarle con Tracciamy.",
+      },
+      {
+        numero: "02",
+        nome: "Configuriamo la piattaforma",
+        testo:
+          "Adattiamo Tracciamy alla vostra operatività, organizzando i flussi di tracciabilità e la documentazione necessaria. Testiamo il funzionamento insieme al vostro team su casi reali.",
+      },
+      {
+        numero: "03",
+        nome: "Vi accompagniamo nel tempo",
+        testo:
+          "Affianchiamo il personale durante l'avvio, lo formiamo sull'utilizzo della piattaforma e rimaniamo il vostro riferimento per supporto ed evoluzioni future.",
+      },
+    ],
+  },
+
+  // ── 9. CONTATTI ───────────────────────────────────────────────────────────
   contattiSezione: {
     titolo: "Richiedi informazioni.",
     testo: "Ti aiutiamo a certificare velocemente.",

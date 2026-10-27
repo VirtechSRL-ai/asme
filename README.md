@@ -25,7 +25,22 @@ Un file per sezione, in `src/components/sezioni/`:
 | 03  | Mantieni        | `mantieni.tsx`    | flusso a sinistra, testo a destra              |
 | 04  | L'applicativo   | `applicativo.tsx` | dashboard tridimensionale su fondo scuro       |
 | 05  | Per chi produce | `pubblico.tsx`    | posizionamento, titolo e testo affiancati      |
-| 06  | Contatti        | `site-footer.tsx` | chiusura, recapiti e logo Virtech              |
+| 06  | Settori         | `settori.tsx`     | griglia editoriale a sei colonne, card 4+2/2+2+2/6 |
+| 07  | Team            | `team.tsx`        | tre tappe collegate da una linea continua      |
+| 08  | Contatti        | `site-footer.tsx` | chiusura, recapiti e logo Virtech              |
+
+L'ordine risponde, una domanda alla volta, a ciò che il visitatore si chiede:
+che cos'è, che cosa ottengo, come restano collegate le informazioni, com'è
+fatto il prodotto, a chi serve, per quale settore, chi mi accompagna, come
+chiedere una demo.
+
+I glifi dei sei settori sono in `src/components/glifi.tsx`: segni astratti
+disegnati sulle forme ricorrenti di ciascun ambito (un recipiente, uno skid, uno
+scambiatore), non icone generiche né fotografie di repertorio.
+
+Nei testi del percorso di adozione il prodotto era scritto «Tracciami»: corretto
+in «Tracciamy», l'unica modifica applicata. Il passaggio dal «tu» della
+descrizione al «voi» delle fasi è voluto ed è stato mantenuto.
 
 Le colonne si alternano fra una sezione e l'altra per dare ritmo allo
 scorrimento.
