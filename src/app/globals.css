@@ -28,8 +28,8 @@
   --scuro-fondo: color-mix(in srgb, #000000 45%, var(--scuro));
 
   --r-pill: 999px;
-  --r-card: 18px;
-  --r-pannello: 26px;
+  --r-card: 12px;
+  --r-pannello: 18px;
   --r-xs: 8px;
 
   --curva: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -108,24 +108,24 @@ body {
   /* Un unico titolo su due righe: stessa dimensione, stesso peso, stessa
      famiglia. La seconda riga non è un sottotitolo. */
   .titolo-hero {
-    font-size: clamp(2rem, 0.8rem + 4.4vw, 3.25rem);
-    font-weight: 800;
+    font-size: clamp(2.125rem, 0.75rem + 5vw, 3.75rem);
+    font-weight: 700;
+    letter-spacing: -0.042em;
+    line-height: 1.0;
+    text-wrap: balance;
+  }
+
+  .titolo-sezione {
+    font-size: clamp(1.875rem, 1.2rem + 2.9vw, 2.75rem);
+    font-weight: 700;
     letter-spacing: -0.038em;
     line-height: 1.04;
     text-wrap: balance;
   }
 
-  .titolo-sezione {
-    font-size: clamp(1.9375rem, 1.35rem + 2.6vw, 2.875rem);
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.06;
-    text-wrap: balance;
-  }
-
   .titolo-minore {
     font-size: clamp(1.1875rem, 1.05rem + 0.6vw, 1.4375rem);
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.025em;
     line-height: 1.25;
   }
@@ -284,16 +284,17 @@ body {
     background-color: var(--scuro);
     background-image:
       radial-gradient(
-        ellipse 66% 52% at 50% -4%,
-        color-mix(in srgb, var(--verde) 20%, transparent),
-        transparent 72%
+        ellipse 90% 70% at 50% 108%,
+        color-mix(in srgb, var(--verde) 34%, transparent) 0%,
+        color-mix(in srgb, var(--verde) 12%, transparent) 45%,
+        transparent 75%
       ),
       radial-gradient(
-        ellipse 58% 48% at 92% 100%,
-        color-mix(in srgb, var(--verde) 13%, transparent),
-        transparent 70%
+        ellipse 70% 40% at 50% -6%,
+        color-mix(in srgb, var(--verde) 14%, transparent),
+        transparent 72%
       ),
-      linear-gradient(168deg, var(--scuro) 0%, var(--scuro-fondo) 100%);
+      linear-gradient(170deg, var(--scuro-fondo) 0%, var(--scuro) 60%);
     color: var(--chiaro);
   }
 
@@ -394,13 +395,15 @@ body {
   .pannello {
     position: relative;
     border-radius: var(--r-pannello);
-    border: 1px solid var(--bordo);
-    background: color-mix(in srgb, var(--chiaro) 86%, #ffffff);
+    border: 0;
+    background: #ffffff;
     box-shadow:
-      0 1px 2px color-mix(in srgb, var(--scuro) 6%, transparent),
-      0 12px 24px -12px color-mix(in srgb, var(--scuro) 18%, transparent),
-      0 40px 80px -48px color-mix(in srgb, var(--scuro) 45%, transparent),
-      0 50px 100px -70px color-mix(in srgb, var(--verde) 70%, transparent);
+      0 0 0 1px color-mix(in srgb, var(--scuro) 7%, transparent),
+      0 1px 2px color-mix(in srgb, var(--scuro) 3%, transparent),
+      0 3px 6px color-mix(in srgb, var(--scuro) 3%, transparent),
+      0 10px 20px -8px color-mix(in srgb, var(--scuro) 6%, transparent),
+      0 32px 64px -32px color-mix(in srgb, var(--scuro) 16%, transparent),
+      0 48px 96px -64px color-mix(in srgb, var(--verde) 55%, transparent);
     overflow: hidden;
   }
 
@@ -423,12 +426,14 @@ body {
   .su-scuro .pannello,
   .lastra-scura .pannello,
   .alone-scuro .pannello {
-    border-color: var(--bordo-su-scuro);
-    background: color-mix(in srgb, var(--chiaro) 7%, var(--scuro));
+    background: color-mix(in srgb, var(--chiaro) 6%, var(--scuro));
+    /* Filetto chiaro interno: sui fondi profondi definisce il bordo meglio
+       di una linea piena, come nelle interfacce scure dei riferimenti. */
     box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.5),
-      0 18px 36px -18px rgba(0, 0, 0, 0.6),
-      0 50px 90px -50px rgba(0, 0, 0, 0.8);
+      inset 0 0 0 1px color-mix(in srgb, var(--chiaro) 9%, transparent),
+      0 1px 2px rgba(0, 0, 0, 0.4),
+      0 16px 32px -16px rgba(0, 0, 0, 0.5),
+      0 48px 88px -48px rgba(0, 0, 0, 0.7);
   }
 
   .su-scuro .pannello::before,
@@ -452,12 +457,13 @@ body {
 
   @media (hover: hover) and (pointer: fine) {
     .pannello-vivo:hover {
-      transform: translateY(-6px);
-      border-color: color-mix(in srgb, var(--verde) 55%, var(--bordo));
+      transform: translateY(-5px);
       box-shadow:
-        0 1px 2px color-mix(in srgb, var(--scuro) 8%, transparent),
-        0 22px 44px -18px color-mix(in srgb, var(--scuro) 24%, transparent),
-        0 60px 110px -60px color-mix(in srgb, var(--verde) 60%, transparent);
+        0 0 0 1px color-mix(in srgb, var(--verde) 45%, transparent),
+        0 2px 4px color-mix(in srgb, var(--scuro) 4%, transparent),
+        0 8px 16px -4px color-mix(in srgb, var(--scuro) 7%, transparent),
+        0 28px 56px -24px color-mix(in srgb, var(--scuro) 18%, transparent),
+        0 64px 120px -64px color-mix(in srgb, var(--verde) 75%, transparent);
     }
   }
 
