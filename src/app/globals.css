@@ -369,19 +369,31 @@ body {
     object-position: center top;
     /* Valore scelto guardando il contrasto reale del testo sopra le parti
        più sature del filmato, non a occhio */
-    opacity: 0.72;
+    opacity: 0.52;
   }
 
-  /* Secondo velo: spegne il filmato dove passano titolo e pulsanti e lo
-     riporta al colore della pagina sul bordo inferiore. */
+  /* Secondo velo: spegne il filmato dove passano marchio, titolo e pulsanti e
+     lo riporta al colore della pagina sul bordo inferiore. */
   .scena-video::after {
     content: "";
     position: absolute;
     inset: 0;
     background-image:
+      /* Fascia alta: sotto l'intestazione il filmato è pieno, e il simbolo
+         verde del marchio su verde arriva a 1,07:1 — sparisce. Qui il fondo
+         torna al chiaro della pagina, così il logo ha il contrasto per cui è
+         stato disegnato. È una sfumatura, non una barra: non si vede dove
+         finisce. */
+      linear-gradient(
+          to bottom,
+          var(--chiaro) 0%,
+          var(--chiaro) 10%,
+          color-mix(in srgb, var(--chiaro) 46%, transparent) 16%,
+          transparent 27%
+        ),
       radial-gradient(
         ellipse 58% 46% at 50% 44%,
-        color-mix(in srgb, var(--chiaro) 80%, transparent),
+        color-mix(in srgb, var(--chiaro) 62%, transparent),
         transparent 74%
       ),
       linear-gradient(
@@ -526,6 +538,15 @@ body {
     );
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--verde) 70%, transparent);
     color: var(--scuro);
+  }
+
+  /* Le schede della schermata scorrono quando non ci stanno in larghezza,
+     cioè sui telefoni. La dissolvenza sul bordo destro dice che continuano,
+     invece di farle sembrare tagliate a metà parola. Dove ci stanno tutte non
+     si vede, perché la fascia finisce prima del bordo. */
+  .schede-scorrevoli {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
   }
 
   /* Riga di fase dentro la schermata ricostruita: si accende al passaggio del

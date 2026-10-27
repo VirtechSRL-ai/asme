@@ -19,12 +19,17 @@ export function Pubblico() {
       <Contenitore>
         <Entra>
           <div className="lastra-scura lastra-rovescia px-6 py-16 sm:px-10 sm:py-20 lg:px-14">
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-end lg:gap-16">
+            {/* Le due colonne si allineano al centro, non al fondo: con
+                `items-end` il titolo scivolava nella metà bassa della lastra e
+                lasciava un vuoto sopra di sé. Le proporzioni sono più vicine,
+                perché a 0,65fr la colonna di destra andava a capo ogni
+                quattro parole. */}
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
               <div>
                 <Occhiello>{pubblico.etichetta}</Occhiello>
-                <h2 className="titolo-display mt-6 max-w-[18ch]">{pubblico.titolo}</h2>
+                <h2 className="titolo-display mt-6 max-w-[15ch]">{pubblico.titolo}</h2>
               </div>
-              <div className="lg:pb-2">
+              <div>
                 <p className="descrizione">{pubblico.testo}</p>
                 <a href="#contatti" className="bottone bottone-verde mt-8">
                   {azioni.contatta}

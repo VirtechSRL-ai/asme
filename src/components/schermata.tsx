@@ -183,7 +183,7 @@ export function Schermata() {
           </div>
 
           {/* Schede */}
-          <div className="mt-5 flex gap-5 overflow-x-auto border-b border-bordo px-4 sm:px-6">
+          <div className="schede-scorrevoli mt-5 flex gap-5 overflow-x-auto border-b border-bordo px-4 sm:px-6">
             {schermata.schede.map((scheda) => {
               const attiva = scheda === schermata.schedaAttiva;
               return (

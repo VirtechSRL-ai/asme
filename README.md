@@ -22,7 +22,7 @@ Un file per sezione, in `src/components/sezioni/`:
 | 01  | Hero            | `hero.tsx`        | filmato di fondo, titolo centrato, due pannelli sfalsati e un cartellino che li attraversa |
 | 02  | Ottieni         | `ottieni.tsx`     | testo stretto a sinistra, quattro fasi su un piano tinto a destra |
 | 03  | Mantieni        | `mantieni.tsx`    | lastra scura: testo in alto, flusso orizzontale a tutta misura |
-| 04  | L'applicativo   | `applicativo.tsx` | la misura più larga: riga d'apertura e la schermata a tutto campo |
+| 04  | L'applicativo   | `applicativo.tsx` | testo centrato sul proprio asse, schermata sotto e più stretta |
 | 05  | Per chi produce | `pubblico.tsx`    | seconda lastra scura, solo tipografia, luce dall'angolo opposto |
 | 06  | Settori         | `settori.tsx`     | selettore: elenco a sinistra, settore scelto in grande a destra |
 | 07  | Team            | `team.tsx`        | rotaia continua con tre nodi e numeri tipografici         |
@@ -98,6 +98,12 @@ pulsanti. L'immagine di posa sta sul contenitore, non sul `<video>`: resta
 visibile prima del caricamento, se la riproduzione non parte e con
 `prefers-reduced-motion`, dove il `<video>` viene tolto dal rendering. Il
 contenitore è in posizione assoluta, quindi la pagina non cambia mai altezza.
+
+La fascia in cima torna al `--chiaro` pieno, e non è un vezzo: il simbolo verde
+del marchio sopra il verde del filmato stava a 1,07:1 e spariva. Riportato il
+fondo al colore della pagina, il logo ha di nuovo il contrasto per cui è stato
+disegnato (simbolo 1,50:1, lettering 18,3:1), senza ricolorarlo. Chi abbassa
+quella sfumatura si riprende il problema.
 
 ### Le dashboard
 
