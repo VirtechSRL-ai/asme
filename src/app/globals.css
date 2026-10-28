@@ -367,9 +367,9 @@ body {
     height: 100%;
     object-fit: cover;
     object-position: center top;
-    /* Valore scelto guardando il contrasto reale del testo sopra le parti
-       più sature del filmato, non a occhio */
-    opacity: 0.52;
+    /* Il filmato deve restare un fondale, non un contenuto: a questa opacità
+       si legge il movimento e non si legge il dettaglio. */
+    opacity: 0.4;
   }
 
   /* Secondo velo: spegne il filmato dove passano marchio, titolo e pulsanti e
@@ -413,7 +413,21 @@ body {
     font-weight: 500;
   }
 
+  /* Con movimento ridotto il filmato sparisce e al suo posto resta
+     l'immagine di posa. Lo sfondo si dichiara solo qui: sotto il <video>
+     semitrasparente si sommerebbe alle immagini in movimento. */
   @media (prefers-reduced-motion: reduce) {
+    /* Il velo chiaro è dentro il background, non un'opacità sul contenitore:
+       l'opacità smorzerebbe anche lo strato ::after che protegge il testo. */
+    .scena-video {
+      background-image:
+        linear-gradient(
+          color-mix(in srgb, var(--chiaro) 60%, transparent),
+          color-mix(in srgb, var(--chiaro) 60%, transparent)
+        ),
+        url("/hero-tracciamy.webp");
+    }
+
     .scena-video video {
       display: none;
     }

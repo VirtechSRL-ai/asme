@@ -44,7 +44,9 @@ export const site = {
 
   // ── 1. HERO ───────────────────────────────────────────────────────────────
   hero: {
-    etichetta: "Per chi produce apparecchiature in pressione.",
+    // L'occhiello sopra il titolo è stato rimosso: la hero apre direttamente
+    // sul titolo. La stessa frase resta come occhiello della sezione
+    // "Per chi produce apparecchiature in pressione".
     // Le due righe sono un unico titolo: stessa dimensione, stesso peso.
     titoloRiga1: "Tracciabilità dei materiali",
     titoloRiga2Prima: "dalla distinta al ",

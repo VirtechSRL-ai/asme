@@ -19,7 +19,7 @@ Un file per sezione, in `src/components/sezioni/`:
 
 | #   | Sezione         | File              | Composizione                                              |
 | --- | --------------- | ----------------- | --------------------------------------------------------- |
-| 01  | Hero            | `hero.tsx`        | filmato di fondo, titolo centrato, due pannelli sfalsati e un cartellino che li attraversa |
+| 01  | Hero            | `hero.tsx`        | filmato di fondo, titolo centrato (senza occhiello), due pannelli sfalsati e un cartellino che li attraversa |
 | 02  | Ottieni         | `ottieni.tsx`     | testo stretto a sinistra, quattro fasi su un piano tinto a destra |
 | 03  | Mantieni        | `mantieni.tsx`    | lastra scura: testo in alto, flusso orizzontale a tutta misura |
 | 04  | L'applicativo   | `applicativo.tsx` | testo centrato sul proprio asse, schermata sotto e più stretta |
@@ -94,10 +94,16 @@ colori non appartengono al sito.
 Il montaggio è in `src/components/sfondo-video.tsx` e nella classe
 `.scena-video`. Il filmato non ha bordi perché una maschera radiale lo spegne
 verso i lati e verso il basso, e un secondo velo lo smorza dove passano titolo e
-pulsanti. L'immagine di posa sta sul contenitore, non sul `<video>`: resta
-visibile prima del caricamento, se la riproduzione non parte e con
-`prefers-reduced-motion`, dove il `<video>` viene tolto dal rendering. Il
-contenitore è in posizione assoluta, quindi la pagina non cambia mai altezza.
+pulsanti. **L'immagine di posa non va messa come sfondo del contenitore.** Il `<video>`
+è semitrasparente, quindi uno sfondo sotto di lui non resta nascosto: si somma
+al filmato e si vede il primo fotogramma, fermo, mescolato alle immagini in
+movimento — sembra un doppione e il movimento pare sbagliato. La posa la
+gestiscono l'attributo `poster`, che il browser toglie da solo appena ha il
+primo fotogramma, e la regola per `prefers-reduced-motion`, dove il `<video>`
+sparisce e lo sfondo prende il suo posto senza sovrapporsi a niente (lì il velo
+chiaro è dentro il `background-image`, non un'opacità sul contenitore, che
+smorzerebbe anche lo strato `::after` che protegge il testo). Il contenitore è
+in posizione assoluta, quindi la pagina non cambia mai altezza.
 
 La fascia in cima torna al `--chiaro` pieno, e non è un vezzo: il simbolo verde
 del marchio sopra il verde del filmato stava a 1,07:1 e spariva. Riportato il

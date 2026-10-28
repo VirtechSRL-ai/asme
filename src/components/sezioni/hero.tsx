@@ -146,15 +146,15 @@ function Stato() {
 
 export function Hero() {
   return (
-    <section className="velo-hero relative pt-10 pb-20 sm:pt-14 sm:pb-28">
+    // Senza l'occhiello il titolo partirebbe troppo vicino all'intestazione:
+    // lo spazio che occupava torna come padding, non come vuoto.
+    <section className="velo-hero relative pt-16 pb-20 sm:pt-24 sm:pb-28">
       <SfondoVideo />
 
       <Contenitore className="relative z-10">
         <Entra className="mx-auto max-w-[66rem] text-center">
-          <p className="occhiello">{hero.etichetta}</p>
-
           {/* Un unico titolo su due righe: stessa dimensione, stesso peso */}
-          <h1 className="titolo-hero mt-7">
+          <h1 className="titolo-hero">
             <span className="block">{hero.titoloRiga1}</span>
             <span className="block">
               {hero.titoloRiga2Prima}
