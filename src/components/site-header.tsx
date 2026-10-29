@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
+import { ContactCta } from "./contact-cta";
 import { Logo } from "./logo";
 import { Contenitore, Freccia } from "./ui";
 
@@ -56,10 +57,10 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <a href="#contatti" className="bottone bottone-verde hidden lg:inline-flex">
+          <ContactCta source="header_desktop" className="bottone bottone-verde hidden lg:inline-flex">
             {site.azioni.contatta}
             <Freccia />
-          </a>
+          </ContactCta>
 
           <button
             type="button"
@@ -106,15 +107,15 @@ export function SiteHeader() {
               </a>
             ))}
           </nav>
-          <a
-            href="#contatti"
+          <ContactCta
+            source="header_mobile"
             onClick={() => setAperto(false)}
             tabIndex={aperto ? undefined : -1}
             className="bottone bottone-verde mb-6 mt-5 w-full"
           >
             {site.azioni.contatta}
             <Freccia />
-          </a>
+          </ContactCta>
         </Contenitore>
       </div>
     </header>

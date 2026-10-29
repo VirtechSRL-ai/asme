@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { ContactCta } from "../contact-cta";
 import { Entra } from "../entra";
 import { Contenitore, Freccia, Occhiello } from "../ui";
 
@@ -70,10 +71,10 @@ export function Team() {
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-1/2 h-32 w-full max-w-[26rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--verde)_28%,transparent),transparent_70%)]"
           />
-          <a href="#contatti" className="bottone bottone-verde relative">
+          <ContactCta source="team" className="bottone bottone-verde relative">
             {team.cta}
             <Freccia />
-          </a>
+          </ContactCta>
         </Entra>
       </Contenitore>
     </section>

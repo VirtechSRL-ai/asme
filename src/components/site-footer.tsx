@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cacheLife } from "next/cache";
 import { site } from "@/content/site";
+import { ContactActions } from "./contact-actions";
 import { Entra } from "./entra";
 import { Logo } from "./logo";
 import { Contenitore, Luogo, Posta, Sito, Telefono } from "./ui";
@@ -72,19 +73,12 @@ export async function SiteFooter() {
         <Entra className="mx-auto max-w-2xl py-20 text-center sm:py-24">
           <h2 className="titolo-sezione">{contattiSezione.titolo}</h2>
           <p className="descrizione mx-auto mt-5 max-w-lg">{contattiSezione.testo}</p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href={MAILTO} className="bottone bottone-verde w-full sm:w-auto">
-              <Posta />
-              {contatti.email}
-            </a>
-            <a
-              href={`tel:${contatti.telefonoLink}`}
-              className="bottone bottone-contorno w-full sm:w-auto"
-            >
-              <Telefono />
-              {contatti.telefono}
-            </a>
-          </div>
+          <ContactActions
+            emailHref={MAILTO}
+            phoneHref={`tel:${contatti.telefonoLink}`}
+            email={contatti.email}
+            phone={contatti.telefono}
+          />
         </Entra>
 
         {/* Riga informativa */}

@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { ContactCta } from "../contact-cta";
 import { Entra } from "../entra";
 import { SfondoVideo } from "../sfondo-video";
 import { Contenitore, Freccia, Spunta, Verifica } from "../ui";
@@ -165,10 +166,10 @@ export function Hero() {
           <p className="descrizione mx-auto mt-6 max-w-lg">{hero.testo}</p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href="#contatti" className="bottone bottone-verde w-full sm:w-auto">
+            <ContactCta source="hero" className="bottone bottone-verde w-full sm:w-auto">
               {azioni.contatta}
               <Freccia />
-            </a>
+            </ContactCta>
             <a href="#ottieni" className="bottone bottone-contorno w-full sm:w-auto">
               {azioni.cosaOttieni}
               <Freccia />

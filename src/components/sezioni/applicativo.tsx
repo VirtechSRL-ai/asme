@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { ContactCta } from "../contact-cta";
 import { Entra } from "../entra";
 import { Schermata } from "../schermata";
 import { Contenitore, Freccia } from "../ui";
@@ -33,10 +34,10 @@ export function Applicativo() {
           <p className="descrizione mt-6">
             {applicativo.testoRiga1} {applicativo.testoRiga2}
           </p>
-          <a href="#contatti" className="bottone bottone-verde mt-8">
+          <ContactCta source="product_showcase" className="bottone bottone-verde mt-8">
             {azioni.contatta}
             <Freccia />
-          </a>
+          </ContactCta>
         </Entra>
 
         {/* La schermata sta sotto e più stretta del testo che la introduce:

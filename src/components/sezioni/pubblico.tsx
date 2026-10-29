@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { ContactCta } from "../contact-cta";
 import { Entra } from "../entra";
 import { Contenitore, Freccia, Occhiello } from "../ui";
 
@@ -31,10 +32,10 @@ export function Pubblico() {
               </div>
               <div>
                 <p className="descrizione">{pubblico.testo}</p>
-                <a href="#contatti" className="bottone bottone-verde mt-8">
+                <ContactCta source="audience" className="bottone bottone-verde mt-8">
                   {azioni.contatta}
                   <Freccia />
-                </a>
+                </ContactCta>
               </div>
             </div>
           </div>

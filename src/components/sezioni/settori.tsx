@@ -1,12 +1,19 @@
 "use client";
 
 import { useRef, useState, type KeyboardEvent } from "react";
+import posthog from "posthog-js";
+import { posthogAnalyticsLogger } from "@/lib/posthog-log";
 import { site } from "@/content/site";
 import { Entra } from "../entra";
 import { glifi } from "../glifi";
 import { Contenitore, Freccia } from "../ui";
 
 const { settori } = site;
+
+const isPostHogConfigured = Boolean(
+  process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+    process.env.NEXT_PUBLIC_POSTHOG_HOST
+);
 
 /**
  * I sei ambiti industriali, come selettore invece che come griglia.
@@ -29,6 +36,15 @@ export function Settori() {
   const voce = settori.voci[attivo];
   const Glifo = glifi[voce.glifo];
 
+  function selezionaSettore(indice: number) {
+    setAttivo(indice);
+    if (isPostHogConfigured) {
+      const sector = settori.voci[indice].nome;
+      posthog.capture("sector_selected", { sector });
+      posthogAnalyticsLogger.info("sector selected", { sector });
+    }
+  }
+
   function suTasto(evento: KeyboardEvent<HTMLButtonElement>, indice: number) {
     const totale = settori.voci.length;
     const mappa: Record<string, number> = {
@@ -42,7 +58,7 @@ export function Settori() {
     const prossimo = mappa[evento.key];
     if (prossimo === undefined) return;
     evento.preventDefault();
-    setAttivo(prossimo);
+    selezionaSettore(prossimo);
     bottoni.current[prossimo]?.focus();
   }
 
@@ -73,7 +89,7 @@ export function Settori() {
                   aria-selected={scelto}
                   aria-controls="settore-scheda"
                   tabIndex={scelto ? 0 : -1}
-                  onClick={() => setAttivo(i)}
+                  onClick={() => selezionaSettore(i)}
                   onKeyDown={(e) => suTasto(e, i)}
                   className={`riga-settore group ${scelto ? "riga-settore-scelta" : ""}`}
                 >
