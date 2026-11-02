@@ -15,7 +15,7 @@ export const site = {
   azienda: "Virtech",
   payoff: "Tracciabilità dei materiali, dalla distinta al fascicolo tecnico",
   descrizione:
-    "Tracciamy collega distinte, componenti e certificati, segnala ciò che manca e prepara la documentazione tecnica per chi produce apparecchiature in pressione.",
+    "Tracciamy collega distinte, componenti e certificati, segnala ciò che manca e prepara la documentazione tecnica per chi produce componenti e apparecchiature certificate.",
   url: "https://www.tracciamy.it",
 
   contatti: {
@@ -46,7 +46,7 @@ export const site = {
   hero: {
     // L'occhiello sopra il titolo è stato rimosso: la hero apre direttamente
     // sul titolo. La stessa frase resta come occhiello della sezione
-    // "Per chi produce apparecchiature in pressione".
+    // "Per chi produce componenti e apparecchiature certificate".
     // Le due righe sono un unico titolo: stessa dimensione, stesso peso.
     titoloRiga1: "Tracciabilità dei materiali",
     titoloRiga2Prima: "dalla distinta al ",
@@ -216,9 +216,9 @@ export const site = {
     },
   },
 
-  // ── 6. PER CHI PRODUCE APPARECCHIATURE IN PRESSIONE ───────────────────────
+  // ── 6. PER CHI PRODUCE COMPONENTI E APPARECCHIATURE CERTIFICATE ───────────
   pubblico: {
-    etichetta: "Per chi produce apparecchiature in pressione",
+    etichetta: "Per chi produce componenti e apparecchiature certificate",
     titolo: "La soluzione ideale per tracciare ogni unità prodotta.",
     testo:
       "Tracciamy è studiata per chi gestisce distinte, materiali e certificati di fornitori. Aiuta il team di qualità, produzione e ufficio tecnico a ritrovare ciò che serve per ogni unità e a preparare la documentazione.",
@@ -306,7 +306,8 @@ export const site = {
   },
 
   footer: {
-    claim: "Tracciabilità dei materiali per chi produce apparecchiature in pressione.",
+    claim:
+      "Tracciabilità dei materiali per chi produce componenti e apparecchiature certificate.",
     legale: "Virtech S.r.l.",
   },
 } as const;
