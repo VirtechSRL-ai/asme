@@ -27,16 +27,19 @@ export const site = {
     sitoEtichetta: "virtechsrl.com",
   },
 
+  // Gli ancoraggi partono da "/" perché la navigazione è condivisa con la
+  // pagina /certificazioni: da lì devono prima tornare alla home.
   nav: [
-    { etichetta: "Ottieni", href: "#ottieni" },
-    { etichetta: "Mantieni", href: "#mantieni" },
-    { etichetta: "L'applicativo", href: "#applicativo" },
-    { etichetta: "Settori", href: "#settori" },
+    { etichetta: "Certificazioni", href: "/certificazioni" },
+    { etichetta: "Ottieni", href: "/#ottieni" },
+    { etichetta: "Mantieni", href: "/#mantieni" },
+    { etichetta: "L'applicativo", href: "/#applicativo" },
+    { etichetta: "Settori", href: "/#settori" },
   ],
 
   azioni: {
     contatta: "Contattaci",
-    cosaOttieni: "Cosa ottieni",
+    tutteCertificazioni: "Tutte le certificazioni",
     demo: "Richiedi una demo",
   },
 
@@ -53,25 +56,30 @@ export const site = {
     titoloRiga2Spicca: "fascicolo tecnico.",
     testo:
       "Riduciamo del 90% il tempo necessario a preparare la documentazione di tracciabilità.",
-    // Dashboard sintetica: due sole tessere, come nella reference.
-    cruscotto: {
-      titolo: "Documenti",
-      filtri: ["Tutti", "Distinte", "Certificati"],
-      tessere: [
-        { quota: 96, valore: "96", etichetta: "Collegati", tono: "verde" },
-        { quota: 4, valore: "4", etichetta: "Da completare", tono: "neutro" },
-      ],
-    },
-    // Seconda dashboard, più discreta: una sola unità.
-    dettaglio: {
-      titolo: "Unità",
-      riferimento: "UN-0016",
-      campi: [
-        { etichetta: "Certificati", valore: "6 su 6" },
-        { etichetta: "Distinta", valore: "Completa" },
-      ],
-      stato: "Pronta per la verifica",
-    },
+    // La parte visiva della hero sono i sigilli delle cinque certificazioni
+    // in evidenza (elenco in content/certificazioni.ts): le dashboard
+    // dimostrative vivono nelle sezioni che spiegano l'applicativo.
+  },
+
+  // ── 2. PAGINA /certificazioni ─────────────────────────────────────────────
+  // I nomi e le descrizioni delle singole voci stanno in
+  // content/certificazioni.ts, riportati dai testi forniti senza modifiche.
+  certificazioni: {
+    etichetta: "Tutte le certificazioni",
+    titoloPrima: "Normative, qualifiche e ",
+    titoloSpicca: "fascicoli tecnici.",
+    testo:
+      "Dalla raccolta dei certificati dei materiali alla composizione del fascicolo: per ogni normativa e documento, ecco come Tracciamy ti aiuta a prepararlo.",
+    conteggio: "normative e documenti coperti",
+    fascicoliEtichetta: "Fascicoli e registri",
+    fascicoliTitoloPrima: "La documentazione di fabbricazione, ",
+    fascicoliTitoloSpicca: "raccolta e collegata.",
+    fascicoliTesto:
+      "Report, registri e dossier che Tracciamy compone collegando materiali, saldature, controlli e collaudi delle singole unità.",
+    // Distinzione dovuta: la piattaforma prepara la documentazione, le
+    // certificazioni le rilasciano gli organismi preposti.
+    nota: "Le certificazioni sono rilasciate dagli enti e dagli organismi preposti: Tracciamy prepara e organizza la documentazione necessaria.",
+    chiusura: "Vuoi vedere come Tracciamy prepara questi fascicoli sui tuoi documenti?",
   },
 
   // ── 3. OTTIENI ────────────────────────────────────────────────────────────

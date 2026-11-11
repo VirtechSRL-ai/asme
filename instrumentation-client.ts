@@ -9,7 +9,10 @@ if (!projectToken || !host) {
       ? "NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN"
       : "NEXT_PUBLIC_POSTHOG_HOST";
 
-    throw new Error(
+    // Avvisa senza lanciare: un errore non gestito qui ferma il JavaScript
+    // della pagina prima dell'idratazione, e i contenuti animati (che partono
+    // da opacità zero) non compaiono mai. Il sito in locale risultava vuoto.
+    console.error(
       `${missingVariable} variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once ${missingVariable} is configured`
     );
   }

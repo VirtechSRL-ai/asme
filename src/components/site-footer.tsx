@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { site } from "@/content/site";
 import { ContactActions } from "./contact-actions";
@@ -93,12 +94,12 @@ export async function SiteFooter() {
             <ul className="mt-4 flex flex-col">
               {nav.map((voce) => (
                 <li key={voce.href}>
-                  <a
+                  <Link
                     href={voce.href}
                     className="inline-block py-2.5 text-[0.9375rem] font-semibold text-su-scuro transition-colors hover:text-verde"
                   >
                     {voce.etichetta}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

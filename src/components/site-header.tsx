@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { ContactCta } from "./contact-cta";
@@ -41,19 +42,17 @@ export function SiteHeader() {
     >
       <Contenitore>
         <div className="flex h-20 items-center justify-between gap-6">
-          <a href="#" aria-label={`${site.nome}, torna all'inizio`} className="rounded-[10px]">
+          {/* "/" e non "#": dalla pagina delle certificazioni il marchio deve
+              riportare alla home, non in cima alla pagina corrente. */}
+          <Link href="/" aria-label={`${site.nome}, torna all'inizio`} className="rounded-[10px]">
             <Logo altezza={28} priority />
-          </a>
+          </Link>
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigazione principale">
             {site.nav.map((voce) => (
-              <a
-                key={voce.href}
-                href={voce.href}
-                className="voce-nav"
-              >
+              <Link key={voce.href} href={voce.href} className="voce-nav">
                 {voce.etichetta}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -95,7 +94,7 @@ export function SiteHeader() {
         <Contenitore>
           <nav className="flex flex-col py-2" aria-label="Navigazione principale">
             {site.nav.map((voce) => (
-              <a
+              <Link
                 key={voce.href}
                 href={voce.href}
                 onClick={() => setAperto(false)}
@@ -104,7 +103,7 @@ export function SiteHeader() {
               >
                 {voce.etichetta}
                 <Freccia className="h-4 w-4 text-verde-testo" />
-              </a>
+              </Link>
             ))}
           </nav>
           <ContactCta

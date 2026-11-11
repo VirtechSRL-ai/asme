@@ -610,6 +610,133 @@ body {
       0 30px 60px -40px color-mix(in srgb, var(--verde) 75%, transparent);
   }
 
+  /* ───────────────────────────────────────────────────────────────────────────
+     SIGILLI DELLE CERTIFICAZIONI
+     I badge geometrici della pagina /certificazioni. I colori stanno in
+     quattro variabili, così la stessa geometria vive sui fondi chiari e
+     sulla lastra scura senza duplicare il componente.
+     ───────────────────────────────────────────────────────────────────────── */
+  .sigillo {
+    --sigillo-g1: color-mix(in srgb, var(--verde) 26%, var(--chiaro));
+    --sigillo-g2: color-mix(in srgb, var(--verde) 5%, #ffffff);
+    --sigillo-bordo: color-mix(in srgb, var(--verde) 42%, transparent);
+    --sigillo-anello: color-mix(in srgb, var(--verde-testo) 45%, transparent);
+    filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--scuro) 10%, transparent))
+      drop-shadow(0 10px 18px color-mix(in srgb, var(--verde) 22%, transparent));
+    transition: transform 0.45s var(--curva);
+  }
+
+  .lastra-scura .sigillo,
+  .alone-scuro .sigillo,
+  .su-scuro .sigillo {
+    --sigillo-g1: color-mix(in srgb, var(--verde) 22%, var(--scuro));
+    --sigillo-g2: color-mix(in srgb, var(--chiaro) 5%, var(--scuro));
+    --sigillo-bordo: color-mix(in srgb, var(--verde) 50%, transparent);
+    --sigillo-anello: color-mix(in srgb, var(--verde) 55%, transparent);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45))
+      drop-shadow(0 12px 22px color-mix(in srgb, var(--verde) 14%, transparent));
+  }
+
+  /* Il sigillo risponde alla carta che lo ospita, non al proprio hover:
+     un'inclinazione minima, da tesserino mosso sul tavolo, non da pulsante. */
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .sigillo {
+      transform: translateY(-3px) rotate(-2deg);
+    }
+  }
+
+  /* Sigle corte: monogramma pieno, in scala con il sigillo che lo ospita */
+  .sigillo-sigla {
+    font-size: clamp(0.875rem, 38cqw, 1.625rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--verde-testo);
+  }
+
+  /* Nomi lunghi: lapidario maiuscolo su più righe */
+  .sigillo-sigla-lunga {
+    font-size: clamp(0.46875rem, 15cqw, 0.5625rem);
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    line-height: 1.45;
+    text-align: center;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--verde-testo);
+  }
+
+  .lastra-scura .sigillo-sigla,
+  .alone-scuro .sigillo-sigla,
+  .su-scuro .sigillo-sigla,
+  .lastra-scura .sigillo-sigla-lunga,
+  .alone-scuro .sigillo-sigla-lunga,
+  .su-scuro .sigillo-sigla-lunga {
+    color: var(--verde);
+  }
+
+  /* Dimensione dei monogrammi legata al sigillo che li contiene */
+  .sigillo > span {
+    container-type: size;
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     FONDALE DELLA PAGINA CERTIFICAZIONI
+     Stessa logica dell'ambiente della home, con le luci ridistribuite
+     sull'altezza di questa pagina: morbide, ampie, mai macchie.
+     ───────────────────────────────────────────────────────────────────────── */
+  .ambiente-cert {
+    position: relative;
+    background-color: var(--chiaro);
+    background-image:
+      radial-gradient(
+        ellipse 74% 22% at 8% 0%,
+        color-mix(in srgb, var(--verde) 44%, transparent),
+        transparent 66%
+      ),
+      radial-gradient(
+        ellipse 58% 18% at 100% 7%,
+        color-mix(in srgb, var(--verde) 26%, transparent),
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse 60% 14% at 0% 46%,
+        color-mix(in srgb, var(--verde) 24%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 70% 16% at 70% 94%,
+        color-mix(in srgb, var(--verde) 28%, transparent),
+        transparent 70%
+      );
+    background-repeat: no-repeat;
+  }
+
+  /* Velo luminoso dietro la hero della pagina: definito, poi si dissolve */
+  .velo-cert {
+    position: relative;
+  }
+
+  .velo-cert::before {
+    content: "";
+    position: absolute;
+    inset: -6rem 0 0 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        ellipse 58% 60% at 22% 10%,
+        color-mix(in srgb, var(--verde) 26%, transparent),
+        transparent 64%
+      ),
+      radial-gradient(
+        ellipse 52% 52% at 86% 20%,
+        color-mix(in srgb, var(--verde) 18%, transparent),
+        transparent 66%
+      );
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  }
+
   /* Lastra profonda: una sezione scura che galleggia nell'ambiente chiaro.
      Gli angoli arrotondati e il margine evitano lo stacco netto a tutta
      larghezza, che sarebbe una cesura nella composizione. */

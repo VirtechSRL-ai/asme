@@ -43,7 +43,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning: lo script dell'intro marca <html> prima che
     // React idrati, quindi server e client differiscono di proposito.
-    <html lang="it" className={`${manrope.variable} h-full`} suppressHydrationWarning>
+    //
+    // data-scroll-behavior: da Next 16 il router non sospende più lo
+    // scroll-behavior smooth del CSS durante i cambi di pagina, quindi il
+    // reset dello scroll diventava una scorsa animata e la nuova pagina
+    // si apriva dal fondo. Con l'attributo, Next torna a passare ad "auto"
+    // per il reset e le àncore interne restano fluide.
+    <html
+      lang="it"
+      data-scroll-behavior="smooth"
+      className={`${manrope.variable} h-full`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Senza JavaScript gli ingressi allo scroll non scattano: i contenuti
             devono restare visibili comunque. */}
