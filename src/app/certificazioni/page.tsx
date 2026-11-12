@@ -3,6 +3,7 @@ import { certificazioni, fascicoli, inEvidenza } from "@/content/certificazioni"
 import { site } from "@/content/site";
 import { ContactCta } from "@/components/contact-cta";
 import { Entra } from "@/components/entra";
+import { SfondoVideo } from "@/components/sfondo-video";
 import { Sigillo } from "@/components/sigillo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -26,7 +27,11 @@ function HeroCertificazioni() {
 
   return (
     <section className="velo-cert relative pt-14 pb-16 sm:pt-20 sm:pb-20">
-      <Contenitore className="relative">
+      {/* Il filmato delle onde, trattato come quello della home: stessa
+          fotografia, maschera centrata sulla composizione di questa hero. */}
+      <SfondoVideo variante="certificazioni" />
+
+      <Contenitore className="relative z-10">
         <Entra className="mx-auto max-w-[46rem] text-center">
           <Occhiello>{testi.etichetta}</Occhiello>
           <h1 className="titolo-display mt-6">
@@ -34,6 +39,16 @@ function HeroCertificazioni() {
             <span className="spicca">{testi.titoloSpicca}</span>
           </h1>
           <p className="descrizione mx-auto mt-6 max-w-xl">{testi.testo}</p>
+
+          <div className="mt-8 flex justify-center">
+            <ContactCta
+              source="certificazioni_hero"
+              className="bottone bottone-verde w-full sm:w-auto"
+            >
+              {site.azioni.contatta}
+              <Freccia />
+            </ContactCta>
+          </div>
         </Entra>
 
         <Entra cascata className="mt-12 flex items-center justify-center sm:mt-14">
@@ -90,7 +105,7 @@ function RaccoltaPrincipale() {
                   />
                   <div className={larga ? "min-w-0" : "mt-6"}>
                     <h2 className="titolo-minore">{cert.nome}</h2>
-                    <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-secondario">
+                    <p className="mt-2.5 text-[1rem] leading-relaxed text-secondario">
                       {cert.descrizione}
                     </p>
                   </div>
@@ -105,14 +120,16 @@ function RaccoltaPrincipale() {
 }
 
 /**
- * I fascicoli e i registri di fabbricazione, sulla lastra scura: la seconda
- * metà della collezione cambia registro visivo senza cambiare identità.
+ * I fascicoli e i registri di fabbricazione, su una pedana tinta chiara: la
+ * lettura viene prima di tutto, quindi superfici bianche, testi scuri alla
+ * stessa taglia della raccolta principale e due sole voci per riga, con
+ * tutto lo spazio che ognuna merita. Su telefono le carte vanno in colonna.
  */
 function RaccoltaFascicoli() {
   return (
     <section className="relative pb-16 sm:pb-24">
       <Contenitore>
-        <div className="lastra-scura lastra-rovescia px-6 py-12 sm:px-10 sm:py-16 lg:px-14">
+        <div className="scena px-5 py-10 sm:px-10 sm:py-14 lg:px-14">
           <Entra className="max-w-2xl">
             <Occhiello>{testi.fascicoliEtichetta}</Occhiello>
             <h2 className="titolo-sezione mt-5">
@@ -122,28 +139,26 @@ function RaccoltaFascicoli() {
             <p className="descrizione mt-5">{testi.fascicoliTesto}</p>
           </Entra>
 
-          <Entra
-            cascata
-            as="ul"
-            className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
-          >
+          {/* Ogni carta entra per conto suo quando arriva in vista: su una
+              griglia lunga la cascata unica farebbe comparire tutto insieme */}
+          <ul className="mt-10 grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
             {fascicoli.map((cert) => (
-              <li key={cert.nome}>
-                <article className="pannello pannello-vivo group h-full p-6">
-                  <Sigillo cert={cert} className="h-20 w-20" />
-                  <h3 className="mt-5 text-[1.0625rem] font-extrabold tracking-[-0.02em]">
-                    {cert.nome}
-                  </h3>
-                  <p className="mt-2 text-[0.875rem] leading-relaxed text-su-scuro">
-                    {cert.descrizione}
-                  </p>
+              <Entra as="li" key={cert.nome}>
+                <article className="pannello pannello-vivo group flex h-full flex-col gap-5 p-6 sm:flex-row sm:items-start sm:gap-6 sm:p-7">
+                  <Sigillo cert={cert} className="h-20 w-20 sm:h-[5.75rem] sm:w-[5.75rem]" />
+                  <div className="min-w-0">
+                    <h3 className="titolo-minore">{cert.nome}</h3>
+                    <p className="mt-2.5 text-[1rem] leading-relaxed text-secondario">
+                      {cert.descrizione}
+                    </p>
+                  </div>
                 </article>
-              </li>
+              </Entra>
             ))}
-          </Entra>
+          </ul>
 
-          <Entra ritardo={200}>
-            <p className="nota-dimostrativa mt-10">{testi.nota}</p>
+          <Entra ritardo={150}>
+            <p className="nota-dimostrativa mt-8">{testi.nota}</p>
           </Entra>
         </div>
       </Contenitore>

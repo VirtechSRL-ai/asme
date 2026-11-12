@@ -404,11 +404,31 @@ body {
       );
   }
 
+  /* La variante della pagina certificazioni: stesso trattamento, ma la
+     maschera si centra perché lì la composizione non pende a sinistra. */
+  .scena-video-cert {
+    -webkit-mask-image: radial-gradient(
+      120% 92% at 50% 22%,
+      #000 28%,
+      rgba(0, 0, 0, 0.72) 56%,
+      rgba(0, 0, 0, 0.26) 76%,
+      transparent 90%
+    );
+    mask-image: radial-gradient(
+      120% 92% at 50% 22%,
+      #000 28%,
+      rgba(0, 0, 0, 0.72) 56%,
+      rgba(0, 0, 0, 0.26) 76%,
+      transparent 90%
+    );
+  }
+
   /* Sopra il filmato il testo secondario non regge: misurato sui pixel
      renderizzati stava a 4,05:1 contro i 4,5 richiesti. Qui scurisce, senza
      toccare la dimensione — ed è anche la frase commerciale della pagina,
      quindi un po' più di peso le sta bene. */
-  .velo-hero .descrizione {
+  .velo-hero .descrizione,
+  .velo-cert .descrizione {
     color: color-mix(in srgb, var(--scuro) 82%, var(--chiaro));
     font-weight: 500;
   }
@@ -426,6 +446,16 @@ body {
           color-mix(in srgb, var(--chiaro) 60%, transparent)
         ),
         url("/hero-tracciamy.webp");
+    }
+
+    /* Dopo la regola generica, così la posa giusta vince sulla sua */
+    .scena-video-cert {
+      background-image:
+        linear-gradient(
+          color-mix(in srgb, var(--chiaro) 60%, transparent),
+          color-mix(in srgb, var(--chiaro) 60%, transparent)
+        ),
+        url("/certificazioni/onde.jpg");
     }
 
     .scena-video video {
