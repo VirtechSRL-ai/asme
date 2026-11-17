@@ -222,10 +222,29 @@ body {
 
   /* L'ambiente: un solo fondale per l'intera pagina. Le luci sono collocate
      in percentuale sull'altezza totale, quindi le sfumature attraversano i
-     confini fra le sezioni invece di interrompersi a ogni stacco. */
+     confini fra le sezioni invece di interrompersi a ogni stacco.
+     Le luci vivono su due livelli che si muovono con tempi diversi: le
+     dispari su uno, le pari sull'altro, così la luce non scorre in blocco
+     ma cambia lentamente i suoi rapporti. Solo transform e opacity: nessun
+     ridisegno, il movimento lo fa il compositore. */
   .ambiente {
     position: relative;
+    isolation: isolate;
+    overflow-x: clip;
     background-color: var(--chiaro);
+  }
+
+  .ambiente::before,
+  .ambiente::after {
+    content: "";
+    position: absolute;
+    inset: 0 -4%;
+    z-index: -1;
+    pointer-events: none;
+    background-repeat: no-repeat;
+  }
+
+  .ambiente::before {
     background-image:
       /* 1 · la luce entra dall'alto a sinistra e attraversa la hero in
          diagonale: è la sorgente da cui discende tutto il resto */
@@ -234,55 +253,60 @@ body {
         color-mix(in srgb, var(--verde) 52%, transparent),
         transparent 66%
       ),
-      /* 2 · contro-luce a destra, più tenue: tiene la diagonale */
-        radial-gradient(
-          ellipse 62% 13% at 100% 9%,
-          color-mix(in srgb, var(--verde) 30%, transparent),
-          transparent 68%
-        ),
       /* 3 · raccordo fra la hero e il processo, dove finisce il filmato */
-        radial-gradient(
-          ellipse 56% 7% at 44% 13%,
-          color-mix(in srgb, var(--verde) 26%, transparent),
-          transparent 70%
-        ),
-      /* 4 · dietro il processo di Ottieni, dal lato della dashboard */
-        radial-gradient(
-          ellipse 52% 8% at 96% 19%,
-          color-mix(in srgb, var(--verde) 34%, transparent),
-          transparent 70%
-        ),
+      radial-gradient(
+        ellipse 56% 7% at 44% 13%,
+        color-mix(in srgb, var(--verde) 26%, transparent),
+        transparent 70%
+      ),
       /* 5 · respiro fra la lastra scura e l'applicativo */
-        radial-gradient(
-          ellipse 46% 7% at 4% 38%,
-          color-mix(in srgb, var(--verde) 26%, transparent),
-          transparent 72%
-        ),
-      /* 6 · sotto la dashboard dell'applicativo, la luce più ampia */
-        radial-gradient(
-          ellipse 78% 9% at 46% 45%,
-          color-mix(in srgb, var(--verde) 36%, transparent),
-          transparent 70%
-        ),
+      radial-gradient(
+        ellipse 46% 7% at 4% 38%,
+        color-mix(in srgb, var(--verde) 26%, transparent),
+        transparent 72%
+      ),
       /* 7 · la griglia dei settori, da sinistra */
-        radial-gradient(
-          ellipse 54% 8% at 0% 62%,
-          color-mix(in srgb, var(--verde) 32%, transparent),
-          transparent 70%
-        ),
-      /* 8 · e dal lato opposto, più in basso */
-        radial-gradient(
-          ellipse 50% 7% at 100% 72%,
-          color-mix(in srgb, var(--verde) 28%, transparent),
-          transparent 70%
-        ),
+      radial-gradient(
+        ellipse 54% 8% at 0% 62%,
+        color-mix(in srgb, var(--verde) 32%, transparent),
+        transparent 70%
+      ),
       /* 9 · il percorso del team, al centro, verso la chiusura */
-        radial-gradient(
-          ellipse 72% 9% at 52% 85%,
-          color-mix(in srgb, var(--verde) 34%, transparent),
-          transparent 70%
-        );
-    background-repeat: no-repeat;
+      radial-gradient(
+        ellipse 72% 9% at 52% 85%,
+        color-mix(in srgb, var(--verde) 34%, transparent),
+        transparent 70%
+      );
+    animation: luce-deriva-a 46s ease-in-out infinite alternate;
+  }
+
+  .ambiente::after {
+    background-image:
+      /* 2 · contro-luce a destra, più tenue: tiene la diagonale */
+      radial-gradient(
+        ellipse 62% 13% at 100% 9%,
+        color-mix(in srgb, var(--verde) 30%, transparent),
+        transparent 68%
+      ),
+      /* 4 · dietro il processo di Ottieni, dal lato della dashboard */
+      radial-gradient(
+        ellipse 52% 8% at 96% 19%,
+        color-mix(in srgb, var(--verde) 34%, transparent),
+        transparent 70%
+      ),
+      /* 6 · sotto la dashboard dell'applicativo, la luce più ampia */
+      radial-gradient(
+        ellipse 78% 9% at 46% 45%,
+        color-mix(in srgb, var(--verde) 36%, transparent),
+        transparent 70%
+      ),
+      /* 8 · e dal lato opposto, più in basso */
+      radial-gradient(
+        ellipse 50% 7% at 100% 72%,
+        color-mix(in srgb, var(--verde) 28%, transparent),
+        transparent 70%
+      );
+    animation: luce-deriva-b 58s ease-in-out -20s infinite alternate;
   }
 
   /* Le sezioni chiare non hanno fondale proprio: lasciano vedere l'ambiente */
@@ -468,21 +492,52 @@ body {
      Serve a non lasciare l'interfaccia appoggiata sul nulla: il pannello
      bianco emerge da una superficie colorata che gli appartiene.
      ───────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────────────────────────────────────
+     SCENA — il piano tinto su cui poggia una dashboard
+     Serve a non lasciare l'interfaccia appoggiata sul nulla: il pannello
+     bianco emerge da una superficie colorata che gli appartiene.
+     La luce che sale dal bordo inferiore è divisa in due fuochi, appena a
+     sinistra e appena a destra del centro, che si alternano lentamente:
+     la luce ondeggia sotto il pannello senza che nulla si sposti davvero.
+     ───────────────────────────────────────────────────────────────────────── */
   .scena {
     position: relative;
+    isolation: isolate;
     border-radius: clamp(1.25rem, 2.4vw, 2rem);
-    background-image:
-      radial-gradient(
-        ellipse 68% 96% at 50% 116%,
-        color-mix(in srgb, var(--verde) 48%, transparent),
-        transparent 68%
-      ),
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--verde) 7%, var(--chiaro)) 0%,
-        color-mix(in srgb, var(--verde) 22%, var(--chiaro)) 100%
-      );
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--verde) 7%, var(--chiaro)) 0%,
+      color-mix(in srgb, var(--verde) 22%, var(--chiaro)) 100%
+    );
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--verde) 24%, transparent);
+  }
+
+  .scena::before,
+  .scena::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .scena::before {
+    background-image: radial-gradient(
+      ellipse 62% 96% at 40% 116%,
+      color-mix(in srgb, var(--verde) 48%, transparent),
+      transparent 68%
+    );
+    animation: scena-onda-a 26s ease-in-out infinite alternate;
+  }
+
+  .scena::after {
+    background-image: radial-gradient(
+      ellipse 62% 96% at 60% 116%,
+      color-mix(in srgb, var(--verde) 48%, transparent),
+      transparent 68%
+    );
+    animation: scena-onda-b 26s ease-in-out infinite alternate;
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
@@ -642,72 +697,471 @@ body {
 
   /* ───────────────────────────────────────────────────────────────────────────
      SIGILLI DELLE CERTIFICAZIONI
-     I badge geometrici della pagina /certificazioni. I colori stanno in
-     quattro variabili, così la stessa geometria vive sui fondi chiari e
-     sulla lastra scura senza duplicare il componente.
+     Lo stesso oggetto per ogni voce, dalla home alle carte: il logo
+     ufficiale nei suoi colori, o la sigla in Manrope. Nessuna tinta per voce.
      ───────────────────────────────────────────────────────────────────────── */
+  /* Il sigillo: rosetta bianca appena smerlata, fascia menta con il tipo
+     inciso sull'arco e il glifo del genere di documento alla base, cuore
+     bianco con il logo o la sigla. La rosetta è il segno universale del
+     timbro di conformità, qui ridotto a un'onda leggera. Le misure del
+     centro seguono la larghezza del sigillo (cqw), dalla home alle carte. */
   .sigillo {
-    --sigillo-g1: color-mix(in srgb, var(--verde) 26%, var(--chiaro));
-    --sigillo-g2: color-mix(in srgb, var(--verde) 5%, #ffffff);
-    --sigillo-bordo: color-mix(in srgb, var(--verde) 42%, transparent);
-    --sigillo-anello: color-mix(in srgb, var(--verde-testo) 45%, transparent);
-    filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--scuro) 10%, transparent))
-      drop-shadow(0 10px 18px color-mix(in srgb, var(--verde) 22%, transparent));
-    transition: transform 0.45s var(--curva);
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    container-type: inline-size;
+    aspect-ratio: 1;
+    color: var(--scuro);
+    filter:
+      drop-shadow(0 1px 1px color-mix(in srgb, var(--scuro) 7%, transparent))
+      drop-shadow(0 8px 12px color-mix(in srgb, var(--scuro) 12%, transparent));
+    transition:
+      transform 0.45s var(--curva),
+      filter 0.45s var(--curva);
   }
 
-  .lastra-scura .sigillo,
-  .alone-scuro .sigillo,
-  .su-scuro .sigillo {
-    --sigillo-g1: color-mix(in srgb, var(--verde) 22%, var(--scuro));
-    --sigillo-g2: color-mix(in srgb, var(--chiaro) 5%, var(--scuro));
-    --sigillo-bordo: color-mix(in srgb, var(--verde) 50%, transparent);
-    --sigillo-anello: color-mix(in srgb, var(--verde) 55%, transparent);
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45))
-      drop-shadow(0 12px 22px color-mix(in srgb, var(--verde) 14%, transparent));
+  .sg-tela {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
   }
 
-  /* Il sigillo risponde alla carta che lo ospita, non al proprio hover:
-     un'inclinazione minima, da tesserino mosso sul tavolo, non da pulsante. */
+  .sg-rosetta {
+    fill: #ffffff;
+    stroke: color-mix(in srgb, var(--scuro) 10%, transparent);
+    stroke-width: 0.8;
+  }
+
+  .sg-fascia {
+    fill: url(#sigillo-fascia);
+    stroke: color-mix(in srgb, var(--verde) 60%, transparent);
+    stroke-width: 0.8;
+  }
+
+  .sg-fascia-alto {
+    stop-color: color-mix(in srgb, var(--verde) 10%, var(--chiaro));
+  }
+
+  .sg-fascia-basso {
+    stop-color: color-mix(in srgb, var(--verde) 26%, var(--chiaro));
+  }
+
+  .sg-cuore {
+    fill: #ffffff;
+    stroke: color-mix(in srgb, var(--verde) 60%, transparent);
+    stroke-width: 0.8;
+  }
+
+  .sg-tipo {
+    fill: var(--verde-testo);
+    font-size: 8.2px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+  }
+
+  .sg-glifo {
+    fill: none;
+    stroke: var(--verde-testo);
+    stroke-width: 0.95;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sg-glifo-pieno {
+    fill: var(--verde-testo);
+    stroke: none;
+  }
+
+  .sg-glifo-testo {
+    fill: var(--verde-testo);
+    stroke: none;
+    font-size: 10.5px;
+    font-weight: 800;
+  }
+
+  .sg-centro {
+    position: absolute;
+    inset: 22%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+
+  .sg-sigla {
+    font-size: 17.5cqw;
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .sg-nome {
+    font-size: 8.8cqw;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .sg-logo {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Il sigillo ridotto del gruppo «E molte altre» */
+  .sigillo-mini {
+    position: relative;
+    display: block;
+    width: 2.875rem;
+    height: 2.875rem;
+    margin-left: -0.5rem;
+    container-type: inline-size;
+    color: var(--scuro);
+    filter: drop-shadow(0 3px 5px color-mix(in srgb, var(--scuro) 14%, transparent));
+  }
+
+  .sigillo-mini .sg-centro {
+    inset: 16%;
+    font-size: 20cqw;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .sigillo-mini-conto .sg-cuore {
+    fill: var(--verde-velo);
+  }
+
+  .sigillo-mini-conto .sg-centro {
+    color: var(--verde-testo);
+    font-size: 24cqw;
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     SIGILLI DELLA HOME (hero e pagina dedicata)
+     Cinque sigilli distinti, ognuno con il suo tipo sotto, distanziati in
+     una composizione centrata: niente barra, niente tessere. A destra il
+     gruppo «E molte altre», staccato e senza contenitore.
+     ───────────────────────────────────────────────────────────────────────── */
+  .cert-preview {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cert-preview-intro {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+    color: var(--testo-secondario);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .cert-composizione {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(1.5rem, 3.5vw, 3.25rem);
+  }
+
+  .cert-medaglie {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1.25rem, 3vw, 2.75rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cert-medaglia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.875rem;
+    border-radius: var(--r-card);
+  }
+
+  .sigillo-medaglia {
+    width: clamp(6rem, 8.4vw, 7.5rem);
+  }
+
+  .cert-medaglia-nome {
+    max-width: 9.5rem;
+    color: var(--testo-secondario);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+    text-wrap: balance;
+  }
+
   @media (hover: hover) and (pointer: fine) {
-    .group:hover .sigillo {
-      transform: translateY(-3px) rotate(-2deg);
+    .cert-medaglia:hover .sigillo-medaglia {
+      transform: translateY(-4px);
+      filter:
+        drop-shadow(0 2px 2px color-mix(in srgb, var(--scuro) 8%, transparent))
+        drop-shadow(0 16px 22px color-mix(in srgb, var(--verde-testo) 26%, transparent));
     }
   }
 
-  /* Sigle corte: monogramma pieno, in scala con il sigillo che lo ospita */
-  .sigillo-sigla {
-    font-size: clamp(0.875rem, 38cqw, 1.625rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1;
+  /* «E molte altre»: allineato al centro dei sigilli, non alle etichette */
+  .cert-altre {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.625rem;
+    height: clamp(6rem, 8.4vw, 7.5rem);
+    cursor: default;
+  }
+
+  .cert-gruppo {
+    display: flex;
+    padding-left: 0.375rem;
+  }
+
+  .cert-altre-testo {
+    color: var(--testo-secondario);
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* Tablet: i sigilli restano in riga, le altre scendono sotto, centrate */
+  @media (max-width: 1023px) {
+    .cert-composizione {
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .cert-altre {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.875rem;
+      height: auto;
+    }
+  }
+
+  /* Il nastro esiste solo su telefono: da 640px in su i suoi due involucri
+     spariscono dal layout e la copia non c'è. */
+  .cert-nastro-finestra,
+  .cert-nastro {
+    display: contents;
+  }
+
+  .cert-medaglie-copia {
+    display: none;
+  }
+
+  /* Telefono: i sigilli scorrono in un nastro continuo, ripreso dalla fila
+     di loghi di Complaion — 20 px al secondo, lineare, senza pause; 40 px
+     fra un sigillo e l'altro; dissolvenza sui due lati (trasparente → pieno
+     al 15%, pieno → trasparente dall'86%). Solo i sigilli, senza didascalie:
+     il tipo è inciso nel sigillo, il nome resta per i lettori di schermo.
+     Il nastro contiene due copie: scorrere di metà larghezza chiude il giro
+     senza stacco. Un giro: 5 × (88 + 40) px = 640 px ÷ 20 px/s = 32 s. */
+  @media (max-width: 639px) {
+    .cert-preview-intro {
+      margin-bottom: 1.25rem;
+      font-size: 0.625rem;
+      letter-spacing: 0.08em;
+    }
+
+    .cert-composizione {
+      gap: 1.25rem;
+    }
+
+    .cert-nastro-finestra {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      /* spazio per l'ombra dei sigilli, recuperato fuori */
+      padding-block: 0.875rem;
+      margin-block: -0.875rem;
+      -webkit-mask-image: linear-gradient(
+        270deg,
+        transparent 0%,
+        #000 14.9%,
+        #000 86.1%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(270deg, transparent 0%, #000 14.9%, #000 86.1%, transparent 100%);
+    }
+
+    .cert-nastro {
+      display: flex;
+      width: max-content;
+      animation: cert-nastro-scorre 32s linear infinite;
+      will-change: transform;
+    }
+
+    .cert-medaglie,
+    .cert-medaglie-copia {
+      display: flex;
+      flex: 0 0 auto;
+      justify-content: flex-start;
+      gap: 2.5rem;
+      padding-right: 2.5rem;
+    }
+
+    .cert-medaglie > li {
+      flex: 0 0 auto;
+    }
+
+    .sigillo-medaglia {
+      width: 5.5rem;
+    }
+
+    .cert-nastro .cert-medaglia-nome {
+      display: none;
+    }
+  }
+
+  @keyframes cert-nastro-scorre {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* Movimento ridotto: il nastro si ferma e diventa una fila da scorrere
+     col dito, con aggancio a ogni sigillo. */
+  @media (max-width: 639px) and (prefers-reduced-motion: reduce) {
+    .cert-nastro-finestra {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .cert-nastro {
+      animation: none;
+      padding-inline: 15%;
+    }
+
+    .cert-medaglie > li {
+      scroll-snap-align: center;
+    }
+
+    .cert-medaglie-copia {
+      display: none;
+    }
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     CARTE DELLE CERTIFICAZIONI (pagina /certificazioni)
+     ───────────────────────────────────────────────────────────────────────── */
+  .titolo-carta {
+    font-size: clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem);
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    line-height: 1.22;
+    color: var(--scuro);
+  }
+
+  .testo-carta {
+    color: var(--testo-secondario);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  /* Il tipo: stessa pillola e stessa tinta per ogni voce */
+  .cert-tipo {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0.3125rem 0.75rem;
+    border-radius: var(--r-pill);
+    background: var(--verde-velo);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--verde) 30%, transparent);
     color: var(--verde-testo);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
-  /* Nomi lunghi: lapidario maiuscolo su più righe */
-  .sigillo-sigla-lunga {
-    font-size: clamp(0.46875rem, 15cqw, 0.5625rem);
-    font-weight: 800;
-    letter-spacing: 0.09em;
-    line-height: 1.45;
-    text-align: center;
-    text-transform: uppercase;
-    text-wrap: balance;
+  /* L'invito in calce alle carte: testo verde scuro e freccia che avanza */
+  .invito-cert {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--r-xs);
     color: var(--verde-testo);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
-  .lastra-scura .sigillo-sigla,
-  .alone-scuro .sigillo-sigla,
-  .su-scuro .sigillo-sigla,
-  .lastra-scura .sigillo-sigla-lunga,
-  .alone-scuro .sigillo-sigla-lunga,
-  .su-scuro .sigillo-sigla-lunga {
-    color: var(--verde);
+  .invito-cert svg {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.35s var(--curva);
   }
 
-  /* Dimensione dei monogrammi legata al sigillo che li contiene */
-  .sigillo > span {
-    container-type: size;
+  @media (hover: hover) and (pointer: fine) {
+    .invito-cert:hover {
+      color: var(--scuro);
+    }
+
+    .invito-cert:hover svg {
+      transform: translateX(4px);
+    }
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     FASCICOLI E REGISTRI
+     Due carte per riga: sigillo a sinistra, contenuto a destra. La testata
+     della sezione divide titolo e testo su due colonne, come un'apertura
+     editoriale.
+     ───────────────────────────────────────────────────────────────────────── */
+  .carta-fascicolo {
+    display: flex;
+    flex-direction: column;
+    gap: 1.375rem;
+    padding: 1.75rem;
+  }
+
+  .sigillo-fascicolo {
+    width: 5.5rem;
+    align-self: flex-start;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .carta-fascicolo {
+      padding: 2rem;
+    }
+  }
+
+  .carta-fascicolo-testo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    flex: 1;
+  }
+
+  /* Sigillo accanto al testo dove la carta è larga: telefono orizzontale
+     (una colonna) e desktop (due colonne). Su tablet, con due colonne
+     strette, il sigillo torna sopra e il testo ha tutta la larghezza. */
+  @media (min-width: 640px) and (max-width: 767px), (min-width: 1024px) {
+    .carta-fascicolo {
+      flex-direction: row;
+      align-items: stretch;
+      gap: 1.75rem;
+      padding: 2rem 2rem 1.875rem;
+    }
+
+    .sigillo-fascicolo {
+      width: 6.25rem;
+    }
   }
 
   /* ───────────────────────────────────────────────────────────────────────────
@@ -717,7 +1171,22 @@ body {
      ───────────────────────────────────────────────────────────────────────── */
   .ambiente-cert {
     position: relative;
+    isolation: isolate;
+    overflow-x: clip;
     background-color: var(--chiaro);
+  }
+
+  .ambiente-cert::before,
+  .ambiente-cert::after {
+    content: "";
+    position: absolute;
+    inset: 0 -4%;
+    z-index: -1;
+    pointer-events: none;
+    background-repeat: no-repeat;
+  }
+
+  .ambiente-cert::before {
     background-image:
       radial-gradient(
         ellipse 74% 22% at 8% 0%,
@@ -725,21 +1194,26 @@ body {
         transparent 66%
       ),
       radial-gradient(
-        ellipse 58% 18% at 100% 7%,
-        color-mix(in srgb, var(--verde) 26%, transparent),
-        transparent 68%
-      ),
-      radial-gradient(
         ellipse 60% 14% at 0% 46%,
         color-mix(in srgb, var(--verde) 24%, transparent),
         transparent 70%
+      );
+    animation: luce-deriva-b 52s ease-in-out infinite alternate;
+  }
+
+  .ambiente-cert::after {
+    background-image:
+      radial-gradient(
+        ellipse 58% 18% at 100% 7%,
+        color-mix(in srgb, var(--verde) 26%, transparent),
+        transparent 68%
       ),
       radial-gradient(
         ellipse 70% 16% at 70% 94%,
         color-mix(in srgb, var(--verde) 28%, transparent),
         transparent 70%
       );
-    background-repeat: no-repeat;
+    animation: luce-deriva-a 44s ease-in-out -16s infinite alternate;
   }
 
   /* Velo luminoso dietro la hero della pagina: definito, poi si dissolve */
@@ -770,22 +1244,17 @@ body {
   /* Lastra profonda: una sezione scura che galleggia nell'ambiente chiaro.
      Gli angoli arrotondati e il margine evitano lo stacco netto a tutta
      larghezza, che sarebbe una cesura nella composizione. */
+  /* Lastra profonda: una sezione scura che galleggia nell'ambiente chiaro.
+     Gli angoli arrotondati e il margine evitano lo stacco netto a tutta
+     larghezza, che sarebbe una cesura nella composizione.
+     Il fondo resta sulla lastra, le luci verdi su un livello più ampio della
+     lastra stessa che deriva piano: i bordi non si scoprono mai. */
   .lastra-scura {
     position: relative;
+    isolation: isolate;
     border-radius: clamp(1.5rem, 3vw, 2.5rem);
     background-color: var(--scuro);
-    background-image:
-      radial-gradient(
-        ellipse 60% 50% at 18% 0%,
-        color-mix(in srgb, var(--verde) 22%, transparent),
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 55% 60% at 100% 100%,
-        color-mix(in srgb, var(--verde) 16%, transparent),
-        transparent 72%
-      ),
-      linear-gradient(160deg, var(--scuro) 0%, var(--scuro-fondo) 100%);
+    background-image: linear-gradient(160deg, var(--scuro) 0%, var(--scuro-fondo) 100%);
     color: var(--chiaro);
     box-shadow:
       0 30px 70px -40px color-mix(in srgb, var(--scuro) 60%, transparent),
@@ -793,25 +1262,63 @@ body {
     overflow: hidden;
   }
 
-  /* Seconda lastra scura, con la luce dalla parte opposta: le due sezioni
-     profonde della pagina non devono sembrare la stessa cosa ripetuta. */
-  .lastra-rovescia {
+  .lastra-scura::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    z-index: -1;
+    pointer-events: none;
     background-image:
       radial-gradient(
-        ellipse 70% 70% at 96% 6%,
+        ellipse 52% 42% at 22% 9%,
+        color-mix(in srgb, var(--verde) 22%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 48% 50% at 90% 91%,
+        color-mix(in srgb, var(--verde) 16%, transparent),
+        transparent 72%
+      );
+    animation: lastra-luce 38s ease-in-out infinite alternate;
+  }
+
+  /* Seconda lastra scura, con la luce dalla parte opposta: le due sezioni
+     profonde della pagina non devono sembrare la stessa cosa ripetuta, e
+     nemmeno muoversi allo stesso modo. */
+  .lastra-rovescia {
+    background-image: linear-gradient(200deg, var(--scuro-fondo) 0%, var(--scuro) 55%);
+  }
+
+  .lastra-rovescia::before {
+    background-image:
+      radial-gradient(
+        ellipse 60% 58% at 87% 14%,
         color-mix(in srgb, var(--verde) 26%, transparent),
         transparent 68%
       ),
       radial-gradient(
-        ellipse 50% 60% at 0% 100%,
+        ellipse 44% 50% at 10% 91%,
         color-mix(in srgb, var(--verde) 14%, transparent),
         transparent 70%
-      ),
-      linear-gradient(200deg, var(--scuro-fondo) 0%, var(--scuro) 55%);
+      );
+    animation: lastra-luce-rovescia 46s ease-in-out -10s infinite alternate;
   }
 
   .alone-scuro {
+    isolation: isolate;
     background-color: var(--scuro);
+    background-image: linear-gradient(170deg, var(--scuro-fondo) 0%, var(--scuro) 60%);
+    color: var(--chiaro);
+  }
+
+  /* Il bagliore del footer sale dal basso e respira: si allarga e si
+     ritira, ancorato al bordo inferiore. */
+  .alone-scuro::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background-image:
       radial-gradient(
         ellipse 90% 70% at 50% 108%,
@@ -823,11 +1330,114 @@ body {
         ellipse 70% 40% at 50% -6%,
         color-mix(in srgb, var(--verde) 14%, transparent),
         transparent 72%
-      ),
-      linear-gradient(170deg, var(--scuro-fondo) 0%, var(--scuro) 60%);
-    color: var(--chiaro);
+      );
+    transform-origin: 50% 100%;
+    animation: alone-respiro 30s ease-in-out infinite alternate;
   }
 
+  /* ───────────────────────────────────────────────────────────────────────────
+     MOVIMENTO DELLE LUCI
+     Derive di pochi punti percentuali in tempi lunghi (30–60 s), sempre in
+     andata e ritorno con accelerazione morbida: la luce cambia posizione e
+     intensità senza che si veda mai l'animazione. Ogni area ha il suo
+     movimento — il fondale scorre, le lastre derivano in diagonale, il
+     footer pulsa dal basso, i piani menta ondeggiano fra due punti.
+     I veli delle due hero restano fermi: lì si muove già il filmato, e una
+     seconda luce animata sopra il video raddoppierebbe il lavoro di
+     composizione senza aggiungere nulla.
+     ───────────────────────────────────────────────────────────────────────── */
+  @keyframes luce-deriva-a {
+    from {
+      transform: translate3d(-2.5%, 0, 0);
+      opacity: 0.8;
+    }
+    to {
+      transform: translate3d(2.5%, -0.3%, 0) scale(1.015);
+      opacity: 1;
+    }
+  }
+
+  @keyframes luce-deriva-b {
+    from {
+      transform: translate3d(2.5%, 0.25%, 0) scale(1.01);
+      opacity: 1;
+    }
+    to {
+      transform: translate3d(-2.5%, -0.2%, 0);
+      opacity: 0.76;
+    }
+  }
+
+  @keyframes lastra-luce {
+    from {
+      transform: translate3d(-3%, -2%, 0) scale(1);
+    }
+    to {
+      transform: translate3d(4%, 3%, 0) scale(1.06);
+    }
+  }
+
+  @keyframes lastra-luce-rovescia {
+    from {
+      transform: translate3d(3%, 2%, 0) scale(1.04);
+    }
+    to {
+      transform: translate3d(-4%, -2%, 0) scale(1);
+    }
+  }
+
+  @keyframes alone-respiro {
+    from {
+      transform: scale(1);
+      opacity: 0.82;
+    }
+    to {
+      transform: scale(1.1, 1.06);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scena-onda-a {
+    from { opacity: 1; }
+    to { opacity: 0.3; }
+  }
+
+  @keyframes scena-onda-b {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+  }
+
+  @keyframes luce-respiro {
+    from { opacity: 0.78; }
+    to { opacity: 1; }
+  }
+
+  /* Telefono: il fondale della pagina è lunghissimo, quindi lì niente
+     spostamenti — solo un respiro d'intensità, il più leggero da comporre. */
+  @media (max-width: 767px) {
+    .ambiente::before,
+    .ambiente-cert::before {
+      animation: luce-respiro 40s ease-in-out infinite alternate;
+    }
+
+    .ambiente::after,
+    .ambiente-cert::after {
+      animation: luce-respiro 52s ease-in-out -26s infinite alternate-reverse;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ambiente::before,
+    .ambiente::after,
+    .ambiente-cert::before,
+    .ambiente-cert::after,
+    .lastra-scura::before,
+    .alone-scuro::before,
+    .scena::before,
+    .scena::after {
+      animation: none;
+    }
+  }
 
   /* ───────────────────────────────────────────────────────────────────────────
      BOTTONI
@@ -1381,5 +1991,274 @@ body {
     .sipario-traccia {
       display: none;
     }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CAMBIO DI SCENA — home ⇄ certificazioni (View Transitions, React 19.3)
+   Una sequenza in tre tempi, tutta in transform e opacity:
+   1 · la pagina che lascia arretra e si spegne in fretta (220 ms);
+   2 · nel vuoto passa la luce menta del brand, che sale dal basso;
+   3 · la nuova pagina sale in scena (580 ms), mentre i cinque sigilli —
+       gli stessi oggetti sulle due pagine — scivolano nella nuova posizione.
+   Dentro la pagina, poi, titolo, contenuti e dettagli entrano in cascata.
+   L'intestazione non si muove mai: è il punto fermo del cambio.
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  --scena-uscita: 220ms;
+  --scena-entrata: 580ms;
+  /* L'entrata parte quando l'uscita è quasi finita: i due titoli non si
+     sovrappongono mai in trasparenza. */
+  --scena-attesa: 180ms;
+  --curva-uscita: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* I clic durante la transizione arrivano comunque alla pagina */
+::view-transition {
+  pointer-events: none;
+}
+
+/* Il fondo comune: le due pagine si dissolvono in sequenza, non insieme,
+   così per un istante si vede la luce menta che le lega. */
+::view-transition-old(root) {
+  animation: scena-svanisce var(--scena-uscita) var(--curva-uscita) both;
+}
+
+::view-transition-new(root) {
+  animation: scena-appare 400ms var(--curva) var(--scena-attesa) both;
+}
+
+/* Il palco fra le due pagine: le stesse luci menta della hero, che
+   salgono piano dal basso. È ciò che si vede nell'istante in cui una
+   pagina è uscita e l'altra sta entrando, insieme ai sigilli. */
+html:active-view-transition-type(apri-certificazioni)::view-transition,
+html:active-view-transition-type(torna-home)::view-transition {
+  background-color: var(--chiaro);
+  background-image:
+    radial-gradient(
+      ellipse 46% 40% at 10% 22%,
+      color-mix(in srgb, var(--verde) 40%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 36% at 92% 14%,
+      color-mix(in srgb, var(--verde) 26%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 62% 32% at 50% 96%,
+      color-mix(in srgb, var(--verde) 30%, transparent),
+      transparent 72%
+    );
+  background-repeat: no-repeat;
+  background-size: 120% 130%;
+  animation: scena-luce-sale var(--scena-entrata) var(--curva) both;
+}
+
+html:active-view-transition-type(torna-home)::view-transition {
+  animation-name: scena-luce-scende;
+}
+
+/* L'intestazione resta ferma e sopra a tutto */
+::view-transition-group(intestazione) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(intestazione) {
+  display: none;
+}
+
+::view-transition-new(intestazione) {
+  animation: none;
+}
+
+/* Andata: la home arretra, la pagina delle certificazioni sale */
+::view-transition-old(.scena-esce) {
+  animation: scena-arretra-su var(--scena-uscita) var(--curva-uscita) both;
+}
+
+::view-transition-new(.scena-entra) {
+  animation: scena-sale var(--scena-entrata) var(--curva) var(--scena-attesa) both;
+}
+
+/* Ritorno: speculare, la pagina scende e la home riaffiora */
+::view-transition-old(.scena-arretra) {
+  animation: scena-arretra-giu var(--scena-uscita) var(--curva-uscita) both;
+}
+
+::view-transition-new(.scena-rientra) {
+  animation: scena-riaffiora var(--scena-entrata) var(--curva) var(--scena-attesa) both;
+}
+
+/* I sigilli condivisi: un solo oggetto che si sposta, con una curva lunga
+   e morbida. Nessuna dissolvenza incrociata visibile fra vecchio e nuovo. */
+::view-transition-group(.sigillo-condiviso) {
+  animation-duration: 680ms;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.24, 1);
+  z-index: 50;
+}
+
+::view-transition-old(.sigillo-condiviso) {
+  animation: scena-svanisce 200ms linear both;
+}
+
+::view-transition-new(.sigillo-condiviso) {
+  animation: none;
+}
+
+@keyframes scena-svanisce {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scena-appare {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes scena-arretra-su {
+  to {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.975);
+  }
+}
+
+@keyframes scena-arretra-giu {
+  to {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+}
+
+@keyframes scena-sale {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  45% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scena-riaffiora {
+  from {
+    opacity: 0;
+    transform: translateY(-24px) scale(1.01);
+  }
+  45% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scena-luce-sale {
+  from {
+    background-position: 50% 0%;
+  }
+  to {
+    background-position: 50% 45%;
+  }
+}
+
+@keyframes scena-luce-scende {
+  from {
+    background-position: 50% 45%;
+  }
+  to {
+    background-position: 50% 0%;
+  }
+}
+
+/* Movimento ridotto: niente spostamenti, resta solo una dissolvenza breve */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+
+  html:active-view-transition-type(apri-certificazioni)::view-transition,
+  html:active-view-transition-type(torna-home)::view-transition {
+    animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RITMO DELLE ENTRATE E MICROINTERAZIONI DELLE CERTIFICAZIONI
+   Prima la struttura (titolo e testo, in cascata), poi i sigilli, poi i
+   dettagli secondari. Nelle griglie a due colonne la seconda carta di ogni
+   riga arriva un soffio dopo la prima, così la riga si legge da sinistra.
+   ───────────────────────────────────────────────────────────────────────────── */
+.cert-medaglie.entra-cascata[data-visibile="true"] > * {
+  transition-delay: 320ms;
+}
+.cert-medaglie.entra-cascata[data-visibile="true"] > *:nth-child(2) {
+  transition-delay: 400ms;
+}
+.cert-medaglie.entra-cascata[data-visibile="true"] > *:nth-child(3) {
+  transition-delay: 480ms;
+}
+.cert-medaglie.entra-cascata[data-visibile="true"] > *:nth-child(4) {
+  transition-delay: 560ms;
+}
+.cert-medaglie.entra-cascata[data-visibile="true"] > *:nth-child(5) {
+  transition-delay: 640ms;
+}
+
+.griglia-raccolta > li:nth-child(even) {
+  --ritardo: 110ms;
+}
+
+/* Tredici voci: l'ultima, sola sulla sua riga, si centra con la larghezza
+   di una colonna invece di restare appoggiata a sinistra. */
+@media (min-width: 768px) {
+  .griglia-raccolta > li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - 1.25rem) / 2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .griglia-raccolta > li:last-child:nth-child(odd) {
+    width: calc((100% - 1.5rem) / 2);
+  }
+}
+
+/* Sulla carta sotto il mouse il sigillo si solleva appena e il suo
+   filetto si accende di verde: la carta risponde, la struttura non cambia. */
+.carta-fascicolo .sigillo {
+  transition:
+    transform 0.5s var(--curva),
+    filter 0.5s var(--curva);
+}
+
+.carta-fascicolo .sg-fascia,
+.carta-fascicolo .sg-cuore {
+  transition: stroke 0.5s var(--curva);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pannello-vivo:hover .sigillo {
+    transform: translateY(-3px);
+    filter:
+      drop-shadow(0 2px 2px color-mix(in srgb, var(--scuro) 8%, transparent))
+      drop-shadow(0 14px 18px color-mix(in srgb, var(--verde-testo) 22%, transparent));
+  }
+
+  .pannello-vivo:hover .sg-fascia,
+  .pannello-vivo:hover .sg-cuore {
+    stroke: var(--verde);
   }
 }

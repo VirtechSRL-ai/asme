@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { certificazioni, fascicoli, inEvidenza } from "@/content/certificazioni";
+import { ancora, certificazioni, type Certificazione } from "@/content/certificazioni";
 import { site } from "@/content/site";
 import { ContactCta } from "@/components/contact-cta";
 import { Entra } from "@/components/entra";
 import { SfondoVideo } from "@/components/sfondo-video";
-import { Sigillo } from "@/components/sigillo";
+import { Sigillo } from "@/components/marchio";
+import { CertificazioniPreview } from "@/components/certificazioni-preview";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { Scena } from "@/components/scena";
 import { Contenitore, Freccia, Occhiello } from "@/components/ui";
 
 const testi = site.certificazioni;
@@ -16,15 +18,7 @@ export const metadata: Metadata = {
   description: testi.testo,
 };
 
-/**
- * Piccola hero introduttiva: titolo, testo e un trittico di sigilli che
- * anticipa la collezione. I sigilli sono inclinati e sovrapposti come
- * tesserini posati su un tavolo, non allineati in griglia.
- */
 function HeroCertificazioni() {
-  // ASME al centro (l'unico logo ufficiale), due sigilli tipografici ai lati.
-  const [asme, ped, pqr] = inEvidenza;
-
   return (
     <section className="velo-cert relative pt-14 pb-16 sm:pt-20 sm:pb-20">
       {/* Il filmato delle onde, trattato come quello della home: stessa
@@ -32,7 +26,7 @@ function HeroCertificazioni() {
       <SfondoVideo variante="certificazioni" />
 
       <Contenitore className="relative z-10">
-        <Entra className="mx-auto max-w-[46rem] text-center">
+        <Entra cascata className="mx-auto max-w-[46rem] text-center">
           <Occhiello>{testi.etichetta}</Occhiello>
           <h1 className="titolo-display mt-6">
             {testi.titoloPrima}
@@ -51,19 +45,11 @@ function HeroCertificazioni() {
           </div>
         </Entra>
 
-        <Entra cascata className="mt-12 flex items-center justify-center sm:mt-14">
-          <div className="-rotate-6 translate-y-2">
-            <Sigillo cert={pqr} className="h-24 w-24 sm:h-28 sm:w-28" />
-          </div>
-          <div className="relative z-10 -mx-3 sm:-mx-2">
-            <Sigillo cert={asme} className="h-32 w-32 sm:h-40 sm:w-40" />
-          </div>
-          <div className="rotate-6 translate-y-2">
-            <Sigillo cert={ped} className="h-24 w-24 sm:h-28 sm:w-28" />
-          </div>
-        </Entra>
+        <div className="mx-auto mt-12 w-full max-w-[68rem] sm:mt-14">
+          <CertificazioniPreview intro={false} />
+        </div>
 
-        <Entra ritardo={300} className="mt-10 text-center">
+        <Entra ritardo={900} className="mt-10 text-center">
           <p className="text-[0.9375rem] font-bold text-secondario">
             {certificazioni.length} {testi.conteggio}
           </p>
@@ -73,84 +59,46 @@ function HeroCertificazioni() {
   );
 }
 
-/**
- * La raccolta principale: griglia modulare con proporzioni variabili.
- * Le prime due voci (le normative) occupano carte larghe e orizzontali, le
- * tre di saldatura carte verticali più compatte: gerarchia, non monotonia.
- */
-function RaccoltaPrincipale() {
+/** La pillola del tipo: stessa tinta per tutte le voci */
+function Tipo({ children }: { children: string }) {
+  return <span className="cert-tipo">{children}</span>;
+}
+
+/** L'invito in calce a ogni carta: porta ai contatti, tracciato per voce */
+function Invito({ cert }: { cert: Certificazione }) {
   return (
-    <section className="relative pb-16 sm:pb-24">
-      <Contenitore>
-        <Entra cascata as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-6">
-          {inEvidenza.map((cert, i) => {
-            const larga = i < 2;
-            return (
-              <li
-                key={cert.nome}
-                className={
-                  larga
-                    ? "lg:col-span-3"
-                    : `lg:col-span-2 ${i === 4 ? "sm:col-span-2 lg:col-span-2" : ""}`
-                }
-              >
-                <article
-                  className={`pannello pannello-vivo group h-full p-7 sm:p-8 ${
-                    larga ? "flex flex-col gap-6 sm:flex-row sm:items-start" : ""
-                  }`}
-                >
-                  <Sigillo
-                    cert={cert}
-                    className={larga ? "h-28 w-28" : "h-[5.5rem] w-[5.5rem]"}
-                  />
-                  <div className={larga ? "min-w-0" : "mt-6"}>
-                    <h2 className="titolo-minore">{cert.nome}</h2>
-                    <p className="mt-2.5 text-[1rem] leading-relaxed text-secondario">
-                      {cert.descrizione}
-                    </p>
-                  </div>
-                </article>
-              </li>
-            );
-          })}
-        </Entra>
-      </Contenitore>
-    </section>
+    <ContactCta source={`certificazione_${ancora(cert)}`} className="invito-cert">
+      {testi.invito}
+      <span className="sr-only"> su {cert.nome}</span>
+      <Freccia />
+    </ContactCta>
   );
 }
 
 /**
- * I fascicoli e i registri di fabbricazione, su una pedana tinta chiara: la
- * lettura viene prima di tutto, quindi superfici bianche, testi scuri alla
- * stessa taglia della raccolta principale e due sole voci per riga, con
- * tutto lo spazio che ognuna merita. Su telefono le carte vanno in colonna.
+ * Un'unica raccolta: tutte le tredici voci, nell'ordine dei contenuti, con
+ * la stessa carta e la stessa importanza — due per riga su desktop, una su
+ * telefono. Le cinque mostrate nella hero aprono la griglia senza titoli o
+ * stacchi che ne facciano un gruppo a parte. Con un numero dispari di voci,
+ * l'ultima si centra sulla riga invece di restare appoggiata a sinistra.
  */
-function RaccoltaFascicoli() {
+function Raccolta() {
   return (
-    <section className="relative pb-16 sm:pb-24">
+    <section id="raccolta" className="relative pb-20 sm:pb-28">
       <Contenitore>
-        <div className="scena px-5 py-10 sm:px-10 sm:py-14 lg:px-14">
-          <Entra className="max-w-2xl">
-            <Occhiello>{testi.fascicoliEtichetta}</Occhiello>
-            <h2 className="titolo-sezione mt-5">
-              {testi.fascicoliTitoloPrima}
-              <span className="spicca">{testi.fascicoliTitoloSpicca}</span>
-            </h2>
-            <p className="descrizione mt-5">{testi.fascicoliTesto}</p>
-          </Entra>
-
-          {/* Ogni carta entra per conto suo quando arriva in vista: su una
-              griglia lunga la cascata unica farebbe comparire tutto insieme */}
-          <ul className="mt-10 grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
-            {fascicoli.map((cert) => (
-              <Entra as="li" key={cert.nome}>
-                <article className="pannello pannello-vivo group flex h-full flex-col gap-5 p-6 sm:flex-row sm:items-start sm:gap-6 sm:p-7">
-                  <Sigillo cert={cert} className="h-20 w-20 sm:h-[5.75rem] sm:w-[5.75rem]" />
-                  <div className="min-w-0">
-                    <h3 className="titolo-minore">{cert.nome}</h3>
-                    <p className="mt-2.5 text-[1rem] leading-relaxed text-secondario">
-                      {cert.descrizione}
-                    </p>
+        <div className="scena px-5 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+          <ul className="griglia-raccolta grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
+            {certificazioni.map((cert) => (
+              <Entra as="li" key={cert.nome} className="h-full">
+                <article id={ancora(cert)} className="pannello pannello-vivo carta-fascicolo h-full">
+                  <Sigillo cert={cert} className="sigillo-fascicolo" />
+                  <div className="carta-fascicolo-testo">
+                    <Tipo>{cert.tipo}</Tipo>
+                    <h2 className="titolo-carta mt-4">{cert.nome}</h2>
+                    <p className="testo-carta mt-2.5">{cert.descrizione}</p>
+                    <div className="mt-auto pt-5">
+                      <Invito cert={cert} />
+                    </div>
                   </div>
                 </article>
               </Entra>
@@ -190,12 +138,13 @@ export default function PaginaCertificazioni() {
   return (
     <>
       <SiteHeader />
+      <Scena>
       <main id="contenuto" className="ambiente-cert flex-1">
         <HeroCertificazioni />
-        <RaccoltaPrincipale />
-        <RaccoltaFascicoli />
+        <Raccolta />
         <Chiusura />
       </main>
+      </Scena>
       <SiteFooter />
     </>
   );

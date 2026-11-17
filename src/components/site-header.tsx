@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { ContactCta } from "./contact-cta";
+import { TORNA_HOME, versoDi } from "./scena";
 import { Logo } from "./logo";
 import { Contenitore, Freccia } from "./ui";
 
@@ -33,7 +34,10 @@ export function SiteHeader() {
   // fino al bordo superiore invece di fermarsi contro una fascia piena; appena
   // si scorre diventa una lastra velata che stacca dai contenuti.
   return (
+    // Nome di transizione fisso: durante il cambio di scena l'intestazione
+    // resta ferma, è il punto di riferimento mentre il contenuto si muove.
     <header
+      style={{ viewTransitionName: "intestazione" }}
       className={`sticky top-0 z-50 transition-[background-color,border-color] duration-300 ${
         scorso || aperto
           ? "border-b border-bordo bg-[color-mix(in_srgb,var(--chiaro)_78%,transparent)] backdrop-blur-xl"
@@ -44,13 +48,23 @@ export function SiteHeader() {
         <div className="flex h-20 items-center justify-between gap-6">
           {/* "/" e non "#": dalla pagina delle certificazioni il marchio deve
               riportare alla home, non in cima alla pagina corrente. */}
-          <Link href="/" aria-label={`${site.nome}, torna all'inizio`} className="rounded-[10px]">
+          <Link
+            href="/"
+            transitionTypes={TORNA_HOME}
+            aria-label={`${site.nome}, torna all'inizio`}
+            className="rounded-[10px]"
+          >
             <Logo altezza={28} priority />
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigazione principale">
             {site.nav.map((voce) => (
-              <Link key={voce.href} href={voce.href} className="voce-nav">
+              <Link
+                key={voce.href}
+                href={voce.href}
+                transitionTypes={versoDi(voce.href)}
+                className="voce-nav"
+              >
                 {voce.etichetta}
               </Link>
             ))}
@@ -97,6 +111,7 @@ export function SiteHeader() {
               <Link
                 key={voce.href}
                 href={voce.href}
+                transitionTypes={versoDi(voce.href)}
                 onClick={() => setAperto(false)}
                 tabIndex={aperto ? undefined : -1}
                 className="flex items-center justify-between border-b border-bordo py-4 text-[1.0625rem] font-bold"

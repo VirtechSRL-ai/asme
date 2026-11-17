@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { versoDi } from "./scena";
 import { cacheLife } from "next/cache";
 import { site } from "@/content/site";
 import { ContactActions } from "./contact-actions";
@@ -96,6 +97,7 @@ export async function SiteFooter() {
                 <li key={voce.href}>
                   <Link
                     href={voce.href}
+                    transitionTypes={versoDi(voce.href)}
                     className="inline-block py-2.5 text-[0.9375rem] font-semibold text-su-scuro transition-colors hover:text-verde"
                   >
                     {voce.etichetta}

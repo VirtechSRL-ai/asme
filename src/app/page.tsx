@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { Scena } from "@/components/scena";
 import { Applicativo } from "@/components/sezioni/applicativo";
 import { Hero } from "@/components/sezioni/hero";
 import { Mantieni } from "@/components/sezioni/mantieni";
@@ -20,6 +21,7 @@ export default function Home() {
       <SiteHeader />
       {/* Un solo fondale per tutte le sezioni chiare: le sfumature
           attraversano i confini invece di fermarsi a ogni stacco. */}
+      <Scena>
       <main id="contenuto" className="ambiente flex-1">
         <Hero />
         <Ottieni />
@@ -29,6 +31,7 @@ export default function Home() {
         <Settori />
         <Team />
       </main>
+      </Scena>
       <SiteFooter />
     </>
   );

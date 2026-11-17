@@ -56,7 +56,7 @@ export const site = {
     titoloRiga2Spicca: "fascicolo tecnico.",
     testo:
       "Riduciamo del 90% il tempo necessario a preparare la documentazione di tracciabilità.",
-    // La parte visiva della hero sono i sigilli delle cinque certificazioni
+    // La parte visiva della hero sono le lastre delle cinque certificazioni
     // in evidenza (elenco in content/certificazioni.ts): le dashboard
     // dimostrative vivono nelle sezioni che spiegano l'applicativo.
   },
@@ -65,17 +65,14 @@ export const site = {
   // I nomi e le descrizioni delle singole voci stanno in
   // content/certificazioni.ts, riportati dai testi forniti senza modifiche.
   certificazioni: {
+    // L'invito in calce a ogni carta: porta ai contatti del footer.
+    invito: "Richiedi informazioni",
     etichetta: "Tutte le certificazioni",
     titoloPrima: "Normative, qualifiche e ",
     titoloSpicca: "fascicoli tecnici.",
     testo:
       "Dalla raccolta dei certificati dei materiali alla composizione del fascicolo: per ogni normativa e documento, ecco come Tracciamy ti aiuta a prepararlo.",
     conteggio: "normative e documenti coperti",
-    fascicoliEtichetta: "Fascicoli e registri",
-    fascicoliTitoloPrima: "La documentazione di fabbricazione, ",
-    fascicoliTitoloSpicca: "raccolta e collegata.",
-    fascicoliTesto:
-      "Report, registri e dossier che Tracciamy compone collegando materiali, saldature, controlli e collaudi delle singole unità.",
     // Distinzione dovuta: la piattaforma prepara la documentazione, le
     // certificazioni le rilasciano gli organismi preposti.
     nota: "Le certificazioni sono rilasciate dagli enti e dagli organismi preposti: Tracciamy prepara e organizza la documentazione necessaria.",

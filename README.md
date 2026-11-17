@@ -278,6 +278,66 @@ npm run start   # avvia la build di produzione
 npm run lint    # controllo del codice
 ```
 
+## Presentazione delle certificazioni
+
+La home e l'apertura di `/certificazioni` usano entrambe
+`src/components/certificazioni-preview.tsx` e la selezione `inEvidenza` di
+`src/content/certificazioni.ts`: ASME, PED, PQR, WPS, Welding Book, nello stesso
+ordine. MRB resta disponibile nella raccolta degli altri fascicoli.
+Le 13 voci originali sono conservate, senza duplicati.
+
+Tutte le icone usano `Sigillo`, con proporzioni uniformi e fallback tipografico
+in caso di errore del logo. Le miniature del richiamo «E molte altre» sono MTR,
+WPQ e NDT, già presenti nel catalogo. Sotto 768 px, due copie identiche della
+selezione formano un nastro CSS a velocità costante; la seconda copia è nascosta
+alle tecnologie assistive. Lo scorrimento è automatico.
+Con `prefers-reduced-motion: reduce` il nastro diventa una raccolta statica,
+completa e disposta su più righe. Su desktop la selezione è sempre statica.
+
+### Provenienza dei loghi
+
+Le icone usano superfici opache nel colore chiaro di marca, il raggio
+`--r-card`, il bordo `--bordo` e un'ombra corta. Una fascia piena `--verde-velo`
+separa la categoria dalla sigla in Manrope. Non sono presenti riflessi,
+sfocature, doppi bordi luminosi, gradienti o trasparenze sulle superfici.
+L'hover enfatizza solo il bordo, senza sollevare l'icona. Il marchio ASME
+bianco resta invariato su un supporto verde scuro pieno. Le miniature sono
+allineate senza rotazioni. Il componente condiviso mantiene identiche tutte
+le versioni.
+
+I tre allegati della revisione sono stati identificati come marchi di
+[WPS Office](https://www.wps.com/about-us/), della società informatica
+[PQR](https://pqr.com/) e di
+[Pressure Equipment Directory](https://ped-online.com/).
+Non vengono associati a Welding Procedure Specification, Procedure
+Qualification Record o Pressure Equipment Directive: la coincidenza delle
+sigle non li rende loghi di queste voci tecniche.
+
+Verifica delle fonti effettuata il 12 novembre 2026:
+
+- **ASME:** `public/certificazioni/asme.svg` proviene direttamente da
+  [ASME](https://www.asme.org/assets/images/asme-logo-white.svg), nella variante
+  bianca utilizzata nell'intestazione del [sito ufficiale](https://www.asme.org/).
+  Il file è conservato senza ricolorazioni o ritagli. È il marchio dell'ente,
+  usato per identificare i codici trattati, non un attestato di certificazione
+  di Tracciamy. Il precedente JPG non è più usato.
+- **PED:** la [Commissione europea](https://single-market-economy.ec.europa.eu/sectors/pressure-equipment-and-gas-appliances/pressure-equipment-sector/pressure-equipment-directive_en)
+  identifica PED come direttiva 2014/68/UE. Non è stato individuato un logo
+  autonomo utilizzabile per la direttiva: viene mostrata la sigla PED, senza
+  sostituirla con il marchio CE o con il logo di un organismo di certificazione.
+- **PQR, WPS, WPQ:** i [moduli ufficiali ASME](https://www.asme.org/codes-standards/publications-information/asme-data-report-forms)
+  li identificano come registrazioni e specifiche tecniche (QW-483, QW-482,
+  QW-484A). Si usano sigle tipografiche, senza loghi di aziende omonime.
+- **MRB:** la [guida IADC](https://iadc.org/wp-content/uploads/2016/10/IADC-Standard-Manufacturing-Record-Book_V1.0-2016-10-18-FINAL-V2.pdf)
+  documenta il Manufacturing Record Book come raccolta di documentazione.
+  Non viene usato il logo IADC per rappresentarlo.
+- **Welding Book, Quality Data Book, MTR, Weld Log, Weld Map, NDT e Pressure
+  Test Reports:** sono le tipologie documentali già previste dal progetto.
+  Non è stato individuato un marchio ufficiale specifico utilizzabile;
+  vengono quindi rappresentate con i nomi o le sigle, senza marchi inventati.
+  [TWI](https://www.twi-global.com/who-we-are/who-we-work-with/industry-sectors/power/twi-software-to-support-the-power-industry)
+  descrive procedure, qualifiche e rapporti NDT come documentazione tecnica.
+
 ## Pubblicazione
 
 Il progetto è collegato a Vercel (`vercel --prod`) e al dominio
