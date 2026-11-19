@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { docsPath, getMcpCard, mcpCardPath, mcpDocsPath, mcpPath, productName, siteUrl } from "../../../lib/discovery";
+import { docsPath, mcpCardPath, mcpDocsPath, mcpPath, mcpServerName, productName, siteUrl } from "../../../lib/discovery";
 
 const title = "Server MCP di Tracciamy";
 const description = "Collega un agente a Tracciamy per consultare il profilo della piattaforma di tracciabilità industriale, trovare le normative coperte e ottenere il link alla demo.";
 const canonical = `${siteUrl}${mcpDocsPath}`;
 const endpoint = `${siteUrl}${mcpPath}`;
-const registryUrl = `https://registry.modelcontextprotocol.io/v0.1/servers/${encodeURIComponent(getMcpCard().name)}/versions/latest`;
+const registryUrl = `https://registry.modelcontextprotocol.io/v0.1/servers/${encodeURIComponent(mcpServerName)}/versions/latest`;
 const searchExample = { name: "find_product_resources", arguments: { query: "normative", limit: 3 } };
 
 export const metadata = {
