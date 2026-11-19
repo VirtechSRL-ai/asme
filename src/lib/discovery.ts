@@ -15,6 +15,7 @@ const features = [
 const contactEmail = site.contatti.email;
 const demoPath = "/#contatti";
 
+export const certificateTraceabilityPath = "/tracciabilita-certificati-materiali";
 export const docsPath = "/docs";
 export const mcpDocsPath = `${docsPath}/mcp`;
 export const profilePath = "/profilo.json";
@@ -320,6 +321,7 @@ export function getLlms() {
     `- [Scheda prodotto](${siteUrl}/index.md): destinatari, funzionalità e risorse.`,
     `- [Documentazione API](${siteUrl}${docsPath}): accesso al profilo pubblico in sola lettura.`,
     `- [Profilo JSON](${siteUrl}${versionedProfilePath}): dati pubblici sul prodotto.`,
+    `- [Tracciabilità dei certificati dei materiali](${siteUrl}${certificateTraceabilityPath}): come collegare certificati, componenti e fascicolo tecnico per commessa.`,
     `- [Guida MCP di ${productName}](${siteUrl}${mcpDocsPath}): connessione, strumenti ed esempi.`,
     `- [Scheda del server MCP](${siteUrl}${mcpCardPath}): indirizzo e protocollo di connessione.`,
     `- [Specifica OpenAPI](${siteUrl}${openApiPath})`,

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { mcpRegistryUrl } from "@/lib/discovery";
+import { certificateTraceabilityPath, mcpRegistryUrl } from "@/lib/discovery";
 import { versoDi } from "./scena";
 import { cacheLife } from "next/cache";
 import { site } from "@/content/site";
@@ -105,6 +105,11 @@ export async function SiteFooter() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href={certificateTraceabilityPath} className="inline-block py-2.5 text-[0.9375rem] font-semibold text-su-scuro transition-colors hover:text-verde">
+                  Tracciabilità dei certificati dei materiali
+                </Link>
+              </li>
               <li>
                 <Link href="/docs" className="inline-block py-2.5 text-[0.9375rem] font-semibold text-su-scuro transition-colors hover:text-verde">
                   Documentazione API del profilo
