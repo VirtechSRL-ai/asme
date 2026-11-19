@@ -18,6 +18,7 @@ import { Team } from "@/components/sezioni/team";
  * chiedere una demo.
  */
 export const metadata = {
+  verification: { google: "veJ6DePNY44E3VBQdxZphmGHcDEdJOPMpawIRj4XGcc" },
   alternates: { canonical: "/", types: { "text/markdown": "/index.md" } },
 };
 
