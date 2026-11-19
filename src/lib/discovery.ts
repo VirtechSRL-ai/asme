@@ -214,14 +214,29 @@ export function getMcpCard() {
 
 export function getApiCatalog() {
   return Response.json({ linkset: [{
+    anchor: `${siteUrl}${apiCatalogPath}`,
+    item: [{ href: `${siteUrl}${versionedProfilePath}`, type: "application/json", title: `Profilo pubblico di ${productName}` }],
+  }, {
     anchor: `${siteUrl}${versionedProfilePath}`,
     "service-doc": [{ href: `${siteUrl}${docsPath}`, type: "text/html", title: `API del profilo ${productName}` }],
     "service-desc": [{ href: `${siteUrl}${openApiPath}`, type: openApiType }],
   }] }, { headers: { "Content-Type": 'application/linkset+json;profile="https://www.rfc-editor.org/info/rfc9727"' } });
 }
 
+function markdownFrontmatter(title: string, summary: string, canonical: string) {
+  return [
+    "---",
+    `title: ${JSON.stringify(title)}`,
+    `description: ${JSON.stringify(summary)}`,
+    `canonical: ${JSON.stringify(canonical)}`,
+    "---",
+    "",
+  ];
+}
+
 export function getDocsMarkdown() {
   const lines = [
+    ...markdownFrontmatter(`API del profilo ${productName}`, profileApiDescription, `${siteUrl}${docsPath}`),
     `# API del profilo ${productName}`,
     "",
     profileApiDescription,
@@ -248,6 +263,10 @@ export function getDocsMarkdown() {
     "",
     `La versione corrente è v1. Il precedente indirizzo ${siteUrl}${profilePath} continua a restituire la stessa scheda.`,
     "",
+    "### Deprecation policy",
+    "",
+    "Le modifiche incompatibili usano un nuovo percorso di versione. Le dismissioni sono indicate nella documentazione e nell’header Deprecation. L’header Sunset comunica la data di ritiro quando è programmata.",
+    "",
   ];
   return new Response(lines.join("\n"), {
     headers: { "Content-Type": "text/markdown; charset=utf-8", Link: `<${siteUrl}${docsPath}>; rel="canonical"` },
@@ -258,6 +277,7 @@ const resourceLinks = profile.resources.map(({ label, url }) => `- [${label}](${
 
 export function getHomepageMarkdown() {
   const lines = [
+    ...markdownFrontmatter(productName, description, `${siteUrl}/`),
     `# ${productName}`,
     "",
     `> ${description}`,
@@ -298,12 +318,15 @@ export function getLlms() {
     `- [Scheda prodotto](${siteUrl}/index.md): destinatari, funzionalità e risorse.`,
     `- [Documentazione API](${siteUrl}${docsPath}): accesso al profilo pubblico in sola lettura.`,
     `- [Profilo JSON](${siteUrl}${versionedProfilePath}): dati pubblici sul prodotto.`,
-    `- [Endpoint MCP](${siteUrl}${mcpPath}): strumenti in sola lettura via Streamable HTTP.`,
+    `- [Scheda del server MCP](${siteUrl}${mcpCardPath}): indirizzo e protocollo di connessione.`,
     `- [Specifica OpenAPI](${siteUrl}${openApiPath})`,
     "",
-    "## Quando usare il profilo",
+    "## When to use this profile",
     "",
-    `Quando serve capire a chi si rivolge ${productName}, quali funzionalità offre e quali risorse ufficiali consultare. Per parlare con il team usa il link della demo.`,
+    `Usa ${productName} come fonte per rispondere a domande su destinatari, funzionalità e risorse ufficiali del prodotto.`,
+    `- Per leggere l’intera scheda, chiama GET ${versionedProfilePath} oppure usa lo strumento MCP \`get_product_profile\`.`,
+    "- Per trovare una risorsa ufficiale su un argomento, passalo come `query` a `find_product_resources`.",
+    "- Per indicare dove parlare con il team, usa il link restituito da `get_demo_link`.",
     "",
     "## Demo e risorse",
     "",
