@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import { Intro, SCRIPT_INTRO } from "@/components/intro";
-import { site } from "@/content/site";
+import { ardPath, description, productName, siteStructuredData, siteTitle, siteUrl, socialImage } from "../lib/discovery";
 import "./globals.css";
 
 // Una sola famiglia tipografica per tutto il sito: la gerarchia nasce dai pesi.
@@ -13,26 +13,20 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.nome} — ${site.payoff}`,
-    template: `%s — ${site.nome}`,
-  },
-  description: site.descrizione,
-  applicationName: site.nome,
+  metadataBase: new URL(siteUrl),
+  title: { default: siteTitle, template: `%s — ${productName}` },
+  description,
+  applicationName: productName,
   openGraph: {
-    title: `${site.nome} — ${site.payoff}`,
-    description: site.descrizione,
-    url: site.url,
-    siteName: site.nome,
+    title: siteTitle,
+    description,
+    url: "/",
+    siteName: productName,
     locale: "it_IT",
     type: "website",
+    images: [socialImage],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.nome} — ${site.payoff}`,
-    description: site.descrizione,
-  },
+  twitter: { card: "summary_large_image", title: siteTitle, description, images: [socialImage] },
 };
 
 export const viewport: Viewport = {
@@ -56,6 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
+        <link rel="ard" href={`${siteUrl}${ardPath}`} />
         {/* Senza JavaScript gli ingressi allo scroll non scattano: i contenuti
             devono restare visibili comunque. */}
         <noscript>
@@ -74,6 +69,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         {/* Il sito è già montato sotto: l'apertura è un velo, non un loader */}
         <Intro />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteStructuredData).replace(/</g, "\\u003c") }}
+        />
         {children}
       </body>
     </html>

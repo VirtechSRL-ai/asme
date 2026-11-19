@@ -104,6 +104,11 @@ export async function SiteFooter() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href="/docs" className="inline-block py-2.5 text-[0.9375rem] font-semibold text-su-scuro transition-colors hover:text-verde">
+                  Documentazione API del profilo
+                </Link>
+              </li>
             </ul>
           </nav>
 

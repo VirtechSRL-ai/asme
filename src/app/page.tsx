@@ -15,6 +15,10 @@ import { Team } from "@/components/sezioni/team";
  * fatto il prodotto, a chi serve, per quale settore, chi mi accompagna e come
  * chiedere una demo.
  */
+export const metadata = {
+  alternates: { canonical: "/", types: { "text/markdown": "/index.md" } },
+};
+
 export default function Home() {
   return (
     <>

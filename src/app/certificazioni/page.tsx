@@ -16,6 +16,7 @@ const testi = site.certificazioni;
 export const metadata: Metadata = {
   title: testi.etichetta,
   description: testi.testo,
+  alternates: { canonical: "/certificazioni" },
 };
 
 function HeroCertificazioni() {
