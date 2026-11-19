@@ -16,6 +16,7 @@ const contactEmail = site.contatti.email;
 const demoPath = "/#contatti";
 
 export const docsPath = "/docs";
+export const mcpDocsPath = `${docsPath}/mcp`;
 export const profilePath = "/profilo.json";
 export const versionedProfilePath = "/api/v1/profilo";
 export const mcpPath = "/mcp";
@@ -207,7 +208,7 @@ export function getMcpCard() {
     title: `Profilo di ${productName}`,
     description: `Profilo, risorse e link demo di ${productName} in sola lettura.`,
     version: "1.0.0",
-    websiteUrl: `${siteUrl}${docsPath}`,
+    websiteUrl: `${siteUrl}${mcpDocsPath}`,
     remotes: [{ type: "streamable-http", url: `${siteUrl}${mcpPath}` }],
   }, { headers: { "Content-Type": "application/mcp-server-card+json" } });
 }
@@ -318,6 +319,7 @@ export function getLlms() {
     `- [Scheda prodotto](${siteUrl}/index.md): destinatari, funzionalità e risorse.`,
     `- [Documentazione API](${siteUrl}${docsPath}): accesso al profilo pubblico in sola lettura.`,
     `- [Profilo JSON](${siteUrl}${versionedProfilePath}): dati pubblici sul prodotto.`,
+    `- [Guida MCP di ${productName}](${siteUrl}${mcpDocsPath}): connessione, strumenti ed esempi.`,
     `- [Scheda del server MCP](${siteUrl}${mcpCardPath}): indirizzo e protocollo di connessione.`,
     `- [Specifica OpenAPI](${siteUrl}${openApiPath})`,
     "",

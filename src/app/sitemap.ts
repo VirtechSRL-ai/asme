@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { docsPath, siteUrl } from "../lib/discovery";
+import { docsPath, mcpDocsPath, siteUrl } from "../lib/discovery";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ["/", "/certificazioni", docsPath].map((path) => ({ url: `${siteUrl}${path}` }));
+  return ["/", "/certificazioni", docsPath, mcpDocsPath].map((path) => ({ url: `${siteUrl}${path}` }));
 }
