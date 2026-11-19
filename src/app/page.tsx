@@ -1,3 +1,5 @@
+import { WebMcpTools } from "../components/WebMcpTools";
+import { profile } from "../lib/discovery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Scena } from "@/components/scena";
@@ -22,6 +24,7 @@ export const metadata = {
 export default function Home() {
   return (
     <>
+      <WebMcpTools productProfile={profile} />
       <SiteHeader />
       {/* Un solo fondale per tutte le sezioni chiare: le sfumature
           attraversano i confini invece di fermarsi a ogni stacco. */}
