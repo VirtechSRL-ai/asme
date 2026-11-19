@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { mcpRegistryUrl } from "@/lib/discovery";
 import { versoDi } from "./scena";
 import { cacheLife } from "next/cache";
 import { site } from "@/content/site";
@@ -108,6 +109,11 @@ export async function SiteFooter() {
                 <Link href="/docs" className="inline-block py-2.5 text-[0.9375rem] font-semibold text-su-scuro transition-colors hover:text-verde">
                   Documentazione API del profilo
                 </Link>
+              </li>
+              <li>
+                <a href={mcpRegistryUrl} className="inline-block py-2.5 text-[0.9375rem] font-semibold text-su-scuro transition-colors hover:text-verde">
+                  Registro MCP ufficiale
+                </a>
               </li>
             </ul>
           </nav>

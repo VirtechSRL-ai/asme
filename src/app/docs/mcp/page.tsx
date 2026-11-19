@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { docsPath, mcpCardPath, mcpDocsPath, mcpPath, mcpServerName, productName, siteUrl } from "../../../lib/discovery";
+import { docsPath, mcpCardPath, mcpDocsPath, mcpPath, mcpRegistryUrl, productName, siteUrl } from "../../../lib/discovery";
 
 const title = "Server MCP di Tracciamy";
 const description = "Collega un agente a Tracciamy per consultare il profilo della piattaforma di tracciabilità industriale, trovare le normative coperte e ottenere il link alla demo.";
 const canonical = `${siteUrl}${mcpDocsPath}`;
 const endpoint = `${siteUrl}${mcpPath}`;
-const registryUrl = `https://registry.modelcontextprotocol.io/v0.1/servers/${encodeURIComponent(mcpServerName)}/versions/latest`;
 const searchExample = { name: "find_product_resources", arguments: { query: "normative", limit: 3 } };
 
 export const metadata = {
@@ -26,7 +25,7 @@ export default function McpDocs() {
       <p>Aggiungi questo URL come server remoto nel tuo client MCP e scegli il trasporto Streamable HTTP. La connessione al profilo pubblico è in sola lettura e non richiede credenziali.</p>
       <pre className="my-4 overflow-x-auto rounded-xl border border-bordo p-4 text-sm"><code>{endpoint}</code></pre>
       <p><a href={mcpCardPath}>Scheda del server in formato JSON</a></p>
-      <p><a href={registryUrl}>Scheda di {productName} nel registro MCP ufficiale</a></p>
+      <p><a href={mcpRegistryUrl}>Scheda di {productName} nel registro MCP ufficiale</a></p>
 
       <h2 className="mt-8 mb-2 text-xl font-bold">Strumenti disponibili</h2>
       <ul className="list-disc space-y-2 ps-5">
